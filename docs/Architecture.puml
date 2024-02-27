@@ -1,0 +1,14 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+package Diary
+package Operation
+package Resource
+package Patient
+package Map
+
+Diary --> Operation
+Diary --> Resource
+Diary --> Patient
+
+@enduml
