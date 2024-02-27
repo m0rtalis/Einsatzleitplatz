@@ -1,11 +1,15 @@
 package de.eisingerf.elp;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -21,12 +25,14 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 @SecurityScheme(name = "Basic", scheme = "basic", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
+@OpenAPIDefinition(security = {@SecurityRequirement(name = "Basic")})
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // TODO: Remove as many as possible
         http.httpBasic(Customizer.withDefaults()).authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/login", "/swagger-ui*/**", "/v3/**", "/error", "/operations/names")
+                .requestMatchers("/login", "/swagger-ui*/**", "/v3/**", "/error", "/operations/names", "/actuator/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated());
@@ -34,8 +40,12 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    UserDetailsManager users(DataSource dataSource) {
+    @Autowired
+    public void authenticationManager(AuthenticationManagerBuilder builder, DataSource dataSource) throws Exception {
+        builder.jdbcAuthentication().dataSource(dataSource).withDefaultSchema();
+    }
+
+    public @Bean UserDetailsManager users(DataSource dataSource) {
         UserDetails user = User.builder()
                 .username("user")
                 .password(passwordEncoder().encode("password"))
