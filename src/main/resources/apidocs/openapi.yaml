@@ -1,9 +1,10 @@
 openapi: 3.0.1
+info:
+  title: Einsatzleitplatz
+  version: 0.0.1
 servers:
 - url: http://localhost
   description: Generated server url
-security:
-- Basic: []
 paths:
   /operations/:
     get:
@@ -97,5 +98,4 @@ components:
   securitySchemes:
     Basic:
       type: http
-      in: header
       scheme: basic

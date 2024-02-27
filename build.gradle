@@ -7,6 +7,10 @@ plugins {
 group = 'de.eisingerf'
 version = '0.0.1-SNAPSHOT'
 
+// Fixed bug WebSecurityConfig(debug=true) throws error
+// https://github.com/spring-projects/spring-security/issues/14370
+ext['spring-security.version']='6.2.2'
+
 java {
     sourceCompatibility = '21'
 }
@@ -28,10 +32,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
     implementation "org.springframework.boot:spring-boot-starter-security"
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'com.h2database:h2:2.2.224'
+    testRuntimeOnly 'com.h2database:h2:2.2.224'
 }
 
 tasks.named('test') {

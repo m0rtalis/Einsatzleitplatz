@@ -27,6 +27,7 @@ class ElpApplicationTests {
 
     @Test
     void generateOpenAPIDefinition() throws Exception {
+        // TODO: Use instead https://github.com/springdoc/springdoc-openapi-gradle-plugin
         assertFalse(openApiFile.isAbsolute());
 
         final MvcResult response = mockMvc.perform(get(API_DOCS_PATH))
