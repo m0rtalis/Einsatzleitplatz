@@ -14,10 +14,13 @@ public class Operation implements HasResources, HasPatients {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "NAME", nullable = false, unique = true)
     private String name;
+
     @OneToOne
     private Location location;
+
     @OneToMany
     @OrderBy("priority ASC")
     private List<Section> sections; // Einsatzabschnitte
