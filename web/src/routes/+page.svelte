@@ -13,13 +13,13 @@
 	<h1 class="heading">Einsatzleitplatz</h1>
 	<form id="login-form" name="login-form" method="post" action="?/login" class="login-form"
 		  use:enhance>
-		<label for="login-username">Username: </label>
+		<label for="login-username">Username</label>
 		<input id="login-username" name="username" type="text" placeholder="Username" required
 			   autocapitalize="none" />
-		<label for="login-password">Password: </label>
+		<label for="login-password">Password</label>
 		<input id="login-password" name="password" type="password" placeholder="Password"
 			   required />
-		<label for="login-operations">Operation: </label>
+		<label for="login-operations">Operation</label>
 		<div class="select-div">
 			{#if isSelectFromList}
 				<select
@@ -39,7 +39,7 @@
 				<input type="text" maxlength="100" minlength="3" name="Operation" placeholder="New Operation" enterkeyhint="done"
 					   required={isSelectFromList === false}>
 				<input type="hidden" name="createNewOperation" value=true >
-				<button type="button" title="List open operations" class="icon-only" on:click={() => isSelectFromList = true}>
+				<button type="button" title="List operations" class="icon-only" on:click={() => isSelectFromList = true}>
 					<IconList />
 				</button>
 			{/if}
@@ -61,21 +61,19 @@
     }
 
     .login-form {
-        display: grid;
-        grid-template-columns: max-content auto;
-        grid-row-gap: .5rem;
         align-items: center;
     }
 
     .login-form > label {
+		display: inline-block;
+		margin-top: .5rem;
         text-align: left;
-        margin-right: .5rem;
-        vertical-align: center;
+        font-weight: bold;
     }
 
     .login-form > button[type="submit"] {
-        margin-top: .7rem;
-        grid-column: 1 / span 2;
+		width: 100%;
+        margin-top: 1rem;
     }
 
     .select-div {
