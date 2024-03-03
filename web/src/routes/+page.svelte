@@ -24,7 +24,7 @@
 			{#if isSelectFromList}
 				<select
 					id="login-operations"
-					name="login-operations"
+					name="operation"
 					bind:value={selectedOperationId}
 					required={isSelectFromList}
 				>
@@ -36,8 +36,9 @@
 					<IconPlus />
 				</button>
 			{:else}
-				<input type="text" maxlength="100" minlength="3" placeholder="New Operation" enterkeyhint="done"
+				<input type="text" maxlength="100" minlength="3" name="Operation" placeholder="New Operation" enterkeyhint="done"
 					   required={isSelectFromList === false}>
+				<input type="hidden" name="createNewOperation" value=true >
 				<button type="button" title="List open operations" class="icon-only" on:click={() => isSelectFromList = true}>
 					<IconList />
 				</button>
@@ -67,7 +68,7 @@
     }
 
     .login-form > label {
-        text-align: right;
+        text-align: left;
         margin-right: .5rem;
         vertical-align: center;
     }
