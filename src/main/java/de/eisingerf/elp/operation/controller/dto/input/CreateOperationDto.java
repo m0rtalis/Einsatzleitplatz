@@ -1,4 +1,4 @@
-package de.eisingerf.elp.operation.api.dto.input;
+package de.eisingerf.elp.operation.controller.dto.input;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

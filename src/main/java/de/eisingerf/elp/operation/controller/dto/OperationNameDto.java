@@ -1,4 +1,4 @@
-package de.eisingerf.elp.operation.api.dto;
+package de.eisingerf.elp.operation.controller.dto;
 
 import de.eisingerf.elp.operation.entity.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;

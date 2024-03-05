@@ -1,8 +1,8 @@
-package de.eisingerf.elp.operation.api;
+package de.eisingerf.elp.operation.controller;
 
-import de.eisingerf.elp.operation.api.dto.OperationDto;
-import de.eisingerf.elp.operation.api.dto.OperationNameDto;
-import de.eisingerf.elp.operation.api.dto.input.CreateOperationDto;
+import de.eisingerf.elp.operation.controller.dto.OperationDto;
+import de.eisingerf.elp.operation.controller.dto.OperationNameDto;
+import de.eisingerf.elp.operation.controller.dto.input.CreateOperationDto;
 import de.eisingerf.elp.operation.service.OperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

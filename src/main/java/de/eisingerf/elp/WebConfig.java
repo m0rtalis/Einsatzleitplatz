@@ -8,6 +8,10 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -17,6 +21,7 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -42,13 +47,12 @@ public class WebConfig {
                         .enableSessionUrlRewriting(false))
                 .securityContext(securityContext ->
                         securityContext.securityContextRepository(new HttpSessionSecurityContextRepository()))
-                .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/swagger-ui*/**", "/v3/**", "/error", "/operations/names")
+                        .requestMatchers("/login", "/swagger-ui*/**", "/v3/**", "/error", "/operations/names")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
-                // Disabled for now because inconvenient. Enable later
+                // Disabled for now because inconvenient. This opens CSRF attack vectors. Enable later
                 // https://medium.com/@thecodinganalyst/configure-spring-security-csrf-for-testing-on-swagger-e9e6461ee0c1
                 // https://stackoverflow.com/questions/74447118/csrf-protection-not-working-with-spring-security-6
                 // https://www.linkedin.com/pulse/solving-invalid-csrf-token-found-error-spring-security-oyeleye/
@@ -66,18 +70,26 @@ public class WebConfig {
     }
 
     @Bean
-    public UserDetailsManager users(DataSource dataSource) {
+    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+        var authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        return new ProviderManager(authenticationProvider);
+    }
+
+    @Bean
+    public UserDetailsManager users(DataSource dataSource, PasswordEncoder passwordEncoder) {
         // This causes "No authentication manager set. Reauthentication of users when changing passwords will not be
         // performed."
         // Maybe it will be fixed when we implement actual user management
         UserDetails user = User.builder()
                 .username("user")
-                .password(passwordEncoder().encode("password"))
+                .password(passwordEncoder.encode("password"))
                 .roles("USER")
                 .build();
         UserDetails admin = User.builder()
                 .username("admin")
-                .password(passwordEncoder().encode("password"))
+                .password(passwordEncoder.encode("password"))
                 .roles("USER", "ADMIN")
                 .build();
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
