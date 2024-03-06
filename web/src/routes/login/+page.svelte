@@ -3,6 +3,8 @@
 	import { enhance } from '$app/forms';
 	import IconPlus from 'virtual:icons/mdi/plus';
 	import IconList from 'virtual:icons/mdi/format-list-bulleted';
+	import { operationStore, userStore } from '$lib/store';
+	import { goto } from '$app/navigation';
 
 	export let data;
 	export let form;
@@ -10,8 +12,12 @@
 	let selectedOperationId = data.openOperations[0]?.id;
 	let isSelectFromList: boolean = !!data.openOperations.length;
 
-	// userStore.set({username: user.username})
-	// operationStore.set({id: operation.id, name: operation.name})
+	$: if(form?.isLoggedIn) {
+		console.log("Logged in")
+		userStore.set({ username: form.user.username })
+		operationStore.set({ id: form.operation.id, name: form.operation.name })
+		goto("/")
+	}
 </script>
 
 <div class="center">
@@ -43,7 +49,7 @@
 			{:else}
 				<input type="text" maxlength="100" minlength="3" name="operation" placeholder="New Operation" enterkeyhint="done"
 					   required={isSelectFromList === false}>
-				<input type="hidden" name="createNewOperation" value=true >
+				<input type="hidden" name="createNewOperation" value=true>
 				<button type="button" title="List operations" class="icon-only" on:click={() => isSelectFromList = true}>
 					<IconList />
 				</button>
