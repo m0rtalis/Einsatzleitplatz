@@ -1,10 +1,12 @@
-import type { Handle } from "@sveltejs/kit";
+import {redirect} from "@sveltejs/kit";
 
-export const handle: Handle = async ({ event, resolve }) => {
-	return resolve(event, {
-		filterSerializedResponseHeaders(name) {
-			// SvelteKit doesn't serialize any headers on server-side fetches by default but openapi-fetch uses this header for empty responses.
-			return name === "content-length";
-		},
-	});
-};
+export async function handleFetch({request, fetch}) {
+    const result = await fetch(request)
+    if (result.status === 403) {
+        console.log("Redirect to login")
+        // TODO: Add current page as param so login can redirect back again
+        // TODO: Do not redirect for login request
+        redirect(307, '/login')
+    }
+    return result;
+}

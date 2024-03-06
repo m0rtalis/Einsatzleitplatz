@@ -5,9 +5,15 @@
 
 
 export interface paths {
-  "/operations/": {
+  "/users/login": {
+    post: operations["login"];
+  };
+  "/operations": {
     get: operations["getOperations"];
     post: operations["createOperation"];
+  };
+  "/users/me": {
+    get: operations["authenticatedUser"];
   };
   "/operations/{id}": {
     get: operations["getOperation"];
@@ -15,24 +21,44 @@ export interface paths {
   "/operations/names": {
     get: operations["getOperationNames"];
   };
+  "/actuator": {
+    get: operations["links"];
+  };
+  "/actuator/health": {
+    get: operations["handle"];
+  };
+  "/actuator/health/**": {
+    get: operations["handle_1"];
+  };
 }
 
 export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
-    CreateBasket: {
+    Login: {
+      username: string;
+      password: string;
+    };
+    User: {
+      username: string;
+    };
+    CreateOperation: {
       name: string;
     };
     Operation: {
       /** Format: int64 */
-      id?: number;
-      name?: string;
+      id: number;
+      name: string;
     };
     OperationName: {
       /** Format: int64 */
-      id?: number;
-      name?: string;
+      id: number;
+      name: string;
+    };
+    Link: {
+      href?: string;
+      templated?: boolean;
     };
   };
   responses: never;
@@ -48,6 +74,21 @@ export type external = Record<string, never>;
 
 export interface operations {
 
+  login: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Login"];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["User"];
+        };
+      };
+    };
+  };
   getOperations: {
     responses: {
       /** @description OK */
@@ -61,14 +102,24 @@ export interface operations {
   createOperation: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["CreateBasket"];
+        "application/json": components["schemas"]["CreateOperation"];
       };
     };
+    responses: {
+      /** @description Created */
+      201: {
+        content: {
+          "application/json": components["schemas"]["Operation"];
+        };
+      };
+    };
+  };
+  authenticatedUser: {
     responses: {
       /** @description OK */
       200: {
         content: {
-          "application/json": components["schemas"]["Operation"];
+          "*/*": components["schemas"]["User"];
         };
       };
     };
@@ -94,6 +145,54 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["OperationName"][];
+        };
+      };
+    };
+  };
+  links: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "application/vnd.spring-boot.actuator.v3+json": {
+            [key: string]: {
+              [key: string]: components["schemas"]["Link"];
+            };
+          };
+          "application/vnd.spring-boot.actuator.v2+json": {
+            [key: string]: {
+              [key: string]: components["schemas"]["Link"];
+            };
+          };
+          "application/json": {
+            [key: string]: {
+              [key: string]: components["schemas"]["Link"];
+            };
+          };
+        };
+      };
+    };
+  };
+  handle: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "application/vnd.spring-boot.actuator.v3+json": Record<string, never>;
+          "application/vnd.spring-boot.actuator.v2+json": Record<string, never>;
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  handle_1: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "application/vnd.spring-boot.actuator.v3+json": Record<string, never>;
+          "application/vnd.spring-boot.actuator.v2+json": Record<string, never>;
+          "application/json": Record<string, never>;
         };
       };
     };

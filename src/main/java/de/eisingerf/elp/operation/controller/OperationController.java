@@ -23,7 +23,7 @@ public class OperationController {
         this.operationService = operationService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<OperationDto> getOperations() {
         var operations = this.operationService.getOperations(10);
         return operations.stream().map(OperationDto::from).toList();
@@ -39,12 +39,13 @@ public class OperationController {
 
     @GetMapping("/{id}")
     public OperationDto getOperation(@PathVariable("id") Long operationId) {
+        // TODO: Make ids to strings? How does this influence the database?
         var operation = this.operationService.getOperation(operationId);
         // TODO: Handle NoSucheElement as NOT FOUND
         return OperationDto.from(operation);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public OperationDto createOperation(@RequestBody CreateOperationDto createOperationDto) {
         var operation = this.operationService.createOperation(createOperationDto.name(), Optional.empty());

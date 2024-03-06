@@ -1,12 +1,38 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0
+  title: Einsatzleitplatz
+  version: 0.0.1
 servers:
 - url: http://localhost
   description: Generated server url
+security:
+- Basic: []
+tags:
+- name: Actuator
+  description: Monitor and interact
+  externalDocs:
+    description: Spring Boot Actuator Web API Documentation
+    url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
-  /operations/:
+  /users/login:
+    post:
+      tags:
+      - user-controller
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+  /operations:
     get:
       tags:
       - operation-controller
@@ -28,15 +54,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateBasket'
+              $ref: '#/components/schemas/CreateOperation'
         required: true
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Operation'
+  /users/me:
+    get:
+      tags:
+      - user-controller
+      operationId: authenticatedUser
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
   /operations/{id}:
     get:
       tags:
@@ -70,9 +108,92 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/OperationName'
+  /actuator:
+    get:
+      tags:
+      - Actuator
+      operationId: links
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: '#/components/schemas/Link'
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: '#/components/schemas/Link'
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: '#/components/schemas/Link'
+  /actuator/health:
+    get:
+      tags:
+      - Actuator
+      operationId: handle
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+  /actuator/health/**:
+    get:
+      tags:
+      - Actuator
+      operationId: handle_1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
 components:
   schemas:
-    CreateBasket:
+    Login:
+      required:
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    User:
+      required:
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+    CreateOperation:
       required:
       - name
       type: object
@@ -80,6 +201,9 @@ components:
         name:
           type: string
     Operation:
+      required:
+      - id
+      - name
       type: object
       properties:
         id:
@@ -88,6 +212,9 @@ components:
         name:
           type: string
     OperationName:
+      required:
+      - id
+      - name
       type: object
       properties:
         id:
@@ -95,3 +222,14 @@ components:
           format: int64
         name:
           type: string
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+        templated:
+          type: boolean
+  securitySchemes:
+    Basic:
+      type: http
+      scheme: basic
