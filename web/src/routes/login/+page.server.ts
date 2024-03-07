@@ -12,7 +12,6 @@ export const actions = {
 		login: async ({ request, fetch, cookies }) => {
 			let data = await request.formData();
 
-			console.log('Login called', data);
 			// 1. Login user
 			let loginResponse = await client.POST('/users/login', {
 				body: {
@@ -42,10 +41,8 @@ export const actions = {
 				)).data!;
 			}
 			// 3. Return operation and user to Page and then set there
+			//    redirect on client side. I'd rather do it on server side but not possible.
 			return { isLoggedIn: true, user, operation };
-
-			// 4. redirect
-			// await goto('..')
 		}
 	}
 ;

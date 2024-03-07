@@ -5,6 +5,7 @@
 	import IconList from 'virtual:icons/mdi/format-list-bulleted';
 	import { operationStore, userStore } from '$lib/store';
 	import { goto } from '$app/navigation';
+	import type { SubmitFunction } from '@sveltejs/kit';
 
 	export let data;
 	export let form;
@@ -12,18 +13,31 @@
 	let selectedOperationId = data.openOperations[0]?.id;
 	let isSelectFromList: boolean = !!data.openOperations.length;
 
-	$: if(form?.isLoggedIn) {
-		console.log("Logged in")
-		userStore.set({ username: form.user.username })
-		operationStore.set({ id: form.operation.id, name: form.operation.name })
-		goto("/")
+	$: if (form?.isLoggedIn) {
+		console.log('Logged in');
+		userStore.set({ username: form.user.username });
+		operationStore.set({ id: form.operation.id, name: form.operation.name });
+		goto('/');
+	}
+
+	const submitLogin:SubmitFunction = ({submitter}) => {
+		if (submitter && submitter instanceof HTMLButtonElement) {
+			submitter.disabled = true;
+		}
+
+		return async ({update}) => {
+			if (submitter && submitter instanceof HTMLButtonElement) {
+				submitter.disabled = false;
+			}
+			await update()
+		}
 	}
 </script>
 
 <div class="center">
 	<h1 class="heading">Einsatzleitplatz</h1>
 	<form id="login-form" name="login-form" method="post" action="?/login" class="login-form"
-		  use:enhance>
+		  use:enhance={submitLogin}>
 		<label for="login-username">Username</label>
 		<input id="login-username" name="username" type="text" placeholder="Username" required
 			   autocapitalize="none" />
@@ -43,14 +57,17 @@
 						<option value={openOperation.id}>{openOperation.name}</option>
 					{/each}
 				</select>
-				<button type="button" title="Add new operation" class="icon-only" on:click={() => isSelectFromList = false}>
+				<button type="button" title="Add new operation" class="icon-only"
+						on:click={() => isSelectFromList = false}>
 					<IconPlus />
 				</button>
 			{:else}
-				<input type="text" maxlength="100" minlength="3" name="operation" placeholder="New Operation" enterkeyhint="done"
+				<input type="text" maxlength="100" minlength="3" name="operation" placeholder="New Operation"
+					   enterkeyhint="done"
 					   required={isSelectFromList === false}>
 				<input type="hidden" name="createNewOperation" value=true>
-				<button type="button" title="List operations" class="icon-only" on:click={() => isSelectFromList = true}>
+				<button type="button" title="List operations" class="icon-only"
+						on:click={() => isSelectFromList = true}>
 					<IconList />
 				</button>
 			{/if}
@@ -76,14 +93,14 @@
     }
 
     .login-form > label {
-		display: inline-block;
-		margin-top: .5rem;
+        display: inline-block;
+        margin-top: .5rem;
         text-align: left;
         font-weight: bold;
     }
 
     .login-form > button[type="submit"] {
-		width: 100%;
+        width: 100%;
         margin-top: 1rem;
     }
 
