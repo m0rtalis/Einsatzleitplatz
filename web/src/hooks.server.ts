@@ -10,3 +10,10 @@ export async function handleFetch({request, fetch  }) {
     }
     return response;
 }
+
+export async function handleError({status}) {
+    if (status === 404) {
+        console.log("Error not found")
+        redirect(307, '/')
+    }
+}

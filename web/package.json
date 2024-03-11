@@ -18,7 +18,9 @@
 		"schema:generate": "openapi-typescript ./apidocs/openapi.yaml -o ./src/lib/api/elp.d.ts --enum --immutable"
 	},
 	"devDependencies": {
+		"@iconify-json/icon-park-outline": "^1.1.15",
 		"@iconify-json/mdi": "^1.1.64",
+		"@iconify-json/uil": "^1.1.8",
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",

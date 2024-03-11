@@ -1,5 +1,4 @@
 <script lang="ts">
-	import 'chota';
 	import { enhance } from '$app/forms';
 	import IconPlus from 'virtual:icons/mdi/plus';
 	import IconList from 'virtual:icons/mdi/format-list-bulleted';
@@ -14,7 +13,6 @@
 	let isSelectFromList: boolean = !!data.openOperations.length;
 
 	$: if (form?.isLoggedIn) {
-		console.log('Logged in');
 		userStore.set({ username: form.user.username });
 		operationStore.set({ id: form.operation.id, name: form.operation.name });
 		goto('/');
@@ -36,7 +34,7 @@
 
 <div class="center">
 	<h1 class="heading">Einsatzleitplatz</h1>
-	<form id="login-form" name="login-form" method="post" action="?/login" class="login-form"
+	<form id="login-form" name="login-form" method="post" action="?/login"
 		  use:enhance={submitLogin}>
 		<label for="login-username">Username</label>
 		<input id="login-username" name="username" type="text" placeholder="Username" required
@@ -88,18 +86,18 @@
         text-align: center;
     }
 
-    .login-form {
+    #login-form {
         align-items: center;
     }
 
-    .login-form > label {
-        display: inline-block;
+    #login-form > label {
+        display: block;
         margin-top: .5rem;
         text-align: left;
         font-weight: bold;
     }
 
-    .login-form > button[type="submit"] {
+    #login-form > button[type="submit"] {
         width: 100%;
         margin-top: 1rem;
     }

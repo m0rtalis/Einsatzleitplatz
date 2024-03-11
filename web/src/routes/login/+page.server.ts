@@ -8,6 +8,8 @@ export const load = async ({ fetch }) => ({
 
 const AUTH_COOKIE_NAME = 'JSESSIONID';
 
+// TODO: If already logged in return with user and operation and isLoggedIn: true
+
 export const actions = {
 		login: async ({ request, fetch, cookies }) => {
 			let data = await request.formData();
