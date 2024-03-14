@@ -15,10 +15,11 @@
 		"test:unit": "vitest",
 		"test:types": "tsc --noEmit",
 		"schema:fetch": "cpy --flat ../src/main/resources/apidocs/openapi.yaml ./apidocs",
-		"schema:generate": "openapi-typescript ./apidocs/openapi.yaml -o ./src/lib/api/elp.d.ts --enum --immutable"
+		"schema:generate": "openapi-typescript ./apidocs/openapi.yaml -o src/lib/server/api/elp.d.ts --enum --immutable"
 	},
 	"devDependencies": {
 		"@iconify-json/icon-park-outline": "^1.1.15",
+		"@iconify-json/material-symbols-light": "^1.1.14",
 		"@iconify-json/mdi": "^1.1.64",
 		"@iconify-json/uil": "^1.1.8",
 		"@playwright/test": "^1.28.1",

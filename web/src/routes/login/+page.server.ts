@@ -1,5 +1,5 @@
-import type { Schema } from '$lib/api';
-import { client } from '$lib/api';
+import type { Schema } from '$lib/server/api';
+import { client } from '$lib/server/api';
 import parseCookie from 'cookie';
 
 export const load = async ({ fetch }) => ({

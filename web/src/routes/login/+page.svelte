@@ -34,7 +34,7 @@
 
 <div class="center">
 	<h1 class="heading">Einsatzleitplatz</h1>
-	<form id="login-form" name="login-form" method="post" action="?/login"
+	<form id="login-form" name="login-form" method="post" action="?/login" class="login-form"
 		  use:enhance={submitLogin}>
 		<label for="login-username">Username</label>
 		<input id="login-username" name="username" type="text" placeholder="Username" required
@@ -86,18 +86,18 @@
         text-align: center;
     }
 
-    #login-form {
+    .login-form {
         align-items: center;
     }
 
-    #login-form > label {
+    .login-form > label {
         display: block;
         margin-top: .5rem;
         text-align: left;
         font-weight: bold;
     }
 
-    #login-form > button[type="submit"] {
+    .login-form > button[type="submit"] {
         width: 100%;
         margin-top: 1rem;
     }
