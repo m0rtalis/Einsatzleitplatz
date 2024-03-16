@@ -2,9 +2,11 @@
 	import { enhance } from '$app/forms';
 	import IconPlus from 'virtual:icons/mdi/plus';
 	import IconList from 'virtual:icons/mdi/format-list-bulleted';
-	import { operationStore, userStore } from '$lib/store';
+	import { operationStore, setPageName, userStore } from '$lib/store';
 	import { goto } from '$app/navigation';
 	import type { SubmitFunction } from '@sveltejs/kit';
+
+	setPageName('Login')
 
 	export let data;
 	export let form;
@@ -32,7 +34,7 @@
 	}
 </script>
 
-<div class="center">
+<div class="content">
 	<h1 class="heading">Einsatzleitplatz</h1>
 	<form id="login-form" name="login-form" method="post" action="?/login" class="login-form"
 		  use:enhance={submitLogin}>
@@ -75,19 +77,25 @@
 </div>
 
 <style>
-    .center {
-        position: fixed;
-        top: 30%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+    .content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex: 1;
+		padding-top: 10%;
+		height: 100%
+	}
 
     .heading {
         text-align: center;
     }
 
     .login-form {
-        align-items: center;
+        padding-bottom: 2rem;
+    }
+
+    .login-form > * {
+        max-width: 100%;
     }
 
     .login-form > label {
@@ -107,7 +115,7 @@
     }
 
     .select-div > select, .select-div > input {
-        min-width: 25rem;
+        width: 20em;
     }
 
 </style>
