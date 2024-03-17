@@ -1,0 +1,23 @@
+@startsalt
+'https://plantuml.com/salt
+
+{^"New journal entry"
+    Type
+    ^Information        ^
+
+    Event
+    {+
+        .
+        .
+        .
+        .
+        "                    "
+
+    }
+    Attachments
+     ^- Attachment 1^|
+     ^- Attachment 2^
+    "" |[Create]
+}
+
+@endsalt

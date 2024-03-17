@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @PreAuthorize("hasRole('USER')")
@@ -38,10 +39,9 @@ public class OperationController {
     }
 
     @GetMapping("/{id}")
-    public OperationDto getOperation(@PathVariable("id") Long operationId) {
-        // TODO: Make ids to strings? How does this influence the database?
+    public OperationDto getOperation(@PathVariable("id") UUID operationId) {
         var operation = this.operationService.getOperation(operationId);
-        // TODO: Handle NoSucheElement as NOT FOUND
+        // TODO: Handle NoSuchElement as NOT FOUND
         return OperationDto.from(operation);
     }
 

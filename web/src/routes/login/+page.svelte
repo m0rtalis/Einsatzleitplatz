@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import IconPlus from 'virtual:icons/mdi/plus';
-	import IconList from 'virtual:icons/mdi/format-list-bulleted';
+	import PlusIcon from 'virtual:icons/mdi/plus';
+	import ListIcon from 'virtual:icons/mdi/format-list-bulleted';
 	import { operationStore, setPageName, userStore } from '$lib/store';
 	import { goto } from '$app/navigation';
 	import type { SubmitFunction } from '@sveltejs/kit';
@@ -59,7 +59,7 @@
 				</select>
 				<button type="button" title="Add new operation" class="icon-only"
 						on:click={() => isSelectFromList = false}>
-					<IconPlus />
+					<PlusIcon />
 				</button>
 			{:else}
 				<input type="text" maxlength="100" minlength="3" name="operation" placeholder="New Operation"
@@ -68,7 +68,7 @@
 				<input type="hidden" name="createNewOperation" value=true>
 				<button type="button" title="List operations" class="icon-only"
 						on:click={() => isSelectFromList = true}>
-					<IconList />
+					<ListIcon />
 				</button>
 			{/if}
 		</div>
@@ -108,6 +108,7 @@
     .login-form > button[type="submit"] {
         width: 100%;
         margin-top: 1rem;
+		cursor: pointer;
     }
 
     .select-div {

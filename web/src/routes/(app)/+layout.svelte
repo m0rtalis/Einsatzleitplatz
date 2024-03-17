@@ -3,16 +3,16 @@
 	// https://www.w3schools.com/css/css3_box-sizing.asp
 	import 'chota';
 	// TODO: Export ALL icons from all components into one file from where they are imported everywhere
-	import IconMenu from 'virtual:icons/mdi/menu';
-	import IconMenuClose from 'virtual:icons/mdi/menu-close';
-	import IconHome from 'virtual:icons/mdi/home';
-	import IconLogin from 'virtual:icons/mdi/login';
-	import IconDiary from 'virtual:icons/uil/diary';
-	import IconCommunication from 'virtual:icons/icon-park-outline/communication';
-	import IconAmbulance from 'virtual:icons/mdi/ambulance';
-	import IconPatient from 'virtual:icons/mdi/swiss-cross-box';
-	import IconSettings from 'virtual:icons/mdi/settings';
-	import IconArrows from 'virtual:icons/material-symbols-light/double-arrow';
+	import MenuIcon from 'virtual:icons/mdi/menu';
+	import MenuCloseIcon from 'virtual:icons/mdi/menu-close';
+	import HomeIcon from 'virtual:icons/mdi/home';
+	import LoginIcon from 'virtual:icons/mdi/login';
+	import JournalIcon from 'virtual:icons/mdi/journal';
+	import CommunicationIcon from 'virtual:icons/icon-park-outline/communication';
+	import AmbulanceIcon from 'virtual:icons/mdi/ambulance';
+	import PatientIcon from 'virtual:icons/mdi/swiss-cross-box';
+	import SettingsIcon from 'virtual:icons/mdi/settings';
+	import ArrowsIcon from 'virtual:icons/material-symbols-light/double-arrow';
 	import { page } from '$app/stores';
 	import { isClipped } from '$lib/dom/isClipped';
 	import { throttle } from '$lib/js';
@@ -54,9 +54,9 @@
 	<button type="button" title="Sidebar" class="sidenav-button icon-only"
 			on:click={() => isSidenavOpen = !isSidenavOpen}>
 		{#if isSidenavOpen}
-			<IconMenuClose style="min-width: 1.5em; min-height: 1.5em; rotate: 180deg" />
+			<MenuCloseIcon style="min-width: 1.5em; min-height: 1.5em; rotate: 180deg" />
 		{:else }
-			<IconMenu style="min-width: 1.5em; min-height: 1.5em;" />
+			<MenuIcon style="min-width: 1.5em; min-height: 1.5em;" />
 		{/if}
 	</button>
 	<span>{$pageStore?.name ?? 'Einsatzleitplatz'}</span>
@@ -67,38 +67,38 @@
 	 on:mouseleave={cancelExpandSidenavTimer}>
 	{#if showScrollUpArrow}
 		<div class="sidenav-scroll-arrow up-arrow">
-			<IconArrows style="width: 2em; height: 2em; rotate: -90deg" />
+			<ArrowsIcon style="width: 2em; height: 2em; rotate: -90deg" />
 		</div>
 	{/if}
 	<menu class="sidenav-menu" bind:this={sidemenu} on:mouseenter={setExpandSidenavTimer}
 	>
 		<!-- To be frank no idea what to put into home. -->
 		<li class:active={path === "/(app)"}><a href="/">
-			<IconHome style="min-width: 1.5em; min-height: 1.5em" />
+			<HomeIcon style="min-width: 1.5em; min-height: 1.5em" />
 			<span>Home</span></a></li>
 		<!-- Temporary -->
 		<li class:active={path?.startsWith("/login")}><a href="/login">
-			<IconLogin style="min-width: 1.5em; min-height: 1.5em" />
+			<LoginIcon style="min-width: 1.5em; min-height: 1.5em" />
 			<span>Login</span></a></li>
-		<li class:active={path?.startsWith("/(app)/diary")}><a href="/diary">
-			<IconDiary style="min-width: 1.5em; min-height: 1.5em" />
-			<span>Diary</span></a></li>
+		<li class:active={path?.startsWith("/(app)/journal")}><a href="/journal">
+			<JournalIcon style="min-width: 1.5em; min-height: 1.5em" />
+			<span>Journal</span></a></li>
 		<li class:active={path?.startsWith("/(app)/communication")}><a href="/communication">
-			<IconCommunication style="min-width: 1.5em; min-height: 1.5em" />
+			<CommunicationIcon style="min-width: 1.5em; min-height: 1.5em" />
 			<span>Communication</span></a></li>
 		<li class:active={path?.startsWith("/(app)/units")}><a href="/units">
-			<IconAmbulance style="min-width: 1.5em; min-height: 1.5em" />
+			<AmbulanceIcon style="min-width: 1.5em; min-height: 1.5em" />
 			<span>Units</span></a></li>
 		<li class:active={path?.startsWith("/(app)/patients")}><a href="/patients">
-			<IconPatient style="min-width: 1.5em; min-height: 1.5em" />
+			<PatientIcon style="min-width: 1.5em; min-height: 1.5em" />
 			<span>Patients</span></a></li>
 		<li class:active={path?.startsWith("/(app)/settings")}><a href="/settings">
-			<IconSettings style="min-width: 1.5em; min-height: 1.5em" />
+			<SettingsIcon style="min-width: 1.5em; min-height: 1.5em" />
 			<span>Settings</span></a></li>
 	</menu>
 	{#if showScrollDownArrow}
 		<div class="sidenav-scroll-arrow down-arrow">
-			<IconArrows style="width: 2em; height: 2em; rotate: 90deg" />
+			<ArrowsIcon style="width: 2em; height: 2em; rotate: 90deg" />
 		</div>
 	{/if}
 </nav>

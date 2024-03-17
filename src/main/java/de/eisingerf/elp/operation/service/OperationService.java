@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class OperationService {
@@ -24,7 +25,7 @@ public class OperationService {
         return operationRepository.findAll(Pageable.ofSize(size)).getContent();
     }
 
-    public Operation getOperation(Long operationId) {
+    public Operation getOperation(UUID operationId) {
         return operationRepository.findById(operationId).orElseThrow();
     }
 
@@ -33,6 +34,8 @@ public class OperationService {
 
         var operation = new Operation(name);
         operation.setLocation(location.orElse(null));
+
+        // TODO: Add journal entry
 
         return this.operationRepository.save(operation);
     }
