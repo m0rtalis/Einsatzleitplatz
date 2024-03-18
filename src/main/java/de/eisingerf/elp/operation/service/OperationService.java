@@ -15,10 +15,12 @@ import java.util.UUID;
 @Service
 public class OperationService {
     private final OperationRepository operationRepository;
+    private final OperationEventPublisher operationEventPublisher;
 
     @Autowired
-    OperationService(OperationRepository operationRepository) {
+    OperationService(OperationRepository operationRepository, OperationEventPublisher operationEventPublisher) {
         this.operationRepository = operationRepository;
+        this.operationEventPublisher = operationEventPublisher;
     }
 
     public List<Operation> getOperations(int size) {
@@ -35,8 +37,9 @@ public class OperationService {
         var operation = new Operation(name);
         operation.setLocation(location.orElse(null));
 
-        // TODO: Add journal entry
+        Operation savedOperation = this.operationRepository.save(operation);
+        this.operationEventPublisher.publishOperationCreated(savedOperation);
 
-        return this.operationRepository.save(operation);
+        return savedOperation;
     }
 }

@@ -2,6 +2,7 @@ package de.eisingerf.elp.user.controller;
 
 import de.eisingerf.elp.user.controller.dto.UserDto;
 import de.eisingerf.elp.user.controller.dto.input.LoginDto;
+import de.eisingerf.elp.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,9 +24,11 @@ import static org.springframework.security.web.context.HttpSessionSecurityContex
 public class UserController {
 
 
+    private final UserService userService;
     private final AuthenticationManager authenticationManager;
 
-    UserController(AuthenticationManager authenticationManager) {
+    UserController(UserService userService, AuthenticationManager authenticationManager) {
+        this.userService = userService;
         this.authenticationManager = authenticationManager;
 	}
 
@@ -40,6 +43,7 @@ public class UserController {
         securityContext.setAuthentication(authentication);
         HttpSession session = request.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, securityContext);
+        userService.login(authentication.getName());
         return new UserDto(authentication.getName());
     }
 

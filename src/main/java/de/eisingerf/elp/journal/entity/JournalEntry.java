@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.util.Date;
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity(name = "journal")
@@ -32,12 +31,14 @@ public class JournalEntry {
     @Column(name = "JOURNAL_ENTRY_ID")
     @Positive
     @ToString.Include
-    private Long journalEntryId;
+    @NotNull
+    private Long journalEntryId = 1L;  // TODO: Calculate or use custom generator?
 
     @ManyToOne(targetEntity = Operation.class, optional = false)
     @JoinColumn(name = "OPERATION_ID")
     @ToString.Include
-    private Long operationId;
+    @NotNull
+    private UUID operationId;
 
     @ManyToOne
     @NotNull
@@ -65,7 +66,7 @@ public class JournalEntry {
     protected JournalEntry() {}
 
     public JournalEntry(
-            Long operationId,
+            UUID operationId,
             JournalComponent component,
             JournalType type,
             String event,

@@ -20,16 +20,9 @@ public class JournalComponent {
     @ToString.Include
     private String component;
 
-    @Column(name = "IS_PRIVATE")
-    private boolean isPrivate;
-
     protected JournalComponent() {}
 
-    public JournalComponent(String component, boolean isPrivate) {
+    public JournalComponent(String component) {
         this.component = component;
-        this.isPrivate = isPrivate;
     }
-
-    public static final JournalComponent JOURNAL = new JournalComponent("Journal", false);
-    public static final JournalComponent INTERNAL = new JournalComponent("Internal", true);
 }
