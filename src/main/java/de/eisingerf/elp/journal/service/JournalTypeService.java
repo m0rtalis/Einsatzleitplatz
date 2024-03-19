@@ -21,6 +21,6 @@ public class JournalTypeService {
     }
 
     public JournalType findOrCreate(String name) {
-        return journalTypeRepository.findByName(name).orElse(create(name));
+		return journalTypeRepository.findByName(name).orElseGet(() -> create(name));
     }
 }

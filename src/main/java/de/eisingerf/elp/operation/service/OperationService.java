@@ -2,6 +2,7 @@ package de.eisingerf.elp.operation.service;
 
 import de.eisingerf.elp.common.location.entity.Location;
 import de.eisingerf.elp.operation.entity.Operation;
+import de.eisingerf.elp.operation.event.OperationEventPublisher;
 import de.eisingerf.elp.operation.persistence.OperationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

@@ -1,12 +1,14 @@
-package de.eisingerf.elp.journal.service;
+package de.eisingerf.elp.journal.event;
 
+import de.eisingerf.elp.journal.entity.Component;
 import de.eisingerf.elp.journal.entity.JournalType;
+import de.eisingerf.elp.journal.service.JournalService;
+import de.eisingerf.elp.journal.service.JournalTypeService;
 import de.eisingerf.elp.shared.operation.event.OperationCreatedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 
-@Component
+@org.springframework.stereotype.Component
 public class JournalEventListener {
 
     private final JournalService journalService;
@@ -23,9 +25,9 @@ public class JournalEventListener {
         JournalType journalType = journalTypeService.findOrCreate("Operation");
         journalService.create(
                 event.operationId(),
-                JournalComponentService.OPERATION,
+                Component.OPERATION,
                 journalType,
-                "Operation " + event.name() + " created",
-                event.createdBy());
+                "Operation " + event.name() + " created"
+                );
     }
 }

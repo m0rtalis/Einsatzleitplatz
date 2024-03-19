@@ -9,7 +9,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,21 +17,18 @@ import java.util.UUID;
 @Entity(name = "operation")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
-@Setter
-@ToString
 public class Operation implements HasResources, HasPatients {
 
     @Id
     @EqualsAndHashCode.Include
-    @ToString.Include
     private UUID id = IdGenerator.generate();
 
     @Column(name = "NAME", unique = true)
     @NotBlank
-    @ToString.Include
     private String name;
 
     @OneToOne
+    @Setter
     private Location location;
 
     @OneToMany

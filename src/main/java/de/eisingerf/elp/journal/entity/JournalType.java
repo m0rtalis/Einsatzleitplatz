@@ -13,8 +13,8 @@ import java.util.UUID;
 
 @Entity(name = "journalType")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
 @Getter
+@ToString
 public class JournalType {
 
     @Id

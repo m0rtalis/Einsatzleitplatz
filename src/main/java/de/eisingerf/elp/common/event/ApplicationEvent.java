@@ -4,5 +4,4 @@ import java.util.UUID;
 
 public interface ApplicationEvent {
     UUID operationId();
-    UUID createdBy();
 }

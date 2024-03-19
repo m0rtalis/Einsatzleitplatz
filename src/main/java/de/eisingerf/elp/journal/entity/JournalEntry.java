@@ -1,11 +1,8 @@
 package de.eisingerf.elp.journal.entity;
 
 import de.eisingerf.elp.common.persistence.IdGenerator;
-import de.eisingerf.elp.operation.entity.Operation;
-import de.eisingerf.elp.user.entity.UserDetail;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -28,25 +25,26 @@ public class JournalEntry {
     @ToString.Include
     private UUID id = IdGenerator.generate();
 
+/*
     @Column(name = "JOURNAL_ENTRY_ID")
     @Positive
     @ToString.Include
     @NotNull
-    private Long journalEntryId = 1L;  // TODO: Calculate or use custom generator?
+    private Long journalEntryId = IdGenerator.generate().getLeastSignificantBits();  // TODO: Calculate or use custom generator
+*/
 
-    @ManyToOne(targetEntity = Operation.class, optional = false)
-    @JoinColumn(name = "OPERATION_ID")
+    @Column // FIXME: Create foreign key
     @ToString.Include
     @NotNull
     private UUID operationId;
 
-    @ManyToOne
+    @Column
+    @Enumerated(EnumType.STRING)
     @NotNull
-    private JournalComponent component;
+    private Component component;
 
     @ManyToOne
     @NotNull
-    @ToString.Include
     private JournalType type;
 
     @Column(name = "EVENT")
@@ -54,8 +52,9 @@ public class JournalEntry {
     @Getter
     private String event;
 
-    @ManyToOne(targetEntity = UserDetail.class)
-    @JoinColumn(name = "CREATED_BY")
+//    @ManyToOne(targetEntity = UserDetail.class)
+//    @JoinColumn(name = "CREATED_BY")
+    @Column // FIXME: Create foreign key
     @NotNull
     private UUID createdBy;
 
@@ -67,7 +66,7 @@ public class JournalEntry {
 
     public JournalEntry(
             UUID operationId,
-            JournalComponent component,
+            Component component,
             JournalType type,
             String event,
             UUID createdBy,
