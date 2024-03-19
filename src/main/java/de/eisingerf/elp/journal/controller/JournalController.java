@@ -12,32 +12,39 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+
 @RestController()
 @PreAuthorize("hasRole('USER')")
 @RequestMapping(path = "/journal", produces = "application/json", name = "Operation")
 public class JournalController {
 
-    private final JournalService journalService;
-    private final JournalTypeService journalTypeService;
+	private final JournalService journalService;
+	private final JournalTypeService journalTypeService;
 
-    @Autowired
-    JournalController(
-            JournalService journalService,
-            JournalTypeService journalTypeService) {
-        this.journalService = journalService;
-        this.journalTypeService = journalTypeService;
-    }
+	@Autowired
+	JournalController(
+			JournalService journalService,
+			JournalTypeService journalTypeService) {
+		this.journalService = journalService;
+		this.journalTypeService = journalTypeService;
+	}
 
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
-    public JournalEntryDto createJournalEntry(@RequestBody CreateJournalEntryDto createJournalEntryDto) {
-        JournalType journalType = journalTypeService.findOrCreate(createJournalEntryDto.type());
-        JournalEntry entry = journalService.create(
-                createJournalEntryDto.operationId(),
-                Component.JOURNAL,
-                journalType,
-                createJournalEntryDto.event()
-                );
-        return JournalEntryDto.from(entry);
-    }
+	@PostMapping("")
+	@ResponseStatus(HttpStatus.CREATED)
+	public JournalEntryDto createJournalEntry(@RequestBody CreateJournalEntryDto createJournalEntryDto) {
+		JournalType journalType = journalTypeService.findOrCreate(createJournalEntryDto.type());
+		JournalEntry entry = journalService.create(
+				createJournalEntryDto.operationId(),
+				Component.JOURNAL,
+				journalType,
+				createJournalEntryDto.event()
+		);
+		return JournalEntryDto.from(entry);
+	}
+
+	@GetMapping("/types")
+	public Collection<String> getJournalTypes() {
+		return this.journalTypeService.findAll().stream().map(JournalType::getName).toList();
+	}
 }

@@ -12,6 +12,9 @@ export interface paths {
     get: operations["getOperations"];
     post: operations["createOperation"];
   };
+  "/journal": {
+    post: operations["createJournalEntry"];
+  };
   "/users/me": {
     get: operations["authenticatedUser"];
   };
@@ -20,6 +23,9 @@ export interface paths {
   };
   "/operations/names": {
     get: operations["getOperationNames"];
+  };
+  "/journal/types": {
+    get: operations["getJournalTypes"];
   };
   "/actuator": {
     get: operations["links"];
@@ -47,13 +53,23 @@ export interface components {
       name: string;
     };
     Operation: {
-      /** Format: int64 */
-      id: number;
+      /** Format: uuid */
+      id: string;
       name: string;
     };
+    CreateJournalEntry: {
+      /** Format: uuid */
+      operationId?: string;
+      type?: string;
+      event?: string;
+    };
+    JournalEntry: {
+      type?: string;
+      event?: string;
+    };
     OperationName: {
-      /** Format: int64 */
-      id: number;
+      /** Format: uuid */
+      id: string;
       name: string;
     };
     Link: {
@@ -114,6 +130,21 @@ export interface operations {
       };
     };
   };
+  createJournalEntry: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateJournalEntry"];
+      };
+    };
+    responses: {
+      /** @description Created */
+      201: {
+        content: {
+          "application/json": components["schemas"]["JournalEntry"];
+        };
+      };
+    };
+  };
   authenticatedUser: {
     responses: {
       /** @description OK */
@@ -127,7 +158,7 @@ export interface operations {
   getOperation: {
     parameters: {
       path: {
-        id: number;
+        id: string;
       };
     };
     responses: {
@@ -145,6 +176,16 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["OperationName"][];
+        };
+      };
+    };
+  };
+  getJournalTypes: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "application/json": string[];
         };
       };
     };

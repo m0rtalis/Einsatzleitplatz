@@ -23,12 +23,3 @@ server:
       cookie:
         http-only: true
         same-site: strict
-logging:
-  level:
-    web: debug
-management:
-  httpexchanges:
-    recording:
-      enabled: true
-      include: authorization_header, cookie_headers, principal, session_id, response_headers
-

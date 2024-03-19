@@ -1,18 +1,14 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import PlusIcon from 'virtual:icons/mdi/plus';
-	import ListIcon from 'virtual:icons/mdi/format-list-bulleted';
 	import { operationStore, setPageName, userStore } from '$lib/store';
 	import { goto } from '$app/navigation';
+	import Combobox from '$lib/component/Combobox.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
 
-	setPageName('Login')
+	setPageName('Login');
 
 	export let data;
 	export let form;
-
-	let selectedOperationId = data.openOperations[0]?.id;
-	let isSelectFromList: boolean = !!data.openOperations.length;
 
 	$: if (form?.isLoggedIn) {
 		userStore.set({ username: form.user.username });
@@ -20,18 +16,18 @@
 		goto('/');
 	}
 
-	const submitLogin:SubmitFunction = ({submitter}) => {
+	const submitLogin: SubmitFunction = ({ submitter }) => {
 		if (submitter && submitter instanceof HTMLButtonElement) {
 			submitter.disabled = true;
 		}
 
-		return async ({update}) => {
+		return async ({ update }) => {
 			if (submitter && submitter instanceof HTMLButtonElement) {
 				submitter.disabled = false;
 			}
-			await update()
-		}
-	}
+			await update();
+		};
+	};
 </script>
 
 <div class="content">
@@ -45,46 +41,23 @@
 		<input id="login-password" name="password" type="password" placeholder="Password"
 			   required />
 		<label for="login-operations">Operation</label>
-		<div class="select-div">
-			{#if isSelectFromList}
-				<select
-					id="login-operations"
-					name="operation"
-					bind:value={selectedOperationId}
-					required={isSelectFromList}
-				>
-					{#each data.openOperations as openOperation}
-						<option value={openOperation.id}>{openOperation.name}</option>
-					{/each}
-				</select>
-				<button type="button" title="Add new operation" class="icon-only"
-						on:click={() => isSelectFromList = false}>
-					<PlusIcon />
-				</button>
-			{:else}
-				<input type="text" maxlength="100" minlength="3" name="operation" placeholder="New Operation"
-					   enterkeyhint="done"
-					   required={isSelectFromList === false}>
-				<input type="hidden" name="createNewOperation" value=true>
-				<button type="button" title="List operations" class="icon-only"
-						on:click={() => isSelectFromList = true}>
-					<ListIcon />
-				</button>
-			{/if}
-		</div>
+		<Combobox id="login-operations"
+			options={data.openOperations}
+				  translation={{addButton: "Add new Operation", listButton: "List operations", newText: "New Operation"}}
+				  componentName="operation" />
 		<button type="submit">Login</button>
 	</form>
 </div>
 
 <style>
     .content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		flex: 1;
-		padding-top: 10%;
-		height: 100%
-	}
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        padding-top: 10%;
+        height: 100%
+    }
 
     .heading {
         text-align: center;
@@ -108,15 +81,8 @@
     .login-form > button[type="submit"] {
         width: 100%;
         margin-top: 1rem;
-		cursor: pointer;
+        cursor: pointer;
     }
 
-    .select-div {
-        display: flex;
-    }
-
-    .select-div > select, .select-div > input {
-        width: 20em;
-    }
 
 </style>

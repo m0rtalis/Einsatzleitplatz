@@ -5,6 +5,8 @@ import de.eisingerf.elp.journal.persistence.JournalTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class JournalTypeService {
 
@@ -22,5 +24,9 @@ public class JournalTypeService {
 
     public JournalType findOrCreate(String name) {
 		return journalTypeRepository.findByName(name).orElseGet(() -> create(name));
+    }
+
+    public List<JournalType> findAll() {
+        return journalTypeRepository.findAll();
     }
 }
