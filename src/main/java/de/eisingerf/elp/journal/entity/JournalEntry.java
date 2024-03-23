@@ -3,6 +3,7 @@ package de.eisingerf.elp.journal.entity;
 import de.eisingerf.elp.common.persistence.IdGenerator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -15,7 +16,7 @@ import java.util.UUID;
         uniqueConstraints =
                 @UniqueConstraint(
                         name = "UniqueJournalEntry",
-                        columnNames = {"JOURNAL_ENTRY_ID", "OPERATION_ID"}))
+                        columnNames = {"OPERATION_ID", "JOURNAL_ENTRY_ID"}), indexes = @Index(name = "DateIndex", columnList = "CREATED_AT"))
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class JournalEntry {
@@ -25,29 +26,30 @@ public class JournalEntry {
     @ToString.Include
     private UUID id = IdGenerator.generate();
 
-/*
+    @Version
+    private Integer version;
+
     @Column(name = "JOURNAL_ENTRY_ID")
     @Positive
     @ToString.Include
     @NotNull
-    private Long journalEntryId = IdGenerator.generate().getLeastSignificantBits();  // TODO: Calculate or use custom generator
-*/
+    @Getter
+    private long journalEntryId;
 
     @Column // FIXME: Create foreign key
     @ToString.Include
     @NotNull
+    @Getter
     private UUID operationId;
 
     @Column
     @Enumerated(EnumType.STRING)
     @NotNull
+    @Getter
     private Component component;
 
-    @ManyToOne
-    @NotNull
-    private JournalType type;
-
     @Column(name = "EVENT")
+    @Lob
     @NotNull
     @Getter
     private String event;
@@ -56,10 +58,12 @@ public class JournalEntry {
 //    @JoinColumn(name = "CREATED_BY")
     @Column // FIXME: Create foreign key
     @NotNull
+    @Getter
     private UUID createdBy;
 
     @Column(name = "CREATED_AT")
     @NotNull
+    @Getter
     private Date createdAt;
 
     protected JournalEntry() {}
@@ -67,20 +71,16 @@ public class JournalEntry {
     public JournalEntry(
             UUID operationId,
             Component component,
-            JournalType type,
+            long journalEntryId,
             String event,
             UUID createdBy,
             Date createdAt) {
         this.operationId = operationId;
         this.component = component;
-        this.type = type;
+        this.journalEntryId = journalEntryId;
         this.event = event;
         this.createdBy = createdBy;
         this.createdAt = createdAt;
-    }
-
-    public String getTypeName() {
-        return this.type.getName();
     }
 
 }

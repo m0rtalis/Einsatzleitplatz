@@ -4,10 +4,7 @@ import de.eisingerf.elp.common.location.entity.Location;
 import de.eisingerf.elp.common.persistence.IdGenerator;
 import de.eisingerf.elp.shared.patient.HasPatients;
 import de.eisingerf.elp.shared.resource.HasResources;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -24,6 +21,9 @@ public class Section implements HasResources, HasPatients {
     @EqualsAndHashCode.Include
     @ToString.Include
     private UUID id = IdGenerator.generate();
+
+    @Version
+    private Integer version;
 
     @Column(name = "NAME")
     @NotBlank

@@ -2,7 +2,6 @@ package de.eisingerf.elp.journal.service;
 
 import de.eisingerf.elp.journal.entity.Component;
 import de.eisingerf.elp.journal.entity.JournalEntry;
-import de.eisingerf.elp.journal.entity.JournalType;
 import de.eisingerf.elp.journal.persistence.JournalRepository;
 import de.eisingerf.elp.shared.user.GetAuthenticatedUserId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +23,12 @@ public class JournalService {
         this.getAuthenticatedUserId = getAuthenticatedUserId;
     }
 
-    public JournalEntry create(UUID operationId, Component component, JournalType type, String event) {
+    public JournalEntry create(UUID operationId, Component component, String event) {
         Assert.hasText(event, "Event must have text");
 
         UUID userId = getAuthenticatedUserId.getAuthenticatedUserId();
-        var journalEntry = new JournalEntry(operationId, component, type, event, userId, new Date());
+        long journalEntryId = journalRepository.findNextJournalEntryId(operationId);
+        var journalEntry = new JournalEntry(operationId, component, journalEntryId, event, userId, new Date());
         return this.journalRepository.save(journalEntry);
     }
 

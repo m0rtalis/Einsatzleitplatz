@@ -12,7 +12,6 @@ spring:
     init:
       mode: always # Execute schema-*.sql and data-*.sql files
 springdoc:
-  show-actuator: true
   swagger-ui:
     csrf:
       enabled: true

@@ -23,6 +23,11 @@ public class Operation implements HasResources, HasPatients {
     @EqualsAndHashCode.Include
     private UUID id = IdGenerator.generate();
 
+    // 1. Enable optimistic concurrency control,
+    // 2. Make sure Hibernate knows this is a new entity as we assign the id ourselves
+    @Version
+    private Integer version;
+
     @Column(name = "NAME", unique = true)
     @NotBlank
     private String name;

@@ -7,7 +7,7 @@
 	import MenuCloseIcon from 'virtual:icons/mdi/menu-close';
 	import HomeIcon from 'virtual:icons/mdi/home';
 	import LoginIcon from 'virtual:icons/mdi/login';
-	import JournalIcon from 'virtual:icons/mdi/journal';
+	import JournalIcon from 'virtual:icons/mdi/journal-outline';
 	import CommunicationIcon from 'virtual:icons/icon-park-outline/communication';
 	import AmbulanceIcon from 'virtual:icons/mdi/ambulance';
 	import PatientIcon from 'virtual:icons/mdi/swiss-cross-box';

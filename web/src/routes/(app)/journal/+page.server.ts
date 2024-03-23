@@ -12,10 +12,9 @@ export const load = (async ({ fetch }) => {
 export const actions = {
 	journal: async ({ request, fetch, cookies }) => {
 		let data = await request.formData();
-		const type = data.get('type') as string;
 		const entry = data.get('entry') as string;
 		const operationId = cookies.get("operation")!;
 
-		const response = await client.POST('/journal', { body: {operationId, type, event: entry}, fetch });
+		const response = await client.POST('/journal', { body: {operationId, event: entry}, fetch });
 	}
 };
