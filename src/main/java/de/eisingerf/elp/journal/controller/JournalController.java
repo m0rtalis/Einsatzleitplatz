@@ -1,6 +1,6 @@
 package de.eisingerf.elp.journal.controller;
 
-import de.eisingerf.elp.common.api.rest.list.input.PaginationParameter;
+import de.eisingerf.elp.common.api.rest.list.input.OffsetPaginationParameter;
 import de.eisingerf.elp.journal.controller.dto.JournalEntryDto;
 import de.eisingerf.elp.journal.controller.dto.JournalEntryListDto;
 import de.eisingerf.elp.journal.controller.dto.input.CreateJournalEntryDto;
@@ -8,7 +8,6 @@ import de.eisingerf.elp.journal.entity.Component;
 import de.eisingerf.elp.journal.entity.JournalEntry;
 import de.eisingerf.elp.journal.persistence.JournalRepository;
 import de.eisingerf.elp.journal.service.JournalService;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -46,7 +45,7 @@ public class JournalController {
 	}
 
 	@GetMapping("")
-	public JournalEntryListDto getJournal(@RequestParam UUID operationId, PaginationParameter pagination) {
+	public JournalEntryListDto getJournal(@RequestParam UUID operationId, OffsetPaginationParameter pagination) {
 		Page<JournalEntry> journal = journalRepository.findByOperationId(operationId, pagination.toPageable());
 		return JournalEntryListDto.from(journal);
 	}

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { setPageName } from '$lib/store';
-	import type { SubmitFunction } from '@sveltejs/kit';
 	import type { KeyboardEventHandler } from 'svelte/elements';
 	// import {Tabulator} from 'tabulator-tables'; Wait for typings to catch up :(
 
@@ -11,12 +10,6 @@
 	$: console.log(data)
 
 	let createEntryForm: HTMLFormElement;
-
-	const submitNewEntry: SubmitFunction = ({ submitter }) => {
-		return async ({ update }) => {
-			await update();
-		};
-	};
 
 	const shouldSubmit: KeyboardEventHandler<HTMLTextAreaElement> = ({ ctrlKey, key }) => {
 		if (ctrlKey && key === 'Enter') {
@@ -28,7 +21,7 @@
 <div class="content">
 	<form bind:this={createEntryForm} class="new-journal-form" id="create-journal-entry-form"
 		  name="create-journal-entry-form"
-		  method="post" action="?/journal" use:enhance={submitNewEntry}>
+		  method="post" action="?/journal" use:enhance >
 		<fieldset>
 			<legend>Create new journal entry</legend>
 			<label for="journal-entry">Event</label>

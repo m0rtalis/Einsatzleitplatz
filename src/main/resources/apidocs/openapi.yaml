@@ -81,7 +81,7 @@ paths:
         required: false
         schema:
           maximum: 200
-          minimum: 0
+          minimum: 1
           type: string
           default: "50"
       - name: sort
@@ -254,14 +254,14 @@ components:
     Pagination:
       type: object
       properties:
-        currentPage:
-          type: integer
-          format: int32
+        lastPage:
+          type: boolean
         totalPages:
           type: integer
           format: int32
-        lastPage:
-          type: boolean
+        currentPage:
+          type: integer
+          format: int32
   securitySchemes:
     Basic:
       type: http

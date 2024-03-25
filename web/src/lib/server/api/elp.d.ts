@@ -75,11 +75,11 @@ export interface components {
       pagination?: components["schemas"]["Pagination"];
     };
     Pagination: {
-      /** Format: int32 */
-      currentPage?: number;
+      lastPage?: boolean;
       /** Format: int32 */
       totalPages?: number;
-      lastPage?: boolean;
+      /** Format: int32 */
+      currentPage?: number;
     };
   };
   responses: never;

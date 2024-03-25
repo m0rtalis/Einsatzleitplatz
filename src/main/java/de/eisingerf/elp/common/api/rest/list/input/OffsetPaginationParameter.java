@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 // Sure Spring already has all of this, but I want to do it myself :)
-// TODO:
 @ParameterObject
 @Getter
 @Setter
-public final class PaginationParameter {
+public final class OffsetPaginationParameter {
 
     @Parameter(schema = @Schema(defaultValue = "0", minimum = "0"))
     @Min(0)
@@ -35,10 +34,10 @@ public final class PaginationParameter {
     @Nullable
     private org.springdoc.core.converters.models.Sort sort;
 
-    public PaginationParameter(
+    public OffsetPaginationParameter(
             @RequestParam(name = "offset", defaultValue = "0") Integer offset,
             @RequestParam(name = "limit", defaultValue = "50") Integer limit,
-            org.springdoc.core.converters.models.Sort sort) {
+            @Nullable org.springdoc.core.converters.models.Sort sort) {
         this.offset = offset;
         this.limit = limit;
         this.sort = sort;

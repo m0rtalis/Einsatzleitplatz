@@ -5,7 +5,7 @@ export const load = (async ({ fetch, cookies }) => {
 	const operationId = cookies.get("operation")!;
 
 	return {
-		journalData: (await client.GET('/journal', { params: {query: {operationId, sort: ["id,desc"]}}, fetch })).data!
+		journalData: (await client.GET('/journal', { params: {query: {operationId, sort: ["id"]}}, fetch })).data!
 	};
 
 }) satisfies PageServerLoad;
