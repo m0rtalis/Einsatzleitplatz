@@ -7,12 +7,6 @@ servers:
   description: Generated server url
 security:
 - Basic: []
-tags:
-- name: Actuator
-  description: Monitor and interact
-  externalDocs:
-    description: Spring Boot Actuator Web API Documentation
-    url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
   /users/login:
     post:
@@ -64,6 +58,48 @@ paths:
               schema:
                 $ref: '#/components/schemas/Operation'
   /journal:
+    get:
+      tags:
+      - journal-controller
+      operationId: getJournal
+      parameters:
+      - name: operationId
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: offset
+        in: query
+        required: false
+        schema:
+          minimum: 0
+          type: string
+          default: "0"
+      - name: limit
+        in: query
+        required: false
+        schema:
+          maximum: 200
+          minimum: 0
+          type: string
+          default: "50"
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JournalEntryList'
     post:
       tags:
       - journal-controller
@@ -126,86 +162,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/OperationName'
-  /journal/types:
-    get:
-      tags:
-      - journal-controller
-      operationId: getJournalTypes
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-  /actuator:
-    get:
-      tags:
-      - Actuator
-      operationId: links
-      responses:
-        "200":
-          description: OK
-          content:
-            application/vnd.spring-boot.actuator.v3+json:
-              schema:
-                type: object
-                additionalProperties:
-                  type: object
-                  additionalProperties:
-                    $ref: '#/components/schemas/Link'
-            application/vnd.spring-boot.actuator.v2+json:
-              schema:
-                type: object
-                additionalProperties:
-                  type: object
-                  additionalProperties:
-                    $ref: '#/components/schemas/Link'
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  type: object
-                  additionalProperties:
-                    $ref: '#/components/schemas/Link'
-  /actuator/health:
-    get:
-      tags:
-      - Actuator
-      operationId: handle
-      responses:
-        "200":
-          description: OK
-          content:
-            application/vnd.spring-boot.actuator.v3+json:
-              schema:
-                type: object
-            application/vnd.spring-boot.actuator.v2+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
-  /actuator/health/**:
-    get:
-      tags:
-      - Actuator
-      operationId: handle_1
-      responses:
-        "200":
-          description: OK
-          content:
-            application/vnd.spring-boot.actuator.v3+json:
-              schema:
-                type: object
-            application/vnd.spring-boot.actuator.v2+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
 components:
   schemas:
     Login:
@@ -251,14 +207,29 @@ components:
           format: uuid
         type:
           type: string
-        event:
+        text:
           type: string
     JournalEntry:
       type: object
       properties:
-        type:
+        operationId:
           type: string
-        event:
+          format: uuid
+        createdBy:
+          type: string
+          format: uuid
+        component:
+          type: string
+          enum:
+          - JOURNAL
+          - OPERATION
+        createdAt:
+          type: string
+          format: date-time
+        journalEntryId:
+          type: integer
+          format: int64
+        text:
           type: string
     OperationName:
       required:
@@ -271,12 +242,25 @@ components:
           format: uuid
         name:
           type: string
-    Link:
+    JournalEntryList:
       type: object
       properties:
-        href:
-          type: string
-        templated:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/JournalEntry'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        lastPage:
           type: boolean
   securitySchemes:
     Basic:

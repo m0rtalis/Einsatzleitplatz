@@ -1,10 +1,11 @@
 import type { PageServerLoad } from './$types';
 import { client } from '$lib/server/api';
 
-export const load = (async ({ fetch }) => {
+export const load = (async ({ fetch, cookies }) => {
+	const operationId = cookies.get("operation")!;
 
 	return {
-		journalTypes: (await client.GET('/journal/types', { fetch })).data!
+		journalData: (await client.GET('/journal', { params: {query: {operationId, sort: ["id,desc"]}}, fetch })).data!
 	};
 
 }) satisfies PageServerLoad;
@@ -15,6 +16,6 @@ export const actions = {
 		const entry = data.get('entry') as string;
 		const operationId = cookies.get("operation")!;
 
-		const response = await client.POST('/journal', { body: {operationId, event: entry}, fetch });
+		await client.POST('/journal', { body: {operationId, text: entry}, fetch });
 	}
 };

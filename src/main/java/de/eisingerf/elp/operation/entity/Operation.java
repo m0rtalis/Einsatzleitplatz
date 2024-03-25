@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 import java.util.List;
 import java.util.UUID;
@@ -30,6 +31,7 @@ public class Operation implements HasResources, HasPatients {
 
     @Column(name = "NAME", unique = true)
     @NotBlank
+    @NaturalId
     private String name;
 
     @OneToOne

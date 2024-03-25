@@ -13,6 +13,7 @@ export interface paths {
     post: operations["createOperation"];
   };
   "/journal": {
+    get: operations["getJournal"];
     post: operations["createJournalEntry"];
   };
   "/users/me": {
@@ -23,18 +24,6 @@ export interface paths {
   };
   "/operations/names": {
     get: operations["getOperationNames"];
-  };
-  "/journal/types": {
-    get: operations["getJournalTypes"];
-  };
-  "/actuator": {
-    get: operations["links"];
-  };
-  "/actuator/health": {
-    get: operations["handle"];
-  };
-  "/actuator/health/**": {
-    get: operations["handle_1"];
   };
 }
 
@@ -61,20 +50,36 @@ export interface components {
       /** Format: uuid */
       operationId?: string;
       type?: string;
-      event?: string;
+      text?: string;
     };
     JournalEntry: {
-      type?: string;
-      event?: string;
+      /** Format: uuid */
+      operationId?: string;
+      /** Format: uuid */
+      createdBy?: string;
+      /** @enum {string} */
+      component?: "JOURNAL" | "OPERATION";
+      /** Format: date-time */
+      createdAt?: string;
+      /** Format: int64 */
+      journalEntryId?: number;
+      text?: string;
     };
     OperationName: {
       /** Format: uuid */
       id: string;
       name: string;
     };
-    Link: {
-      href?: string;
-      templated?: boolean;
+    JournalEntryList: {
+      data?: components["schemas"]["JournalEntry"][];
+      pagination?: components["schemas"]["Pagination"];
+    };
+    Pagination: {
+      /** Format: int32 */
+      currentPage?: number;
+      /** Format: int32 */
+      totalPages?: number;
+      lastPage?: boolean;
     };
   };
   responses: never;
@@ -130,6 +135,25 @@ export interface operations {
       };
     };
   };
+  getJournal: {
+    parameters: {
+      query: {
+        operationId: string;
+        offset?: string;
+        limit?: string;
+        /** @description Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
+        sort?: string[];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "application/json": components["schemas"]["JournalEntryList"];
+        };
+      };
+    };
+  };
   createJournalEntry: {
     requestBody: {
       content: {
@@ -176,64 +200,6 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["OperationName"][];
-        };
-      };
-    };
-  };
-  getJournalTypes: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": string[];
-        };
-      };
-    };
-  };
-  links: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/vnd.spring-boot.actuator.v3+json": {
-            [key: string]: {
-              [key: string]: components["schemas"]["Link"];
-            };
-          };
-          "application/vnd.spring-boot.actuator.v2+json": {
-            [key: string]: {
-              [key: string]: components["schemas"]["Link"];
-            };
-          };
-          "application/json": {
-            [key: string]: {
-              [key: string]: components["schemas"]["Link"];
-            };
-          };
-        };
-      };
-    };
-  };
-  handle: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/vnd.spring-boot.actuator.v3+json": Record<string, never>;
-          "application/vnd.spring-boot.actuator.v2+json": Record<string, never>;
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  handle_1: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/vnd.spring-boot.actuator.v3+json": Record<string, never>;
-          "application/vnd.spring-boot.actuator.v2+json": Record<string, never>;
-          "application/json": Record<string, never>;
         };
       };
     };

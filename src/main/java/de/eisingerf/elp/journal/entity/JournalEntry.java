@@ -7,16 +7,13 @@ import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import org.hibernate.annotations.NaturalId;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Entity(name = "journal")
-@Table(
-        uniqueConstraints =
-                @UniqueConstraint(
-                        name = "UniqueJournalEntry",
-                        columnNames = {"OPERATION_ID", "JOURNAL_ENTRY_ID"}), indexes = @Index(name = "DateIndex", columnList = "CREATED_AT"))
+@Table(indexes = @Index(name = "DateIndex", columnList = "CREATED_AT"))
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class JournalEntry {
@@ -34,12 +31,14 @@ public class JournalEntry {
     @ToString.Include
     @NotNull
     @Getter
+    @NaturalId
     private long journalEntryId;
 
     @Column // FIXME: Create foreign key
     @ToString.Include
     @NotNull
     @Getter
+    @NaturalId
     private UUID operationId;
 
     @Column
@@ -48,11 +47,11 @@ public class JournalEntry {
     @Getter
     private Component component;
 
-    @Column(name = "EVENT")
+    @Column(name = "TEXT")
     @Lob
     @NotNull
     @Getter
-    private String event;
+    private String text;
 
 //    @ManyToOne(targetEntity = UserDetail.class)
 //    @JoinColumn(name = "CREATED_BY")
@@ -72,13 +71,13 @@ public class JournalEntry {
             UUID operationId,
             Component component,
             long journalEntryId,
-            String event,
+            String text,
             UUID createdBy,
             Date createdAt) {
         this.operationId = operationId;
         this.component = component;
         this.journalEntryId = journalEntryId;
-        this.event = event;
+        this.text = text;
         this.createdBy = createdBy;
         this.createdAt = createdAt;
     }

@@ -6,13 +6,18 @@
 	// import {Tabulator} from 'tabulator-tables'; Wait for typings to catch up :(
 
 	setPageName('Journal');
+	export let data;
+	$: journalEntries = data.journalData?.data ?? []
+	$: console.log(data)
 
 	let createEntryForm: HTMLFormElement;
+
 	const submitNewEntry: SubmitFunction = ({ submitter }) => {
 		return async ({ update }) => {
 			await update();
 		};
 	};
+
 	const shouldSubmit: KeyboardEventHandler<HTMLTextAreaElement> = ({ ctrlKey, key }) => {
 		if (ctrlKey && key === 'Enter') {
 			createEntryForm.submit();
@@ -21,7 +26,8 @@
 </script>
 
 <div class="content">
-	<form bind:this={createEntryForm} class="new-journal-form" id="create-journal-entry-form" name="create-journal-entry-form"
+	<form bind:this={createEntryForm} class="new-journal-form" id="create-journal-entry-form"
+		  name="create-journal-entry-form"
 		  method="post" action="?/journal" use:enhance={submitNewEntry}>
 		<fieldset>
 			<legend>Create new journal entry</legend>
@@ -31,6 +37,29 @@
 		</fieldset>
 	</form>
 	<!-- List journal entries (Tabulator) -->
+	<table class="journal">
+		<caption>Operation Journal</caption>
+		<thead>
+		<tr>
+			<th>Seq. Nr.</th>
+			<th>Time</th>
+			<th>Component</th>
+			<th>Text</th>
+			<th>Author</th>
+		</tr>
+		</thead>
+		<tbody>
+		{#each journalEntries as entry}
+			<tr>
+				<td>{entry.journalEntryId}</td>
+				<td>{entry.createdAt}</td>
+				<td>{entry.component}</td>
+				<td>{entry.text}</td>
+				<td>{entry.createdBy}</td>
+			</tr>
+		{/each}
+		</tbody>
+	</table>
 </div>
 
 <style>
@@ -48,5 +77,13 @@
         margin-top: 1rem;
         cursor: pointer;
     }
+
+	.journal {
+		margin-top: 2rem;
+	}
+
+	.journal caption {
+		font-weight: bold;
+	}
 
 </style>
