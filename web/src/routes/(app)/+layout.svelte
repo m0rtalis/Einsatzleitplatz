@@ -17,6 +17,7 @@
 	import { isClipped } from '$lib/dom/isClipped';
 	import { throttle } from '$lib/js';
 	import { pageStore } from '$lib/store';
+	import { onMount } from 'svelte';
 
 	$: path = $page.route.id;
 	let isSidenavOpen: boolean = false;
@@ -24,6 +25,7 @@
 	let showScrollUpArrow: boolean = false;
 	let showScrollDownArrow: boolean = false;
 	let expandSidenavTimer: NodeJS.Timeout | null;
+	let eventSource: EventSource | null;
 
 	function checkShowNavArrow() {
 		showScrollUpArrow = sidemenu ? isClipped(sidemenu).top : false;
@@ -45,6 +47,24 @@
 			isSidenavOpen = false;
 		}
 	}
+
+	onMount(() => {
+		console.log('Layout mounted');
+		if (!eventSource || !eventSource.OPEN) {
+			eventSource = new EventSource('/events', { withCredentials: false });
+			eventSource.onerror = error => {
+				console.warn(error, 'Error in SSE');
+				eventSource?.close();
+				eventSource = null;
+			};
+		}
+		return () => {
+			console.log("Close source")
+			eventSource?.close();
+			eventSource = null;
+		};
+	});
+
 </script>
 
 <svelte:window on:resize={throttle(checkShowNavArrow)} />
@@ -130,7 +150,7 @@
         min-height: var(--header-height);
         background-color: var(--color-grey);
         z-index: 1;
-		padding-right: 1rem;
+        padding-right: 1rem;
     }
 
     /* /Header */
@@ -184,7 +204,7 @@
     .sidenav-menu {
         list-style-type: none;
         padding-left: 0;
-		margin-top: 0;
+        margin-top: 0;
     }
 
     .sidenav-menu .active {
@@ -236,7 +256,7 @@
         margin-left: calc(var(--sidenav-width-collapsed) + 1rem);
         background-color: grey;
         overflow: auto;
-		padding-left: 2rem;
+        padding-left: 2rem;
         height: calc(100vh - var(--header-height));
         width: calc(100vw - var(--sidenav-width-collapsed) - 1rem);
     }

@@ -16,6 +16,7 @@ import java.util.UUID;
 @Table(indexes = @Index(name = "DateIndex", columnList = "CREATED_AT"))
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
+@Getter
 public class JournalEntry {
 
     @Id
@@ -30,39 +31,33 @@ public class JournalEntry {
     @Positive
     @ToString.Include
     @NotNull
-    @Getter
     @NaturalId
     private long journalEntryId;
 
     @Column // FIXME: Create foreign key
     @ToString.Include
     @NotNull
-    @Getter
     @NaturalId
     private UUID operationId;
 
     @Column
     @Enumerated(EnumType.STRING)
     @NotNull
-    @Getter
     private Component component;
 
     @Column(name = "TEXT")
     @Lob
     @NotNull
-    @Getter
     private String text;
 
 //    @ManyToOne(targetEntity = UserDetail.class)
 //    @JoinColumn(name = "CREATED_BY")
     @Column // FIXME: Create foreign key
     @NotNull
-    @Getter
     private UUID createdBy;
 
     @Column(name = "CREATED_AT")
     @NotNull
-    @Getter
     private Date createdAt;
 
     protected JournalEntry() {}

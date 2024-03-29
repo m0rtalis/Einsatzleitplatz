@@ -5,7 +5,7 @@ import com.fasterxml.uuid.NoArgGenerator;
 
 import java.util.UUID;
 
-public class IdGenerator {
+public final class IdGenerator {
     private final static NoArgGenerator generator  = Generators.timeBasedEpochGenerator();
 
     public static UUID generate() {

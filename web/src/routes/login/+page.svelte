@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { operationStore, setPageName, userStore } from '$lib/store';
-	import { goto } from '$app/navigation';
+	import { afterNavigate, goto } from '$app/navigation';
 	import Combobox from '$lib/component/Combobox.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
 
@@ -28,6 +28,11 @@
 			await update();
 		};
 	};
+
+	afterNavigate(() => {
+		const usernameInput: HTMLInputElement | null = document.querySelector('#login-username')
+		usernameInput?.focus();
+	})
 </script>
 
 <div class="content">

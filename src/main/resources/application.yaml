@@ -26,6 +26,8 @@ server:
         same-site: strict
 logging:
   level:
+    de:
+      eisingerf: DEBUG
     org:
       springframework:
         web: DEBUG

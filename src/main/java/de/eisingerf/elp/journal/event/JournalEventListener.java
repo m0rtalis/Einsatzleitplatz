@@ -2,7 +2,7 @@ package de.eisingerf.elp.journal.event;
 
 import de.eisingerf.elp.journal.entity.Component;
 import de.eisingerf.elp.journal.service.JournalService;
-import de.eisingerf.elp.shared.operation.event.OperationCreatedEvent;
+import de.eisingerf.elp.shared.operation.OperationCreatedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 

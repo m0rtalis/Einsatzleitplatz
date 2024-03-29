@@ -2,6 +2,7 @@ import type { Schema } from '$lib/server/api';
 import { client } from '$lib/server/api';
 import parseCookie from 'cookie';
 
+// TODO: Add it to constant file
 const AUTH_COOKIE_NAME = 'JSESSIONID';
 
 export const load = async ({ fetch }) => ({
@@ -32,7 +33,7 @@ export const actions = {
 				authCookieString = `${AUTH_COOKIE_NAME}=${authCookie[AUTH_COOKIE_NAME]}`;
 				cookies.set(AUTH_COOKIE_NAME, authCookie[AUTH_COOKIE_NAME]!, { path: '/', ...authCookie });
 			} else {
-				authCookieString = cookies.get(AUTH_COOKIE_NAME)!
+				authCookieString = `${AUTH_COOKIE_NAME}=${cookies.get(AUTH_COOKIE_NAME)}`
 			}
 
 			// 2. If "createNewOperation=true": Create new Operation

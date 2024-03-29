@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { setPageName } from '$lib/store';
 	import type { KeyboardEventHandler } from 'svelte/elements';
+	import { afterNavigate } from '$app/navigation';
 	// import {Tabulator} from 'tabulator-tables'; Wait for typings to catch up :(
 
 	setPageName('Journal');
@@ -16,6 +17,11 @@
 			createEntryForm.submit();
 		}
 	};
+
+	afterNavigate(() => {
+		const textarea: HTMLTextAreaElement | null = document.querySelector('#journal-entry')
+		textarea?.focus();
+	})
 </script>
 
 <div class="content">
