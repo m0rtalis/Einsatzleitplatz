@@ -1,9 +1,6 @@
-import type { Schema } from '$lib/server/api';
+import { AUTH_COOKIE, getAuthCookieStr, type Schema } from '$lib/server/api';
 import { client } from '$lib/server/api';
 import parseCookie from 'cookie';
-
-// TODO: Add it to constant file
-const AUTH_COOKIE_NAME = 'JSESSIONID';
 
 export const load = async ({ fetch }) => ({
 	openOperations: (await client.GET('/operations/names', { fetch })).data!
@@ -27,13 +24,13 @@ export const actions = {
 			const user = loginResponse.data!;
 
 			const setCookies = loginResponse.response.headers.getSetCookie();
-			const authCookie = setCookies.map(cookie => parseCookie.parse(cookie)).find(cookie => AUTH_COOKIE_NAME in cookie);
+			const authCookie = setCookies.map(cookie => parseCookie.parse(cookie)).find(cookie => AUTH_COOKIE in cookie);
 			let authCookieString: string
 			if (authCookie) {
-				authCookieString = `${AUTH_COOKIE_NAME}=${authCookie[AUTH_COOKIE_NAME]}`;
-				cookies.set(AUTH_COOKIE_NAME, authCookie[AUTH_COOKIE_NAME]!, { path: '/', ...authCookie });
+				authCookieString = `${AUTH_COOKIE}=${authCookie[AUTH_COOKIE]}`;
+				cookies.set(AUTH_COOKIE, authCookie[AUTH_COOKIE]!, { path: '/', ...authCookie });
 			} else {
-				authCookieString = `${AUTH_COOKIE_NAME}=${cookies.get(AUTH_COOKIE_NAME)}`
+				authCookieString = getAuthCookieStr(cookies)
 			}
 
 			// 2. If "createNewOperation=true": Create new Operation
@@ -50,7 +47,6 @@ export const actions = {
 					}
 				)).data!;
 			}
-			cookies.set("operation", operationResponse.id, {path: '/'})
 			// 3. Return operation and user to Page and then set there
 			//    redirect on client side. I'd rather do it on server side but not possible.
 			return { isLoggedIn: true, user, operation: operationResponse };

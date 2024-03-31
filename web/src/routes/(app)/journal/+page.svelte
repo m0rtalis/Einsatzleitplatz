@@ -1,14 +1,20 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { setPageName } from '$lib/store';
+	import { setPageName, sseStore } from '$lib/store';
 	import type { KeyboardEventHandler } from 'svelte/elements';
-	import { afterNavigate } from '$app/navigation';
+	import { afterNavigate, invalidate  } from '$app/navigation';
+	import type { JournalEntry } from '$lib/server/api';
 	// import {Tabulator} from 'tabulator-tables'; Wait for typings to catch up :(
 
 	setPageName('Journal');
 	export let data;
+	let journalEntries: JournalEntry[] = [];
+
 	$: journalEntries = data.journalData?.data ?? []
-	$: console.log(data)
+
+	$: if ($sseStore?.name === 'NEW_JOURNAL_ENTRY') {
+		invalidate('journal');
+	}
 
 	let createEntryForm: HTMLFormElement;
 
@@ -19,15 +25,15 @@
 	};
 
 	afterNavigate(() => {
-		const textarea: HTMLTextAreaElement | null = document.querySelector('#journal-entry')
+		const textarea: HTMLTextAreaElement | null = document.querySelector('#journal-entry');
 		textarea?.focus();
-	})
+	});
 </script>
 
 <div class="content">
 	<form bind:this={createEntryForm} class="new-journal-form" id="create-journal-entry-form"
 		  name="create-journal-entry-form"
-		  method="post" action="?/journal" use:enhance >
+		  method="post" action="?/journal" use:enhance>
 		<fieldset>
 			<legend>Create new journal entry</legend>
 			<label for="journal-entry">Event</label>
@@ -48,7 +54,7 @@
 		</tr>
 		</thead>
 		<tbody>
-		{#each journalEntries as entry}
+		{#each journalEntries as entry (entry.id)}
 			<tr>
 				<td>{entry.journalEntryId}</td>
 				<td>{entry.createdAt}</td>
@@ -77,12 +83,12 @@
         cursor: pointer;
     }
 
-	.journal {
-		margin-top: 2rem;
-	}
+    .journal {
+        margin-top: 2rem;
+    }
 
-	.journal caption {
-		font-weight: bold;
-	}
+    .journal caption {
+        font-weight: bold;
+    }
 
 </style>

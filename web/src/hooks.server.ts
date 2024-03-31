@@ -11,9 +11,10 @@ export async function handleFetch({request, fetch  }) {
     return response;
 }
 
-export async function handleError({status}) {
+export async function handleError({status, error, event, message}) {
     if (status === 404) {
         console.log("Error not found")
         redirect(307, '/')
     }
+    console.error(error, event, message)
 }

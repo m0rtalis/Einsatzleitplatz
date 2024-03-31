@@ -1,3 +1,3 @@
-import {writable} from "svelte/store";
+import { session } from '$lib/store/persisted';
 
-export const userStore = writable<{username: string}>()
+export const userStore = session<{username: string} | null>("User", null)

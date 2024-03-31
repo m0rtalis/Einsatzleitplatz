@@ -19,6 +19,12 @@ export interface paths {
   "/users/me": {
     get: operations["authenticatedUser"];
   };
+  "/sse": {
+    get: operations["subscribe"];
+  };
+  "/sse/names": {
+    get: operations["sseNames"];
+  };
   "/operations/{id}": {
     get: operations["getOperation"];
   };
@@ -49,10 +55,11 @@ export interface components {
     CreateJournalEntry: {
       /** Format: uuid */
       operationId?: string;
-      type?: string;
       text?: string;
     };
     JournalEntry: {
+      /** Format: uuid */
+      id?: string;
       /** Format: uuid */
       operationId?: string;
       /** Format: uuid */
@@ -65,6 +72,12 @@ export interface components {
       journalEntryId?: number;
       text?: string;
     };
+    SseEmitter: {
+      /** Format: int64 */
+      timeout?: number;
+    };
+    /** @enum {string} */
+    EventName: "NEW_JOURNAL_ENTRY";
     OperationName: {
       /** Format: uuid */
       id: string;
@@ -75,6 +88,12 @@ export interface components {
       pagination?: components["schemas"]["Pagination"];
     };
     Pagination: {
+      /** Format: int32 */
+      offset?: number;
+      /** Format: int32 */
+      limit?: number;
+      /** Format: int32 */
+      totalElements?: number;
       lastPage?: boolean;
       /** Format: int32 */
       totalPages?: number;
@@ -105,7 +124,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["User"];
+          "application/json": components["schemas"]["User"];
         };
       };
     };
@@ -174,7 +193,27 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["User"];
+          "application/json": components["schemas"]["User"];
+        };
+      };
+    };
+  };
+  subscribe: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "text/event-stream": components["schemas"]["SseEmitter"];
+        };
+      };
+    };
+  };
+  sseNames: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "application/json": components["schemas"]["EventName"][];
         };
       };
     };

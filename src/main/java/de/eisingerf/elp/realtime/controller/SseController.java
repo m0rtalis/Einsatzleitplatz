@@ -1,5 +1,6 @@
 package de.eisingerf.elp.realtime.controller;
 
+import de.eisingerf.elp.realtime.controller.dto.EventNameDto;
 import de.eisingerf.elp.realtime.service.SseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,5 +29,10 @@ public class SseController {
 		SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
 		sseService.addEmitter(emitter);
 		return emitter;
+	}
+
+	@GetMapping(value = "/sse/names")
+	public EventNameDto[] sseNames() {
+		return EventNameDto.values();
 	}
 }

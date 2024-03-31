@@ -14,3 +14,5 @@ https://jenil.github.io/chota/
 offers dark mode
 
 https://icongr.am/
+
+unlighthouse and web vitals (chrome)

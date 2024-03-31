@@ -4,7 +4,7 @@
 	import 'chota';
 	// TODO: Export ALL icons from all components into one file from where they are imported everywhere
 	import MenuIcon from 'virtual:icons/mdi/menu';
-	import MenuCloseIcon from 'virtual:icons/mdi/menu-close';
+	import MenuCloseIcon from 'virtual:icons/mdi/menu-open'; // It's weird but open looks more like close and vv
 	import HomeIcon from 'virtual:icons/mdi/home';
 	import LoginIcon from 'virtual:icons/mdi/login';
 	import JournalIcon from 'virtual:icons/mdi/journal-outline';
@@ -16,8 +16,10 @@
 	import { page } from '$app/stores';
 	import { isClipped } from '$lib/dom/isClipped';
 	import { throttle } from '$lib/js';
-	import { pageStore } from '$lib/store';
+	import { operationStore, pageStore } from '$lib/store';
 	import { onMount } from 'svelte';
+	import type { SseEventName } from '$lib/server/api';
+	import { setFromMessageEvent } from '$lib/store/SseStore';
 
 	$: path = $page.route.id;
 	let isSidenavOpen: boolean = false;
@@ -25,7 +27,6 @@
 	let showScrollUpArrow: boolean = false;
 	let showScrollDownArrow: boolean = false;
 	let expandSidenavTimer: NodeJS.Timeout | null;
-	let eventSource: EventSource | null;
 
 	function checkShowNavArrow() {
 		showScrollUpArrow = sidemenu ? isClipped(sidemenu).top : false;
@@ -48,20 +49,19 @@
 		}
 	}
 
+	const sseEventNames: SseEventName[] = ['NEW_JOURNAL_ENTRY'];
 	onMount(() => {
-		console.log('Layout mounted');
-		if (!eventSource || !eventSource.OPEN) {
-			eventSource = new EventSource('/events', { withCredentials: false });
-			eventSource.onerror = error => {
-				console.warn(error, 'Error in SSE');
-				eventSource?.close();
-				eventSource = null;
-			};
-		}
-		return () => {
-			console.log("Close source")
+		const eventSource = new EventSource('/events');
+		eventSource.onerror = error => {
+			console.warn(error, 'Error in SSE');
 			eventSource?.close();
-			eventSource = null;
+		};
+		sseEventNames.forEach(name => eventSource.addEventListener(name, evt => {
+			setFromMessageEvent(evt);
+		}));
+		return () => {
+			console.log('Close source');
+			eventSource?.close();
 		};
 	});
 
@@ -74,11 +74,12 @@
 	<button type="button" title="Sidebar" class="sidenav-button icon-only"
 			on:click={() => isSidenavOpen = !isSidenavOpen}>
 		{#if isSidenavOpen}
-			<MenuCloseIcon style="min-width: 1.5em; min-height: 1.5em; rotate: 180deg" />
+			<MenuCloseIcon style="min-width: 1.5em; min-height: 1.5em" />
 		{:else }
 			<MenuIcon style="min-width: 1.5em; min-height: 1.5em;" />
 		{/if}
 	</button>
+	<span>{$operationStore?.name ?? ""}</span>
 	<span>{$pageStore?.name ?? 'Einsatzleitplatz'}</span>
 	<span>Profile</span>
 </header>

@@ -14,8 +14,7 @@
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
 		"test:types": "tsc --noEmit",
-		"schema:fetch": "cpy --flat ../src/main/resources/apidocs/openapi.yaml ./apidocs",
-		"schema:generate": "openapi-typescript ./apidocs/openapi.yaml -o src/lib/server/api/elp.d.ts --enum --immutable"
+		"schema:generate": "openapi-typescript http://localhost:8080/v3/api-docs -o src/lib/server/api/elp.d.ts --enum --immutable"
 	},
 	"devDependencies": {
 		"@iconify-json/icon-park-outline": "^1.1.15",

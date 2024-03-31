@@ -10,11 +10,10 @@
 	export let data;
 	export let form;
 
-	$: if (form?.isLoggedIn) {
-		userStore.set({ username: form.user.username });
-		operationStore.set({ id: form.operation.id, name: form.operation.name });
-		goto('/');
-	}
+	afterNavigate(() => {
+		const usernameInput: HTMLInputElement | null = document.querySelector('#login-username')
+		usernameInput?.focus();
+	})
 
 	const submitLogin: SubmitFunction = ({ submitter }) => {
 		if (submitter && submitter instanceof HTMLButtonElement) {
@@ -29,10 +28,11 @@
 		};
 	};
 
-	afterNavigate(() => {
-		const usernameInput: HTMLInputElement | null = document.querySelector('#login-username')
-		usernameInput?.focus();
-	})
+	$: if (form?.isLoggedIn) {
+		userStore.set({ username: form.user.username });
+		operationStore.set({ id: form.operation.id, name: form.operation.name });
+		goto('/');
+	}
 </script>
 
 <div class="content">

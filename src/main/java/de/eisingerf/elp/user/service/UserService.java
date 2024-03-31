@@ -26,6 +26,7 @@ public class UserService implements GetAuthenticatedUserId {
     }
 
     public Authentication login(String username, String password) {
+        // TODO: Journal entry for login and logout
         Authentication authentication = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);

@@ -23,7 +23,7 @@ paths:
         "200":
           description: OK
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/User'
   /operations:
@@ -126,9 +126,37 @@ paths:
         "200":
           description: OK
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/User'
+  /sse:
+    get:
+      tags:
+      - sse-controller
+      operationId: subscribe
+      responses:
+        "200":
+          description: OK
+          content:
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/SseEmitter'
+  /sse/names:
+    get:
+      tags:
+      - sse-controller
+      operationId: sseNames
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  enum:
+                  - NEW_JOURNAL_ENTRY
   /operations/{id}:
     get:
       tags:
@@ -231,6 +259,12 @@ components:
           format: int64
         text:
           type: string
+    SseEmitter:
+      type: object
+      properties:
+        timeout:
+          type: integer
+          format: int64
     OperationName:
       required:
       - id
@@ -254,14 +288,23 @@ components:
     Pagination:
       type: object
       properties:
-        lastPage:
-          type: boolean
+        offset:
+          type: integer
+          format: int32
+        limit:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
         totalPages:
           type: integer
           format: int32
         currentPage:
           type: integer
           format: int32
+        lastPage:
+          type: boolean
   securitySchemes:
     Basic:
       type: http

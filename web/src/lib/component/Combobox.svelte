@@ -19,7 +19,7 @@
 			bind:value={selectedId}
 			required={isSelectFromList}
 		>
-			{#each options as option}
+			{#each options as option (option.id)}
 				<option value={option.id}>{option.name}</option>
 			{/each}
 		</select>
