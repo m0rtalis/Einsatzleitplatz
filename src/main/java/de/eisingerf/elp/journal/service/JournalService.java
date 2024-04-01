@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -22,7 +23,10 @@ public class JournalService {
     private final EventStream eventStream;
 
     @Autowired
-    JournalService(JournalRepository journalRepository, GetAuthenticatedUserId getAuthenticatedUserId, EventStream eventStream) {
+    JournalService(
+            JournalRepository journalRepository,
+            GetAuthenticatedUserId getAuthenticatedUserId,
+            EventStream eventStream) {
         this.journalRepository = journalRepository;
         this.getAuthenticatedUserId = getAuthenticatedUserId;
         this.eventStream = eventStream;
@@ -39,4 +43,22 @@ public class JournalService {
         return savedEntry;
     }
 
+    public void reference(UUID id, UUID referencedEntryId) {
+        // TODO: Create JournalEntry
+        this.referenceInternal(id, referencedEntryId);
+    }
+
+    protected void referenceInternal(UUID id, UUID referencedEntryId) {
+        this.referenceInternal(id, Set.of(referencedEntryId));
+    }
+
+    protected void referenceInternal(UUID id, Set<UUID> referencedEntryId) {}
+
+    public JournalEntry update(UUID id, String event) {
+        return null;
+    }
+
+    public JournalEntry delete(UUID id) {
+        return null;
+    }
 }

@@ -27,36 +27,36 @@ public class JournalEntry {
     @Version
     private Integer version;
 
-    @Column(name = "JOURNAL_ENTRY_ID")
+    @Column(name = "JOURNAL_ENTRY_ID", updatable = false)
     @Positive
     @ToString.Include
     @NotNull
     @NaturalId
     private long journalEntryId;
 
-    @Column // FIXME: Create foreign key
+    @Column(updatable = false)
     @ToString.Include
     @NotNull
     @NaturalId
     private UUID operationId;
 
-    @Column
+    @Column(updatable = false)
     @Enumerated(EnumType.STRING)
     @NotNull
     private Component component;
 
-    @Column(name = "TEXT")
+    @Column(name = "TEXT", updatable = false)
     @Lob
     @NotNull
     private String text;
 
 //    @ManyToOne(targetEntity = UserDetail.class)
 //    @JoinColumn(name = "CREATED_BY")
-    @Column // FIXME: Create foreign key
+    @Column(updatable = false) // TODO: Create foreign key, for others as well
     @NotNull
     private UUID createdBy;
 
-    @Column(name = "CREATED_AT")
+    @Column(name = "CREATED_AT", updatable = false)
     @NotNull
     private Date createdAt;
 

@@ -21,6 +21,7 @@
 	import type { SseEventName } from '$lib/server/api';
 	import { setFromMessageEvent } from '$lib/store/SseStore';
 
+	// export const ssr = false;
 	$: path = $page.route.id;
 	let isSidenavOpen: boolean = false;
 	let sidemenu: HTMLElement | undefined;
@@ -51,7 +52,7 @@
 
 	const sseEventNames: SseEventName[] = ['NEW_JOURNAL_ENTRY'];
 	onMount(() => {
-		const eventSource = new EventSource('/events');
+		const eventSource = new EventSource('/api/events');
 		eventSource.onerror = error => {
 			console.warn(error, 'Error in SSE');
 			eventSource?.close();

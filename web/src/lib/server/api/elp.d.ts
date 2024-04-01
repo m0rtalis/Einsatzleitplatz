@@ -16,8 +16,11 @@ export interface paths {
     get: operations["getJournal"];
     post: operations["createJournalEntry"];
   };
-  "/users/me": {
-    get: operations["authenticatedUser"];
+  "/users": {
+    get: operations["getUsers"];
+  };
+  "/users/{id}": {
+    get: operations["getUser"];
   };
   "/sse": {
     get: operations["subscribe"];
@@ -42,6 +45,8 @@ export interface components {
       password: string;
     };
     User: {
+      /** Format: uuid */
+      id: string;
       username: string;
     };
     CreateOperation: {
@@ -54,23 +59,40 @@ export interface components {
     };
     CreateJournalEntry: {
       /** Format: uuid */
-      operationId?: string;
-      text?: string;
+      operationId: string;
+      text: string;
     };
     JournalEntry: {
       /** Format: uuid */
-      id?: string;
+      id: string;
       /** Format: uuid */
-      operationId?: string;
+      operationId: string;
       /** Format: uuid */
-      createdBy?: string;
+      createdBy: string;
       /** @enum {string} */
-      component?: "JOURNAL" | "OPERATION";
+      component: "JOURNAL" | "OPERATION" | "USER";
       /** Format: date-time */
-      createdAt?: string;
+      createdAt: string;
       /** Format: int64 */
-      journalEntryId?: number;
-      text?: string;
+      journalEntryId: number;
+      text: string;
+    };
+    Pagination: {
+      /** Format: int32 */
+      offset: number;
+      /** Format: int32 */
+      limit: number;
+      /** Format: int32 */
+      totalElements: number;
+      /** Format: int32 */
+      currentPage?: number;
+      /** Format: int32 */
+      totalPages?: number;
+      lastPage?: boolean;
+    };
+    UserList: {
+      data: components["schemas"]["User"][];
+      pagination: components["schemas"]["Pagination"];
     };
     SseEmitter: {
       /** Format: int64 */
@@ -84,21 +106,8 @@ export interface components {
       name: string;
     };
     JournalEntryList: {
-      data?: components["schemas"]["JournalEntry"][];
-      pagination?: components["schemas"]["Pagination"];
-    };
-    Pagination: {
-      /** Format: int32 */
-      offset?: number;
-      /** Format: int32 */
-      limit?: number;
-      /** Format: int32 */
-      totalElements?: number;
-      lastPage?: boolean;
-      /** Format: int32 */
-      totalPages?: number;
-      /** Format: int32 */
-      currentPage?: number;
+      data: components["schemas"]["JournalEntry"][];
+      pagination: components["schemas"]["Pagination"];
     };
   };
   responses: never;
@@ -188,7 +197,30 @@ export interface operations {
       };
     };
   };
-  authenticatedUser: {
+  getUsers: {
+    parameters: {
+      query?: {
+        offset?: string;
+        limit?: string;
+        /** @description Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
+        sort?: string[];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserList"];
+        };
+      };
+    };
+  };
+  getUser: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
     responses: {
       /** @description OK */
       200: {

@@ -5,6 +5,7 @@ export const local = <T, >(name: string, value: T): Writable<T> => storage<T>(na
 
 export const session = <T, >(name: string, value: T): Writable<T> => storage<T>(name, value, 'session');
 
+// TODO: Listener for changes from other tabs
 const storage = <T, >(name: string, value: T, storage: 'session' | 'local'): Writable<T> => {
 	const item: string | null = getStorage(storage)?.getItem(name) ?? null;
 

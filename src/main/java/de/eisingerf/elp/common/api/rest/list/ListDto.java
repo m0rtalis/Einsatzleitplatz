@@ -1,6 +1,7 @@
 package de.eisingerf.elp.common.api.rest.list;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import org.springframework.data.domain.Slice;
 import org.springframework.util.Assert;
@@ -10,8 +11,8 @@ import java.util.List;
 @Getter
 @Schema(name = "List")
 public abstract class ListDto<T> {
-	private final List<T> data;
-	private final Pagination pagination;
+	@NotNull private final List<T> data;
+	@NotNull private final Pagination pagination;
 
 	public ListDto(List<T> data, Pagination pagination) {
 		Assert.isTrue(data.size() <= pagination.limit, "Data list size must be equal or smaller pagination limit");
@@ -25,7 +26,7 @@ public abstract class ListDto<T> {
 				new Pagination((int) slice.getPageable().getOffset(), slice.getSize(), slice.getNumberOfElements()));
 	}
 
-	public record Pagination(int offset, int limit, int totalElements) {
+	public record Pagination(@NotNull int offset, @NotNull int limit, @NotNull int totalElements) {
 		public Pagination {
 			Assert.isTrue(offset >= 0, "Offset must be positive");
 			Assert.isTrue(limit > 0, "Limit must be positive");

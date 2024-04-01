@@ -23,7 +23,7 @@ public class Authority implements GrantedAuthority {
     private UUID id;
 
     @ToString.Include
-    @ManyToOne(targetEntity = UserDetail.class)
+    @ManyToOne(targetEntity = UserAuthentication.class)
     @JoinColumn(name = "USERNAME", referencedColumnName = "USERNAME")
     @NotBlank
     private String username;

@@ -4,7 +4,9 @@
 	import type { KeyboardEventHandler } from 'svelte/elements';
 	import { afterNavigate, invalidate  } from '$app/navigation';
 	import type { JournalEntry } from '$lib/server/api';
-	// import {Tabulator} from 'tabulator-tables'; Wait for typings to catch up :(
+	import User from '$lib/component/User.svelte';
+	import Time from '$lib/component/Time.svelte';
+	// import {Tabulator} from 'tabulator-tables'; Wait for typings to catch up :( ... or create own :) ?
 
 	setPageName('Journal');
 	export let data;
@@ -41,7 +43,7 @@
 			<button type="submit">Create</button>
 		</fieldset>
 	</form>
-	<!-- List journal entries (Tabulator) -->
+	<!-- List journal entries -->
 	<table class="journal">
 		<caption>Operation Journal</caption>
 		<thead>
@@ -57,10 +59,10 @@
 		{#each journalEntries as entry (entry.id)}
 			<tr>
 				<td>{entry.journalEntryId}</td>
-				<td>{entry.createdAt}</td>
+				<td><Time time={entry.createdAt || "0"} /></td>
 				<td>{entry.component}</td>
 				<td>{entry.text}</td>
-				<td>{entry.createdBy}</td>
+				<td><User id={entry.createdBy || ""} /></td>
 			</tr>
 		{/each}
 		</tbody>

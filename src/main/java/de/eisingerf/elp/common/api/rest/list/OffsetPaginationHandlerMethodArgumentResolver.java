@@ -2,6 +2,7 @@ package de.eisingerf.elp.common.api.rest.list;
 
 import de.eisingerf.elp.common.api.rest.list.input.OffsetPaginationParameter;
 import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotNull;
 import org.springdoc.core.converters.models.Sort;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,7 @@ public class OffsetPaginationHandlerMethodArgumentResolver implements HandlerMet
 	}
 
 	@Override
-	public OffsetPaginationParameter resolveArgument(@Nonnull MethodParameter parameter, ModelAndViewContainer mavContainer, @Nonnull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+	public OffsetPaginationParameter resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer mavContainer, @NotNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 		// This seems stupid. Combining ParameterInfo and RequestParamMethodArgumentResolver should easily be able to support ParameterObjects.
 		// Not sure why Spring isn't doing it. I will make this work with the OffsetPaginationParameter and maybe generalize it later if I need to.
 		// At least until I find out that spring can already do this with some obscure annotation that's not in the docs and throw it all away again.

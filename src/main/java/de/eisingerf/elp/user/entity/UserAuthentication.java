@@ -19,7 +19,7 @@ import java.util.*;
 @Getter
 @Setter
 @ToString
-public class UserDetail implements UserDetails {
+public class UserAuthentication implements UserDetails {
 
     @Id
     @Generated

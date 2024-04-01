@@ -11,3 +11,4 @@ export const client = createClient<paths>({baseUrl: SERVER_URL });
 
 export type JournalEntry = components["schemas"]["JournalEntry"]
 export type SseEventName = components["schemas"]["EventName"]
+export type User = components["schemas"]["User"]
