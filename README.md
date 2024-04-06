@@ -2,6 +2,8 @@
 ## Backend
 The packages should probably all be separate modules or at least make sure it's not possible to import between them except shared and common.
 
+Don't use java.util.Date
+
 ## Frontend
 
 Right now only working on success path and forcing all undefined away with !

@@ -8,7 +8,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.Instant;
 import java.util.UUID;
 
 // Einsatzabschnitt
@@ -35,4 +37,7 @@ public class Section implements HasResources, HasPatients {
 
     @OneToOne
     private Location location;
+
+    @CreationTimestamp
+    private Instant createdAt;
 }

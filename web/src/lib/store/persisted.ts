@@ -1,18 +1,28 @@
 import { writable, type Writable } from 'svelte/store';
 import { browser } from '$app/environment';
 
-export const local = <T, >(name: string, value: T): Writable<T> => storage<T>(name, value, 'local');
+export type Options<T> = {
+	serializer?: (value: T) => string;
+	deserializer?: (value: string) => T;
+}
 
-export const session = <T, >(name: string, value: T): Writable<T> => storage<T>(name, value, 'session');
+export const local = <T, >(name: string, value: T, options?: Options<T>): Writable<T> => storage<T>(name, value, 'local', options);
+
+export const session = <T, >(name: string, value: T, options?: Options<T>): Writable<T> => storage<T>(name, value, 'session', options);
 
 // TODO: Listener for changes from other tabs
-const storage = <T, >(name: string, value: T, storage: 'session' | 'local'): Writable<T> => {
-	const item: string | null = getStorage(storage)?.getItem(name) ?? null;
+// Can we somehow make it so T can only be primitive or Immutable?
+const storage = <T, >(name: string, value: T, storage: 'session' | 'local', options?: Options<T>): Writable<T> => {
+	const storageObject = getStorage(storage);
+	const serializer = options?.serializer ?? JSON.stringify;
+	const deserializer = options?.deserializer ?? JSON.parse;
 
-	const store = writable<T>(item ? JSON.parse(item) : value);
+	const item: string | null = storageObject?.getItem(name) ?? null;
+
+	const store = writable<T>(item ? deserializer(item) : value);
 
 	store.subscribe(value => {
-		getStorage(storage)?.setItem(name, JSON.stringify(value));
+		storageObject?.setItem(name, serializer(value));
 	});
 
 	return store;
@@ -20,5 +30,5 @@ const storage = <T, >(name: string, value: T, storage: 'session' | 'local'): Wri
 
 const getStorage = (type: 'session' | 'local'): Storage | undefined => {
 	if (!browser) return undefined;
-	return type === 'session' ? sessionStorage : localStorage
-}
+	return type === 'session' ? sessionStorage : localStorage;
+};

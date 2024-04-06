@@ -49,4 +49,10 @@ public class JournalController {
 		Page<JournalEntry> journal = journalRepository.findByOperationId(operationId, pagination.toPageable());
 		return JournalEntryListDto.from(journal);
 	}
+
+	@DeleteMapping(value = "/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteEntry(@PathVariable UUID id) {
+		journalService.delete(id);
+	}
 }

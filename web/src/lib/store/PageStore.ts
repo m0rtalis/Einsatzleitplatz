@@ -1,5 +1,16 @@
-import { writable } from 'svelte/store';
+import { type Writable, writable } from 'svelte/store';
+import { getContext, setContext } from 'svelte';
 
-export const pageStore = writable<{ name: string }>();
+type PageData = { name: string };
 
-export const setPageName = (name: string) => pageStore.update(data => ({ ...data, name }));
+const PAGE_CTX = Symbol.for('PAGE_CTX');
+
+export const createPageStore = () => {
+	const pageStore = writable<PageData>();
+	setContext(PAGE_CTX, pageStore);
+	return pageStore;
+};
+
+export const getPageStore = () => getContext<Writable<PageData>>(PAGE_CTX);
+
+export const setPageName = (name: string) => getPageStore().update(data => ({ ...data, name }));

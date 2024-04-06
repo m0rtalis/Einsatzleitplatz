@@ -13,21 +13,24 @@
 	import PatientIcon from 'virtual:icons/mdi/swiss-cross-box';
 	import SettingsIcon from 'virtual:icons/mdi/settings';
 	import ArrowsIcon from 'virtual:icons/material-symbols-light/double-arrow';
+	import DamageAccountIcon from 'virtual:icons/material-symbols/team-dashboard-outline';
 	import { page } from '$app/stores';
 	import { isClipped } from '$lib/dom/isClipped';
 	import { throttle } from '$lib/js';
-	import { operationStore, pageStore } from '$lib/store';
+	import { createSseStore, getOperationStore, getPageStore, setFromMessageEvent } from '$lib/store';
 	import { onMount } from 'svelte';
 	import type { SseEventName } from '$lib/server/api';
-	import { setFromMessageEvent } from '$lib/store/SseStore';
 
-	// export const ssr = false;
 	$: path = $page.route.id;
 	let isSidenavOpen: boolean = false;
 	let sidemenu: HTMLElement | undefined;
 	let showScrollUpArrow: boolean = false;
 	let showScrollDownArrow: boolean = false;
 	let expandSidenavTimer: NodeJS.Timeout | null;
+
+	createSseStore();
+	const operationStore = getOperationStore();
+	const pageStore = getPageStore();
 
 	function checkShowNavArrow() {
 		showScrollUpArrow = sidemenu ? isClipped(sidemenu).top : false;
@@ -38,7 +41,7 @@
 		if (!isSidenavOpen) {
 			expandSidenavTimer = setTimeout(() => {
 				isSidenavOpen = true;
-			}, 750);
+			}, 1_000);
 		}
 	}
 
@@ -60,6 +63,7 @@
 		sseEventNames.forEach(name => eventSource.addEventListener(name, evt => {
 			setFromMessageEvent(evt);
 		}));
+		// TODO: Build debug page which shows the event stream
 		return () => {
 			console.log('Close source');
 			eventSource?.close();
@@ -80,6 +84,7 @@
 			<MenuIcon style="min-width: 1.5em; min-height: 1.5em;" />
 		{/if}
 	</button>
+	<!-- TODO: Operation left, page middle, Profile right -->
 	<span>{$operationStore?.name ?? ""}</span>
 	<span>{$pageStore?.name ?? 'Einsatzleitplatz'}</span>
 	<span>Profile</span>
@@ -108,6 +113,10 @@
 		<li class:active={path?.startsWith("/(app)/communication")}><a href="/communication">
 			<CommunicationIcon style="min-width: 1.5em; min-height: 1.5em" />
 			<span>Communication</span></a></li>
+		<li class:active={path?.startsWith("/(app)/damage")}><a href="/damage">
+			<DamageAccountIcon style="min-width: 1.5em; min-height: 1.5em" />
+			<span>Damage Account</span>
+		</a></li>
 		<li class:active={path?.startsWith("/(app)/units")}><a href="/units">
 			<AmbulanceIcon style="min-width: 1.5em; min-height: 1.5em" />
 			<span>Units</span></a></li>
@@ -230,7 +239,8 @@
     }
 
     .sidenav-menu li a span {
-        padding-left: 1rem
+        padding-left: 1rem;
+        white-space: nowrap;
     }
 
     .sidenav-scroll-arrow {

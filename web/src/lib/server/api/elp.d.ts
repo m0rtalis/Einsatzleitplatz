@@ -34,6 +34,9 @@ export interface paths {
   "/operations/names": {
     get: operations["getOperationNames"];
   };
+  "/journal/{id}": {
+    delete: operations["deleteEntry"];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -76,6 +79,7 @@ export interface components {
       /** Format: int64 */
       journalEntryId: number;
       text: string;
+      isDeleted: boolean;
     };
     Pagination: {
       /** Format: int32 */
@@ -86,9 +90,9 @@ export interface components {
       totalElements: number;
       /** Format: int32 */
       currentPage?: number;
+      lastPage?: boolean;
       /** Format: int32 */
       totalPages?: number;
-      lastPage?: boolean;
     };
     UserList: {
       data: components["schemas"]["User"][];
@@ -271,6 +275,21 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["OperationName"][];
+        };
+      };
+    };
+  };
+  deleteEntry: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "application/json": components["schemas"]["JournalEntry"];
         };
       };
     };

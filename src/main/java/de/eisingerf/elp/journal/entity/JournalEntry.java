@@ -6,10 +6,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity(name = "journal")
@@ -54,11 +57,18 @@ public class JournalEntry {
 //    @JoinColumn(name = "CREATED_BY")
     @Column(updatable = false) // TODO: Create foreign key, for others as well
     @NotNull
+    @CreatedBy
     private UUID createdBy;
 
     @Column(name = "CREATED_AT", updatable = false)
     @NotNull
-    private Date createdAt;
+    @CreatedDate
+    private Instant createdAt;
+
+    @Column(name = "IS_DELETED")
+    @Setter
+    @NotNull
+    boolean isDeleted;
 
     protected JournalEntry() {}
 
@@ -67,14 +77,13 @@ public class JournalEntry {
             Component component,
             long journalEntryId,
             String text,
-            UUID createdBy,
-            Date createdAt) {
+            UUID createdBy
+            ) {
         this.operationId = operationId;
         this.component = component;
         this.journalEntryId = journalEntryId;
         this.text = text;
         this.createdBy = createdBy;
-        this.createdAt = createdAt;
     }
 
 }

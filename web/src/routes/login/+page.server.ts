@@ -7,7 +7,7 @@ export const load = async ({ fetch }) => ({
 });
 
 export const actions = {
-		login: async ({ request, fetch, cookies }) => {
+		login: async ({ request, fetch, cookies}) => {
 			let data = await request.formData();
 			const username = data.get("username") as string
 			const password = data.get("password") as string
@@ -47,6 +47,7 @@ export const actions = {
 					}
 				)).data!;
 			}
+
 			// 3. Return operation and user to Page and then set there
 			//    redirect on client side. I'd rather do it on server side but not possible.
 			return { isLoggedIn: true, user, operation: operationResponse };

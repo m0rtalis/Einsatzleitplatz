@@ -3,10 +3,7 @@ import { client } from '$lib/server/api';
 
 // Don't like that endpoints are not typed
 export const GET: RequestHandler = async ({fetch,params }) => {
-	const id = params.id
-	if (!id) {
-		throw new Error("UserId not defined")
-	}
+	const id = params.id!
 
 	const user = await client.GET("/users/{id}", {params: {path: {id}}, fetch})
 	return json(user.data!);

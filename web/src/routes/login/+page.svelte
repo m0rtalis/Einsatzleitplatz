@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { operationStore, setPageName, userStore } from '$lib/store';
+	import { getOperationStore, getUserStore, setPageName } from '$lib/store';
 	import { afterNavigate, goto } from '$app/navigation';
 	import Combobox from '$lib/component/Combobox.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
@@ -9,6 +9,9 @@
 
 	export let data;
 	export let form;
+
+	const operationStore = getOperationStore()
+	const userStore = getUserStore()
 
 	afterNavigate(() => {
 		const usernameInput: HTMLInputElement | null = document.querySelector('#login-username')

@@ -10,7 +10,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +43,9 @@ public class Operation implements HasResources, HasPatients {
     @OneToMany
     @OrderBy("name ASC")
     private List<Section> sections; // Einsatzabschnitte
+
+    @CreatedDate
+    private Instant createdAt;
 
     protected Operation() {}
 

@@ -1,7 +1,11 @@
 <script lang="ts">
+	// TODO: Use pico
 	import 'chota';
-	import { pageStore } from '$lib/store';
+	import { createOperationStore, createPageStore, createUserStore } from '$lib/store';
 
+	createOperationStore()
+	createUserStore()
+	const pageStore = createPageStore()
 </script>
 
 <svelte:head>

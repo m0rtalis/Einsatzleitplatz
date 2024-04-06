@@ -18,6 +18,7 @@
 	},
 	"devDependencies": {
 		"@iconify-json/icon-park-outline": "^1.1.15",
+		"@iconify-json/material-symbols": "^1.1.76",
 		"@iconify-json/material-symbols-light": "^1.1.14",
 		"@iconify-json/mdi": "^1.1.64",
 		"@iconify-json/uil": "^1.1.8",
@@ -26,6 +27,7 @@
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "^8.56.0",
+		"@types/eventsource": "^1.1.15",
 		"@types/tabulator-tables": "^5.6.0",
 		"@typescript-eslint/eslint-plugin": "^7.0.0",
 		"@typescript-eslint/parser": "^7.0.0",
@@ -43,13 +45,13 @@
 		"typescript": "^5.3.0",
 		"unplugin-icons": "^0.18.5",
 		"vite": "^5.0.3",
-		"vitest": "^1.2.0",
-		"@types/eventsource": "^1.1.15"
+		"vitest": "^1.2.0"
 	},
 	"type": "module",
 	"dependencies": {
+		"eventsource": "^2.0.2",
+		"immutable": "^4.3.5",
 		"openapi-fetch": "^0.9.2",
-		"tabulator-tables": "^6.0.1",
-		"eventsource": "^2.0.2"
+		"tabulator-tables": "^6.0.1"
 	}
 }

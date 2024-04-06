@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.Date;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -37,7 +35,7 @@ public class JournalService {
 
         UUID userId = getAuthenticatedUserId.getAuthenticatedUserId();
         long journalEntryId = journalRepository.findNextJournalEntryId(operationId);
-        var journalEntry = new JournalEntry(operationId, component, journalEntryId, event, userId, new Date());
+        var journalEntry = new JournalEntry(operationId, component, journalEntryId, event, userId);
         var savedEntry = this.journalRepository.save(journalEntry);
         eventStream.send(new Event(savedEntry.getId(), EventName.NEW_JOURNAL_ENTRY, savedEntry));
         return savedEntry;
@@ -49,16 +47,20 @@ public class JournalService {
     }
 
     protected void referenceInternal(UUID id, UUID referencedEntryId) {
-        this.referenceInternal(id, Set.of(referencedEntryId));
     }
-
-    protected void referenceInternal(UUID id, Set<UUID> referencedEntryId) {}
 
     public JournalEntry update(UUID id, String event) {
         return null;
     }
 
-    public JournalEntry delete(UUID id) {
-        return null;
+    public void delete(UUID id) {
+        JournalEntry entry = journalRepository.findById(id).orElseThrow();
+        if (entry.isDeleted()) {
+            throw new RuntimeException();
+        }
+        entry.setDeleted(true);
+        journalRepository.save(entry);
+        JournalEntry deleteEntry = this.create(entry.getOperationId(), Component.JOURNAL, "Delete entry " + entry.getJournalEntryId());
+        this.referenceInternal(entry.getId(), deleteEntry.getId());
     }
 }
