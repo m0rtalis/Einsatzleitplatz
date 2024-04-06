@@ -4,14 +4,13 @@ import de.eisingerf.elp.common.location.entity.Location;
 import de.eisingerf.elp.operation.entity.Operation;
 import de.eisingerf.elp.operation.event.OperationEventPublisher;
 import de.eisingerf.elp.operation.persistence.OperationRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class OperationService {

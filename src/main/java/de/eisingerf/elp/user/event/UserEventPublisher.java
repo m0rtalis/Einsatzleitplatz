@@ -1,11 +1,10 @@
 package de.eisingerf.elp.user.event;
 
 import de.eisingerf.elp.shared.user.UserSignedInEvent;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 @Component
 public class UserEventPublisher {

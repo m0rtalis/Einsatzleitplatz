@@ -4,7 +4,6 @@ import de.eisingerf.elp.common.persistence.IdGenerator;
 import de.eisingerf.elp.common.persistence.ReadOnly;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-
 import java.util.UUID;
 
 @Entity(name = "location")
@@ -19,6 +18,5 @@ public class Location {
     private Address address;
 
     @Column
-    @NotNull
-    private Coordinates coordinates;
+    @NotNull private Coordinates coordinates;
 }

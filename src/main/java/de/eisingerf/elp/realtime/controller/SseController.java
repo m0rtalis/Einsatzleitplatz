@@ -10,29 +10,29 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
- * Controller handling Server-Side-Events.
- * Events like a new journal entry, new patient, status change of a unit etc will send to the client in real-time with this.
+ * Controller handling Server-Side-Events. Events like a new journal entry, new patient, status change of a unit etc
+ * will send to the client in real-time with this.
  */
 @RestController
 @PreAuthorize("hasRole('USER')")
 public class SseController {
 
-	private final SseService sseService;
+    private final SseService sseService;
 
-	@Autowired
-	public SseController(SseService sseService) {
-		this.sseService = sseService;
-	}
+    @Autowired
+    public SseController(SseService sseService) {
+        this.sseService = sseService;
+    }
 
-	@GetMapping(value = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public SseEmitter subscribe() {
-		SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
-		sseService.addEmitter(emitter);
-		return emitter;
-	}
+    @GetMapping(value = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter subscribe() {
+        SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
+        sseService.addEmitter(emitter);
+        return emitter;
+    }
 
-	@GetMapping(value = "/sse/names")
-	public EventNameDto[] sseNames() {
-		return EventNameDto.values();
-	}
+    @GetMapping(value = "/sse/names")
+    public EventNameDto[] sseNames() {
+        return EventNameDto.values();
+    }
 }

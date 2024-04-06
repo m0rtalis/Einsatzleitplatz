@@ -19,15 +19,11 @@ public class JournalEventListener {
 
     @EventListener
     public void handleOperationCreatedEvent(OperationCreatedEvent event) {
-        journalService.create(
-                event.operationId(),
-                Component.OPERATION,
-                "Operation " + event.name() + " created"
-                );
+        journalService.create(event.operationId(), Component.OPERATION, "Operation " + event.name() + " created");
     }
 
     @EventListener
     public void handleUserSignedInEvent(UserSignedInEvent event) {
-//        journalService.create(null, Component.USER, "User " + event.username() + " signed in");
+        //        journalService.create(null, Component.USER, "User " + event.username() + " signed in");
     }
 }

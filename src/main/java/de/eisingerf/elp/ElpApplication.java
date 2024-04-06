@@ -11,5 +11,4 @@ public class ElpApplication {
     public static void main(String[] args) {
         SpringApplication.run(ElpApplication.class, args);
     }
-
 }

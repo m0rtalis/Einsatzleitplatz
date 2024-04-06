@@ -2,13 +2,12 @@ package de.eisingerf.elp.realtime.service;
 
 import de.eisingerf.elp.shared.realtime.Event;
 import de.eisingerf.elp.shared.realtime.EventStream;
+import java.io.IOException;
+import java.util.concurrent.CopyOnWriteArraySet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import java.io.IOException;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 @Service
 @Slf4j

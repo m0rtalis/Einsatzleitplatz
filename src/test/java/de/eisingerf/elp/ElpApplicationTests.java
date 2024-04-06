@@ -1,18 +1,17 @@
 package de.eisingerf.elp;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.io.File;
-import java.io.FileOutputStream;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,9 +29,8 @@ class ElpApplicationTests {
         // TODO: Use instead https://github.com/springdoc/springdoc-openapi-gradle-plugin
         assertFalse(openApiFile.isAbsolute());
 
-        final MvcResult response = mockMvc.perform(get(API_DOCS_PATH))
-                .andExpect(status().isOk())
-                .andReturn();
+        final MvcResult response =
+                mockMvc.perform(get(API_DOCS_PATH)).andExpect(status().isOk()).andReturn();
 
         assertNotNull(response);
         assertNotNull(response.getResponse());

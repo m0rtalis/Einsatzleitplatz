@@ -2,6 +2,7 @@ package de.eisingerf.elp.user.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import java.util.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,8 +12,6 @@ import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.*;
 
 @Entity(name = "users")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -28,7 +27,7 @@ public class UserAuthentication implements UserDetails {
     @ToString.Include
     private UUID id;
 
-    @Column(unique=true)
+    @Column(unique = true)
     @NotBlank
     @ToString.Include
     @NaturalId

@@ -2,14 +2,13 @@ package de.eisingerf.elp.user.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Generated;
 import org.springframework.security.core.GrantedAuthority;
-
-import java.util.UUID;
 
 @Entity(name = "authorities")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -32,5 +31,4 @@ public class Authority implements GrantedAuthority {
     @ToString.Include
     @NotBlank
     private String authority;
-
 }

@@ -1,5 +1,7 @@
 package de.eisingerf.elp.user.controller;
 
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
+
 import de.eisingerf.elp.common.api.rest.list.input.OffsetPaginationParameter;
 import de.eisingerf.elp.user.controller.dto.UserDto;
 import de.eisingerf.elp.user.controller.dto.UserListDto;
@@ -9,16 +11,12 @@ import de.eisingerf.elp.user.persistence.UserRepository;
 import de.eisingerf.elp.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.UUID;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
-
-import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @RestController
 @PreAuthorize("isFullyAuthenticated()")

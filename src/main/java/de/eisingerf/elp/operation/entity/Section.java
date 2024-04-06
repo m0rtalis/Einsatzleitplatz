@@ -6,12 +6,11 @@ import de.eisingerf.elp.shared.patient.HasPatients;
 import de.eisingerf.elp.shared.resource.HasResources;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import java.time.Instant;
+import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.Instant;
-import java.util.UUID;
 
 // Einsatzabschnitt
 @Entity(name = "operation_section")

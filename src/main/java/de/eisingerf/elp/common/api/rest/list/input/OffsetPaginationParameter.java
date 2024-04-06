@@ -6,6 +6,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.springdoc.core.annotations.ParameterObject;
@@ -13,8 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 // Sure Spring already has all of this, but I want to do it myself :)
 @ParameterObject
@@ -31,8 +30,7 @@ public final class OffsetPaginationParameter {
     @Max(200)
     private Integer limit;
 
-    @Nullable
-    private org.springdoc.core.converters.models.Sort sort;
+    @Nullable private org.springdoc.core.converters.models.Sort sort;
 
     public OffsetPaginationParameter(
             @RequestParam(name = "offset", defaultValue = "0") Integer offset,
