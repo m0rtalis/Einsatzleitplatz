@@ -7,10 +7,12 @@ import de.eisingerf.elp.shared.realtime.Event;
 import de.eisingerf.elp.shared.realtime.EventName;
 import de.eisingerf.elp.shared.realtime.EventStream;
 import de.eisingerf.elp.shared.user.GetAuthenticatedUserId;
-import java.util.UUID;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
+import java.util.UUID;
 
 @Service
 public class JournalService {
@@ -45,21 +47,23 @@ public class JournalService {
         this.referenceInternal(id, referencedEntryId);
     }
 
-    protected void referenceInternal(UUID id, UUID referencedEntryId) {}
+    protected void referenceInternal(UUID id, UUID referencedEntryId) {
+    }
 
     public JournalEntry update(UUID id, String event) {
         return null;
     }
 
-    public void delete(UUID id) {
+    public void delete(UUID id, @Nullable String text) {
         JournalEntry entry = journalRepository.findById(id).orElseThrow();
         if (entry.isDeleted()) {
             throw new RuntimeException();
         }
         entry.setDeleted(true);
         journalRepository.save(entry);
+        String deleteDescription = "Delete entry " + entry.getJournalEntryId();
         JournalEntry deleteEntry =
-                this.create(entry.getOperationId(), Component.JOURNAL, "Delete entry " + entry.getJournalEntryId());
+                this.create(entry.getOperationId(), Component.JOURNAL, text != null ? text + "\n" + deleteDescription : deleteDescription);
         this.referenceInternal(entry.getId(), deleteEntry.getId());
     }
 }

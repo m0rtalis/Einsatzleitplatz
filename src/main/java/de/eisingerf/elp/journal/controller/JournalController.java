@@ -4,6 +4,7 @@ import de.eisingerf.elp.common.api.rest.list.input.OffsetPaginationParameter;
 import de.eisingerf.elp.journal.controller.dto.JournalEntryDto;
 import de.eisingerf.elp.journal.controller.dto.JournalEntryListDto;
 import de.eisingerf.elp.journal.controller.dto.input.CreateJournalEntryDto;
+import de.eisingerf.elp.journal.controller.dto.input.DeleteJournalEntryDto;
 import de.eisingerf.elp.journal.entity.Component;
 import de.eisingerf.elp.journal.entity.JournalEntry;
 import de.eisingerf.elp.journal.persistence.JournalRepository;
@@ -45,7 +46,7 @@ public class JournalController {
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEntry(@PathVariable UUID id) {
-        journalService.delete(id);
+    public void deleteEntry(@PathVariable UUID id, @RequestBody DeleteJournalEntryDto deleteJournalEntryDto) {
+        journalService.delete(id, deleteJournalEntryDto.text());
     }
 }

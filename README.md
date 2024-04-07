@@ -5,6 +5,8 @@ The packages should probably all be separate modules or at least make sure it's 
 Don't use java.util.Date
 https://github.com/google/error-prone
 
+Import order and formatting, java below, static very bottom
+
 ## Frontend
 
 Right now only working on success path and forcing all undefined away with !

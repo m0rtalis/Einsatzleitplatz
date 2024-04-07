@@ -54,7 +54,7 @@ public class JournalEntry {
     private UUID createdBy;
 
     @Column(name = "CREATED_AT", updatable = false)
-    @NotNull @CreatedDate
+    @CreatedDate
     private Instant createdAt;
 
     @Column(name = "IS_DELETED")
