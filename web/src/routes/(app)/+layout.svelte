@@ -26,7 +26,7 @@
 	let sidemenu: HTMLElement | undefined;
 	let showScrollUpArrow: boolean = false;
 	let showScrollDownArrow: boolean = false;
-	let expandSidenavTimer: NodeJS.Timeout | null;
+	let expandSidenavTimer: NodeJS.Timeout | null ;
 
 	createSseStore();
 	const operationStore = getOperationStore();
@@ -41,7 +41,7 @@
 		if (!isSidenavOpen) {
 			expandSidenavTimer = setTimeout(() => {
 				isSidenavOpen = true;
-			}, 1_000);
+			}, 700);
 		}
 	}
 

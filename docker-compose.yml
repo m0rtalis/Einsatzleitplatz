@@ -1,0 +1,10 @@
+name: "ELP Development"
+
+services:
+  database:
+    image: "mariadb:latest"
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_DATABASE: "elp"
+      MARIADB_ROOT_PASSWORD: "toor"
