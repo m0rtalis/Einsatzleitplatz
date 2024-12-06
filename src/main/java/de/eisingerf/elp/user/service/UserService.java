@@ -45,7 +45,7 @@ public class UserService implements GetAuthenticatedUserId {
     @Override
     public UUID getAuthenticatedUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.isAuthenticated()) {
+        if (authentication == null || !authentication.isAuthenticated()) {
             throw new RuntimeException("No user authenticated");
         }
         String username = authentication.getName();

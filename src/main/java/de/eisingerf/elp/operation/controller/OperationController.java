@@ -5,7 +5,6 @@ import de.eisingerf.elp.operation.controller.dto.OperationNameDto;
 import de.eisingerf.elp.operation.controller.dto.input.CreateOperationDto;
 import de.eisingerf.elp.operation.service.OperationService;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,7 +46,7 @@ public class OperationController {
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public OperationDto createOperation(@RequestBody CreateOperationDto createOperationDto) {
-        var operation = this.operationService.createOperation(createOperationDto.name(), Optional.empty());
+        var operation = this.operationService.createOperation(createOperationDto.name(), null);
         return OperationDto.from(operation);
     }
 }

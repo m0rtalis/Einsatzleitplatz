@@ -5,8 +5,9 @@ import de.eisingerf.elp.operation.entity.Operation;
 import de.eisingerf.elp.operation.event.OperationEventPublisher;
 import de.eisingerf.elp.operation.persistence.OperationRepository;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,11 +32,11 @@ public class OperationService {
         return operationRepository.findById(operationId).orElseThrow();
     }
 
-    public Operation createOperation(String name, Optional<Location> location) {
+    public Operation createOperation(String name, @Nullable Location location) {
         Assert.hasText(name, "Name must have text");
 
         var operation = new Operation(name);
-        operation.setLocation(location.orElse(null));
+        operation.setLocation(location);
 
         Operation savedOperation = this.operationRepository.save(operation);
         this.operationEventPublisher.publishOperationCreated(savedOperation);

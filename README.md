@@ -4,6 +4,7 @@ The packages should probably all be separate modules or at least make sure it's 
 
 TODO: Don't use java.util.Date
 https://github.com/google/error-prone
+TODO: Fail if Hibernate create table fails
 
 Import order and formatting, java below, static very bottom
 

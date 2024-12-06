@@ -13,9 +13,9 @@ public record JournalEntryDto(
         @NotNull UUID createdBy,
         @NotNull ComponentDto component,
         @NotNull Instant createdAt,
-        @NotNull long journalEntryId,
+        long journalEntryId,
         @NotNull String text,
-        @NotNull boolean isDeleted) {
+        boolean isDeleted) {
     public static JournalEntryDto from(JournalEntry entry) {
         return new JournalEntryDto(
                 entry.getId(),

@@ -7,14 +7,13 @@ import de.eisingerf.elp.journal.controller.dto.input.CreateJournalEntryDto;
 import de.eisingerf.elp.journal.controller.dto.input.DeleteJournalEntryDto;
 import de.eisingerf.elp.journal.entity.Component;
 import de.eisingerf.elp.journal.entity.JournalEntry;
-import de.eisingerf.elp.journal.persistence.JournalRepository;
 import de.eisingerf.elp.journal.service.JournalService;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController()
 @PreAuthorize("hasRole('USER')")
@@ -22,12 +21,10 @@ import org.springframework.web.bind.annotation.*;
 public class JournalController {
 
     private final JournalService journalService;
-    private final JournalRepository journalRepository;
 
     @Autowired
-    JournalController(JournalService journalService, JournalRepository journalRepository) {
+    JournalController(JournalService journalService) {
         this.journalService = journalService;
-        this.journalRepository = journalRepository;
     }
 
     @PostMapping("")
@@ -40,8 +37,14 @@ public class JournalController {
 
     @GetMapping("")
     public JournalEntryListDto getJournal(@RequestParam UUID operationId, OffsetPaginationParameter pagination) {
-        Page<JournalEntry> journal = journalRepository.findByOperationId(operationId, pagination.toPageable());
+        var journal = journalService.getJournal(operationId, pagination.toPageable());
         return JournalEntryListDto.from(journal);
+    }
+
+    @GetMapping("/{id}")
+    public JournalEntryDto getJournalEntry(@PathVariable UUID id) {
+        var entry = journalService.get(id);
+        return JournalEntryDto.from(entry);
     }
 
     @DeleteMapping(value = "/{id}")
