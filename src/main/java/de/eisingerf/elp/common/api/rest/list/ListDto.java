@@ -2,6 +2,8 @@ package de.eisingerf.elp.common.api.rest.list;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import org.springframework.data.domain.Slice;
@@ -13,6 +15,11 @@ public abstract class ListDto<T> {
     @NotNull private final List<T> data;
 
     @NotNull private final Pagination pagination;
+
+    protected ListDto() {
+        this.data = new ArrayList<>();
+        this.pagination = new Pagination(0, 50, 0);
+    }
 
     public ListDto(List<T> data, Pagination pagination) {
         Assert.isTrue(data.size() <= pagination.limit, "Data list size must be equal or smaller pagination limit");
@@ -26,7 +33,7 @@ public abstract class ListDto<T> {
                 new Pagination((int) slice.getPageable().getOffset(), slice.getSize(), slice.getNumberOfElements()));
     }
 
-    public record Pagination(@NotNull int offset, @NotNull int limit, @NotNull int totalElements) {
+    public record Pagination(int offset, int limit, int totalElements) {
         public Pagination {
             Assert.isTrue(offset >= 0, "Offset must be positive");
             Assert.isTrue(limit > 0, "Limit must be positive");

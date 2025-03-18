@@ -8,6 +8,69 @@ servers:
 security:
 - Basic: []
 paths:
+  /journal/{id}:
+    get:
+      tags:
+      - journal-controller
+      operationId: getJournalEntry
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalEntry"
+    put:
+      tags:
+      - journal-controller
+      operationId: updateJournalEntry
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalEntry"
+    delete:
+      tags:
+      - journal-controller
+      operationId: deleteEntry
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteJournalEntryDto"
+        required: true
+      responses:
+        "204":
+          description: No Content
   /users/login:
     post:
       tags:
@@ -17,7 +80,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Login'
+              $ref: "#/components/schemas/Login"
         required: true
       responses:
         "200":
@@ -25,7 +88,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
   /operations:
     get:
       tags:
@@ -39,7 +102,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Operation'
+                  $ref: "#/components/schemas/Operation"
     post:
       tags:
       - operation-controller
@@ -48,7 +111,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateOperation'
+              $ref: "#/components/schemas/CreateOperation"
         required: true
       responses:
         "201":
@@ -56,7 +119,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Operation'
+                $ref: "#/components/schemas/Operation"
   /journal:
     get:
       tags:
@@ -99,7 +162,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JournalEntryList'
+                $ref: "#/components/schemas/JournalEntryList"
     post:
       tags:
       - journal-controller
@@ -108,7 +171,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateJournalEntry'
+              $ref: "#/components/schemas/CreateJournalEntry"
         required: true
       responses:
         "201":
@@ -116,7 +179,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JournalEntry'
+                $ref: "#/components/schemas/JournalEntry"
   /users:
     get:
       tags:
@@ -153,7 +216,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserList'
+                $ref: "#/components/schemas/UserList"
   /users/{id}:
     get:
       tags:
@@ -172,19 +235,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-  /users/me:
-    get:
-      tags:
-      - user-controller
-      operationId: authenticatedUser
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
   /sse:
     get:
       tags:
@@ -196,7 +247,7 @@ paths:
           content:
             text/event-stream:
               schema:
-                $ref: '#/components/schemas/SseEmitter'
+                $ref: "#/components/schemas/SseEmitter"
   /sse/names:
     get:
       tags:
@@ -210,7 +261,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/EventName'
+                  $ref: "#/components/schemas/EventName"
   /operations/{id}:
     get:
       tags:
@@ -229,7 +280,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Operation'
+                $ref: "#/components/schemas/Operation"
   /operations/names:
     get:
       tags:
@@ -243,9 +294,37 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/OperationName'
+                  $ref: "#/components/schemas/OperationName"
 components:
   schemas:
+    JournalEntry:
+      required:
+      - createdAt
+      - createdBy
+      - id
+      - operationId
+      - text
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        operationId:
+          type: string
+          format: uuid
+        createdBy:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        journalEntryId:
+          type: integer
+          format: int64
+        text:
+          type: string
+        isDeleted:
+          type: boolean
     Login:
       required:
       - password
@@ -258,9 +337,13 @@ components:
           type: string
     User:
       required:
+      - id
       - username
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         username:
           type: string
     CreateOperation:
@@ -292,45 +375,7 @@ components:
           format: uuid
         text:
           type: string
-    JournalEntry:
-      required:
-      - component
-      - createdAt
-      - createdBy
-      - id
-      - journalEntryId
-      - operationId
-      - text
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        operationId:
-          type: string
-          format: uuid
-        createdBy:
-          type: string
-          format: uuid
-        component:
-          type: string
-          enum:
-          - JOURNAL
-          - OPERATION
-          - USER
-        createdAt:
-          type: string
-          format: date-time
-        journalEntryId:
-          type: integer
-          format: int64
-        text:
-          type: string
     Pagination:
-      required:
-      - limit
-      - offset
-      - totalElements
       type: object
       properties:
         offset:
@@ -342,12 +387,12 @@ components:
         totalElements:
           type: integer
           format: int32
-        currentPage:
+        totalPages:
           type: integer
           format: int32
         lastPage:
           type: boolean
-        totalPages:
+        currentPage:
           type: integer
           format: int32
     UserList:
@@ -359,9 +404,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/User'
+            $ref: "#/components/schemas/User"
         pagination:
-          $ref: '#/components/schemas/Pagination'
+          $ref: "#/components/schemas/Pagination"
     SseEmitter:
       type: object
       properties:
@@ -371,7 +416,9 @@ components:
     EventName:
       type: string
       enum:
-      - NEW_JOURNAL_ENTRY
+      - CREATE_JOURNAL_ENTRY
+      - UPDATE_JOURNAL_ENTRY
+      - DELETE_JOURNAL_ENTRY
     OperationName:
       required:
       - id
@@ -392,9 +439,14 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/JournalEntry'
+            $ref: "#/components/schemas/JournalEntry"
         pagination:
-          $ref: '#/components/schemas/Pagination'
+          $ref: "#/components/schemas/Pagination"
+    DeleteJournalEntryDto:
+      type: object
+      properties:
+        text:
+          type: string
   securitySchemes:
     Basic:
       type: http

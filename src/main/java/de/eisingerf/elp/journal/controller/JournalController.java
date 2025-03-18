@@ -5,7 +5,6 @@ import de.eisingerf.elp.journal.controller.dto.JournalEntryDto;
 import de.eisingerf.elp.journal.controller.dto.JournalEntryListDto;
 import de.eisingerf.elp.journal.controller.dto.input.CreateJournalEntryDto;
 import de.eisingerf.elp.journal.controller.dto.input.DeleteJournalEntryDto;
-import de.eisingerf.elp.journal.entity.Component;
 import de.eisingerf.elp.journal.entity.JournalEntry;
 import de.eisingerf.elp.journal.service.JournalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ public class JournalController {
     @ResponseStatus(HttpStatus.CREATED)
     public JournalEntryDto createJournalEntry(@RequestBody CreateJournalEntryDto createJournalEntryDto) {
         JournalEntry entry = journalService.create(
-                createJournalEntryDto.operationId(), Component.JOURNAL, createJournalEntryDto.text());
+                createJournalEntryDto.operationId(), createJournalEntryDto.text());
         return JournalEntryDto.from(entry);
     }
 
@@ -44,6 +43,12 @@ public class JournalController {
     @GetMapping("/{id}")
     public JournalEntryDto getJournalEntry(@PathVariable UUID id) {
         var entry = journalService.get(id);
+        return JournalEntryDto.from(entry);
+    }
+
+    @PutMapping("/{id}")
+    public JournalEntryDto updateJournalEntry(@PathVariable UUID id, @RequestBody String text) {
+        var entry = journalService.update(id, text);
         return JournalEntryDto.from(entry);
     }
 

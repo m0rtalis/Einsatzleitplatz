@@ -22,7 +22,7 @@ public class SseService implements EventStream {
             this.removeEmitter(emitter);
         });
         emitter.onError(error -> {
-            log.warn(String.format("Emitter %s error", emitter), error);
+            log.warn("Emitter {} error", emitter, error);
             this.removeEmitter(emitter);
         });
         emitter.onTimeout(() -> {
@@ -63,7 +63,7 @@ public class SseService implements EventStream {
             try {
                 emitter.send(sseEventBuilder);
             } catch (IOException e) {
-                log.warn(String.format("Exception on send for emitter %s", emitter), e);
+                log.warn("Exception on send for emitter {}", emitter, e);
             }
         }
     }

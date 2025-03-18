@@ -4,8 +4,8 @@ spring:
     username: root
     password: toor
   jpa:
-    show-sql: true
     hibernate:
+      format-sql: true
       ddl-auto: create
     open-in-view: false
   sql:
@@ -35,3 +35,9 @@ logging:
     org:
       springframework:
         web: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+        orm:
+          jdbc:
+            bind: TRACE

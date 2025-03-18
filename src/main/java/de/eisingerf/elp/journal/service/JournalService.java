@@ -1,9 +1,8 @@
 package de.eisingerf.elp.journal.service;
 
-import de.eisingerf.elp.journal.entity.Component;
 import de.eisingerf.elp.journal.entity.JournalEntry;
-import de.eisingerf.elp.journal.entity.ReferenceType;
 import de.eisingerf.elp.journal.persistence.JournalRepository;
+import de.eisingerf.elp.record.service.RecordService;
 import de.eisingerf.elp.shared.realtime.Event;
 import de.eisingerf.elp.shared.realtime.EventName;
 import de.eisingerf.elp.shared.realtime.EventStream;
@@ -18,77 +17,81 @@ import org.springframework.util.Assert;
 
 import java.util.UUID;
 
-// TODO: Read up and add @Transactional
 @Service
+@Transactional
 public class JournalService {
 
-    private final JournalRepository journalRepository;
-    private final GetAuthenticatedUserId getAuthenticatedUserId;
-    private final EventStream eventStream;
+	private final RecordService recordService;
+	private final JournalRepository journalRepository;
+	private final GetAuthenticatedUserId getAuthenticatedUserId;
+	private final EventStream eventStream;
 
 
-    @Autowired
-    JournalService(
-            JournalRepository journalRepository,
-            GetAuthenticatedUserId getAuthenticatedUserId,
-            EventStream eventStream) {
-        this.journalRepository = journalRepository;
-        this.getAuthenticatedUserId = getAuthenticatedUserId;
-        this.eventStream = eventStream;
-    }
+	@Autowired
+	JournalService(RecordService recordService, JournalRepository journalRepository, GetAuthenticatedUserId getAuthenticatedUserId, EventStream eventStream) {
+		this.recordService = recordService;
+		this.journalRepository = journalRepository;
+		this.getAuthenticatedUserId = getAuthenticatedUserId;
+		this.eventStream = eventStream;
+	}
 
-    public Page<JournalEntry> getJournal(UUID operationId, Pageable pageable) {
-        Page<JournalEntry> journal = journalRepository.findByOperationId(operationId, pageable);
-        return journal;
-    }
+	public Page<JournalEntry> getJournal(UUID operationId, Pageable pageable) {
+		Page<JournalEntry> journal = journalRepository.findByOperationId(
+				operationId,
+				pageable);
+		return journal;
+	}
 
-    public JournalEntry create(UUID operationId, Component component, String text) {
-        Assert.hasText(text, "Text must not be empty");
+	public JournalEntry create(UUID operationId, String text) {
+		Assert.hasText(text, "Text must not be empty");
 
-        UUID userId = getAuthenticatedUserId.getAuthenticatedUserId();
-        long journalEntryId = journalRepository.findNextJournalEntryId(operationId);
-        var journalEntry = new JournalEntry(operationId, component, journalEntryId, text, userId);
-        var savedEntry = this.journalRepository.save(journalEntry);
-        eventStream.send(new Event(EventName.NEW_JOURNAL_ENTRY, savedEntry));
-        return savedEntry;
-    }
+		UUID userId = getAuthenticatedUserId.getAuthenticatedUserId();
+		long journalEntryId = journalRepository.findNextJournalEntryId(
+				operationId);
+		var journalEntry = new JournalEntry(operationId,
+											journalEntryId,
+											text,
+											userId);
+		var savedEntry = this.journalRepository.save(journalEntry);
 
-    public void reference(UUID id, UUID referencedEntryId, ReferenceType type) {
-        var mainEntry = journalRepository.findById(id).orElseThrow();
-        this.create(mainEntry.getOperationId(), Component.JOURNAL, "Reference entry " + referencedEntryId + " as " + type);
-        var referencedEntry = journalRepository.findById(referencedEntryId).orElseThrow();
-        this.referenceWithoutJournalEntry(mainEntry, referencedEntry, type);
-    }
+		recordService.record(operationId, "JournalEntry created: " + text);
+		eventStream.send(new Event(EventName.CREATE_JOURNAL_ENTRY, savedEntry));
 
-    protected void referenceWithoutJournalEntry(JournalEntry mainEntry, JournalEntry referencedEntry, ReferenceType type) {
-        if (!mainEntry.getOperationId().equals(referencedEntry.getOperationId())) {
-            // TODO: Rollback
-            throw new RuntimeException();
-        }
-        mainEntry.addReference(referencedEntry, type);
-        journalRepository.save(mainEntry);
-    }
+		return savedEntry;
+	}
 
-    public JournalEntry update(UUID id, String event) {
-        return null;
-    }
+	public JournalEntry update(UUID id, String newText) {
+		JournalEntry entry = this.get(id);
+		if (entry.isDeleted()) {
+			throw new RuntimeException();
+		}
 
-    @Transactional
-    public void delete(UUID id, @Nullable String text) {
-        JournalEntry entry = journalRepository.findById(id).orElseThrow();
-        if (entry.isDeleted()) {
-            throw new RuntimeException();
-        }
-        entry.setDeleted(true);
-        journalRepository.save(entry);
-        // TODO: I18N this and every other hardcoded string
-        String deleteDescription = "Delete entry " + entry.getJournalEntryId();
-        JournalEntry deleteEntry =
-                this.create(entry.getOperationId(), Component.JOURNAL, text != null ? text + "\n" + deleteDescription : deleteDescription);
-        this.referenceWithoutJournalEntry(entry, deleteEntry, ReferenceType.DELETE);
-    }
+		entry.setText(newText);
+		var updatedEntry = journalRepository.save(entry);
 
-    public JournalEntry get(UUID id) {
-        return journalRepository.findById(id).orElseThrow();
-    }
+		eventStream.send(new Event(EventName.UPDATE_JOURNAL_ENTRY, updatedEntry));
+
+		return updatedEntry;
+	}
+
+	public void delete(UUID id, @Nullable String text) {
+		JournalEntry entry = this.get(id);
+		if (entry.isDeleted()) {
+			throw new RuntimeException();
+		}
+		entry.setDeleted(true);
+		var deletedEntry = journalRepository.save(entry);
+		if (text != null) {
+			// TODO: I18N this and every other hardcoded string
+			String deleteDescription = "Delete entry " + entry.getJournalEntryId();
+			this.create(entry.getOperationId(),
+						deleteDescription + "\n" + text);
+		}
+
+		eventStream.send(new Event(EventName.DELETE_JOURNAL_ENTRY, deletedEntry));
+	}
+
+	public JournalEntry get(UUID id) {
+		return journalRepository.findById(id).orElseThrow();
+	}
 }

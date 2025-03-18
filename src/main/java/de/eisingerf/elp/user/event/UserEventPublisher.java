@@ -15,7 +15,7 @@ public class UserEventPublisher {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    public void publishUserSignedIn(UUID id, String username) {
-        this.applicationEventPublisher.publishEvent(new UserSignedInEvent(id, username));
+    public void publishUserSignedIn(UUID userId, String username) {
+        this.applicationEventPublisher.publishEvent(new UserSignedInEvent(userId, username));
     }
 }

@@ -7,12 +7,20 @@ import org.springframework.data.domain.Slice;
 
 @Schema(name = "JournalEntryList")
 public class JournalEntryListDto extends ListDto<JournalEntryDto> {
-    public JournalEntryListDto(Slice<JournalEntryDto> slice) {
-        super(slice);
-    }
 
-    public static JournalEntryListDto from(Slice<JournalEntry> journal) {
-        Slice<JournalEntryDto> journalEntryDtoSlice = journal.map(JournalEntryDto::from);
-        return new JournalEntryListDto(journalEntryDtoSlice);
-    }
+	@SuppressWarnings("unused")
+	protected JournalEntryListDto() {
+		// Jackson Default Constructor
+		super();
+	}
+
+	public JournalEntryListDto(Slice<JournalEntryDto> slice) {
+		super(slice);
+	}
+
+	public static JournalEntryListDto from(Slice<JournalEntry> journal) {
+		Slice<JournalEntryDto> journalEntryDtoSlice = journal.map(
+				JournalEntryDto::from);
+		return new JournalEntryListDto(journalEntryDtoSlice);
+	}
 }

@@ -8,6 +8,25 @@ TODO: Fail if Hibernate create table fails
 
 Import order and formatting, java below, static very bottom
 
+### Testing Strategy
+
+Realistically most tests will be integration tests.
+
+#### Unit Tests
+Test one specific unit in isolation.
+
+Files are named "xxxTests"
+
+#### Integration Tests
+Test Components. With the database setup but usually skip the controller layer.
+
+Files are named "xxxIntTests"
+
+#### Functional Tests
+Test the API, expect for test setup only communication is via the API.
+
+Files are named "xxxFuncTests"
+
 ## Frontend
 
 Right now only working on success path and forcing all undefined away with !
