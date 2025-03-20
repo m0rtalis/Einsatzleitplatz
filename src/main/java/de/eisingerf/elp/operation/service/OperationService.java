@@ -4,27 +4,24 @@ import de.eisingerf.elp.common.location.entity.Location;
 import de.eisingerf.elp.operation.entity.Operation;
 import de.eisingerf.elp.operation.event.OperationEventPublisher;
 import de.eisingerf.elp.operation.persistence.OperationRepository;
-import java.util.List;
-import java.util.UUID;
-
-import de.eisingerf.elp.record.service.RecordService;
 import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 public class OperationService {
     private final OperationRepository operationRepository;
     private final OperationEventPublisher operationEventPublisher;
-    private final RecordService recordService;
 
     @Autowired
-    OperationService(OperationRepository operationRepository, OperationEventPublisher operationEventPublisher, RecordService recordService) {
+    OperationService(OperationRepository operationRepository, OperationEventPublisher operationEventPublisher) {
         this.operationRepository = operationRepository;
         this.operationEventPublisher = operationEventPublisher;
-		this.recordService = recordService;
 	}
 
     public List<Operation> getOperations(int size) {
@@ -42,7 +39,7 @@ public class OperationService {
         operation.setLocation(location);
 
         Operation savedOperation = this.operationRepository.save(operation);
-        recordService.record(savedOperation.getId(), "Operation " + operation.getName() + " created");
+
         this.operationEventPublisher.publishOperationCreated(savedOperation);
 
         return savedOperation;

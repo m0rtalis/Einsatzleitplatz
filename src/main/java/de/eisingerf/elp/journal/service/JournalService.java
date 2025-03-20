@@ -2,7 +2,6 @@ package de.eisingerf.elp.journal.service;
 
 import de.eisingerf.elp.journal.entity.JournalEntry;
 import de.eisingerf.elp.journal.persistence.JournalRepository;
-import de.eisingerf.elp.record.service.RecordService;
 import de.eisingerf.elp.shared.realtime.Event;
 import de.eisingerf.elp.shared.realtime.EventName;
 import de.eisingerf.elp.shared.realtime.EventStream;
@@ -21,15 +20,13 @@ import java.util.UUID;
 @Transactional
 public class JournalService {
 
-	private final RecordService recordService;
 	private final JournalRepository journalRepository;
 	private final GetAuthenticatedUserId getAuthenticatedUserId;
 	private final EventStream eventStream;
 
 
 	@Autowired
-	JournalService(RecordService recordService, JournalRepository journalRepository, GetAuthenticatedUserId getAuthenticatedUserId, EventStream eventStream) {
-		this.recordService = recordService;
+	JournalService(JournalRepository journalRepository, GetAuthenticatedUserId getAuthenticatedUserId, EventStream eventStream) {
 		this.journalRepository = journalRepository;
 		this.getAuthenticatedUserId = getAuthenticatedUserId;
 		this.eventStream = eventStream;
@@ -54,7 +51,6 @@ public class JournalService {
 											userId);
 		var savedEntry = this.journalRepository.save(journalEntry);
 
-		recordService.record(operationId, "JournalEntry created: " + text);
 		eventStream.send(new Event(EventName.CREATE_JOURNAL_ENTRY, savedEntry));
 
 		return savedEntry;
@@ -69,7 +65,8 @@ public class JournalService {
 		entry.setText(newText);
 		var updatedEntry = journalRepository.save(entry);
 
-		eventStream.send(new Event(EventName.UPDATE_JOURNAL_ENTRY, updatedEntry));
+		eventStream.send(new Event(EventName.UPDATE_JOURNAL_ENTRY,
+								   updatedEntry));
 
 		return updatedEntry;
 	}
@@ -88,7 +85,8 @@ public class JournalService {
 						deleteDescription + "\n" + text);
 		}
 
-		eventStream.send(new Event(EventName.DELETE_JOURNAL_ENTRY, deletedEntry));
+		eventStream.send(new Event(EventName.DELETE_JOURNAL_ENTRY,
+								   deletedEntry));
 	}
 
 	public JournalEntry get(UUID id) {

@@ -5,6 +5,7 @@ import de.eisingerf.elp.journal.controller.dto.JournalEntryDto;
 import de.eisingerf.elp.journal.controller.dto.JournalEntryListDto;
 import de.eisingerf.elp.journal.controller.dto.input.CreateJournalEntryDto;
 import de.eisingerf.elp.journal.controller.dto.input.DeleteJournalEntryDto;
+import de.eisingerf.elp.journal.entity.Component;
 import de.eisingerf.elp.journal.entity.JournalEntry;
 import de.eisingerf.elp.journal.service.JournalService;
 import org.springframework.beans.factory.annotation.Autowired;

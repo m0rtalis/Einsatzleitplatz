@@ -86,10 +86,12 @@ public class JournalFuncTests {
 	@Nested
 	class Update {
 		@Test
-		void shouldUpdateTextOfJournalEntry() {}
+		void shouldUpdateTextOfJournalEntry() {
+		}
 
 		@Test
-		void shouldUpdateVersionOfJournalEntry() {}
+		void shouldUpdateVersionOfJournalEntry() {
+		}
 	}
 
 	@Nested
@@ -98,11 +100,13 @@ public class JournalFuncTests {
 
 		@BeforeEach
 		void createJournalEntry() {
-			entry = journalService.create(operationId, "Test Entry");
+			entry = journalService.create(operationId,
+										  "Test Entry");
 		}
 
 		@Test
-		void shouldCreateJournalEntryWhenReasonIsSupplied() {}
+		void shouldCreateJournalEntryWhenReasonIsSupplied() {
+		}
 
 		@Test
 		void shouldDeleteEntry() throws Exception {
@@ -121,6 +125,7 @@ public class JournalFuncTests {
 		}
 
 		@Test
-		void shouldUpdateVersionOfJournalEntry() {}
+		void shouldUpdateVersionOfJournalEntry() {
+		}
 	}
 }

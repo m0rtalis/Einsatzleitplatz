@@ -2,7 +2,6 @@ package de.eisingerf.elp.journal.service;
 
 import de.eisingerf.elp.journal.entity.JournalEntry;
 import de.eisingerf.elp.journal.persistence.JournalRepository;
-import de.eisingerf.elp.record.service.RecordService;
 import de.eisingerf.elp.shared.realtime.EventName;
 import de.eisingerf.elp.shared.realtime.EventStream;
 import de.eisingerf.elp.shared.user.GetAuthenticatedUserId;
@@ -29,9 +28,6 @@ public class JournalServiceTests {
 	JournalService journalService;
 
 	@Mock
-	RecordService recordService;
-
-	@Mock
 	JournalRepository journalRepository;
 
 	@Mock
@@ -42,7 +38,7 @@ public class JournalServiceTests {
 
 	@BeforeEach
 	void beforeEach() {
-		journalService = new JournalService(recordService,
+		journalService = new JournalService(
 											journalRepository,
 											getAuthenticatedUserId,
 											eventStream);
@@ -58,7 +54,8 @@ public class JournalServiceTests {
 			when(getAuthenticatedUserId.getAuthenticatedUserId()).thenReturn(
 					UUID.randomUUID());
 
-			journalService.create(UUID.randomUUID(), "Test Journal");
+			journalService.create(UUID.randomUUID(),
+								  "Test Journal");
 
 			verify(journalRepository).save(any());
 		}
@@ -70,7 +67,8 @@ public class JournalServiceTests {
 			when(getAuthenticatedUserId.getAuthenticatedUserId()).thenReturn(
 					UUID.randomUUID());
 
-			journalService.create(UUID.randomUUID(), "Test Journal");
+			journalService.create(UUID.randomUUID(),
+								  "Test Journal");
 
 			verify(eventStream).send(argThat(e -> e.name().equals(EventName.CREATE_JOURNAL_ENTRY)));
 		}
@@ -78,11 +76,13 @@ public class JournalServiceTests {
 		@Test
 		void createEmptyTextShouldThrowException() {
 			assertThrows(IllegalArgumentException.class,
-						 () -> journalService.create(UUID.randomUUID(), " "));
+						 () -> journalService.create(UUID.randomUUID(),
+													 " "));
 		}
 
 		@Test
-		void createShouldCreateRecordEntry() {}
+		void createShouldCreateRecordEntry() {
+		}
 	}
 
 	@Nested

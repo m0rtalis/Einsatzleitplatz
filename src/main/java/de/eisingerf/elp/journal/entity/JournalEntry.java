@@ -26,56 +26,60 @@ import java.util.UUID;
 @Getter
 public class JournalEntry {
 
-    @Id
-    @EqualsAndHashCode.Include
-    @ToString.Include
-    private UUID id = IdGenerator.generate();
+	@Id
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	private UUID id = IdGenerator.generate();
 
-    @Version
-    private Integer version;
+	@Version
+	private Integer version;
 
-    @Column(name = "JOURNAL_ENTRY_ID", updatable = false, nullable = false)
-    @Positive
-    @ToString.Include
-    @NaturalId
-    private long journalEntryId;
+	@Column(name = "JOURNAL_ENTRY_ID", updatable = false, nullable = false)
+	@Positive
+	@ToString.Include
+	@NaturalId
+	private long journalEntryId;
 
-    @Column(updatable = false, nullable = false)
-    @ToString.Include
-    @NotNull
-    @NaturalId
-    private UUID operationId;
+	@Column(updatable = false, nullable = false)
+	@ToString.Include
+	@NotNull
+	@NaturalId
+	private UUID operationId;
 
-    @Setter
+	@Setter
 	@Column(name = "TEXT")
-    @Lob
-    @NotNull
-    private String text;
+	@Lob
+	@NotNull
+	private String text;
 
-    @Column(updatable = false, nullable = false) // TODO: Create foreign key, for others as well
-    @NotNull
-    @CreatedBy // TODO: Should be populated automatically
-    private UUID createdBy;
+	@Column(updatable = false, nullable = false)
+	// TODO: Create foreign key, for others as well
+	@NotNull
+	@CreatedBy // TODO: Should be populated automatically
+	private UUID createdBy;
 
-    @Column(name = "CREATED_AT", updatable = false)
-    @CreatedDate
-    private Instant createdAt;
+	@Column(name = "CREATED_AT", updatable = false)
+	@CreatedDate
+	private Instant createdAt;
 
-    @Column(name = "UPDATED_AT")
-    @UpdateTimestamp
-    private Instant updatedAt;
+	@Column(name = "UPDATED_AT")
+	@UpdateTimestamp
+	private Instant updatedAt;
 
-    @Column(name = "IS_DELETED", nullable = false)
-    @Setter
-    private boolean isDeleted;
+	@Column(name = "IS_DELETED", nullable = false)
+	@Setter
+	private boolean isDeleted;
 
-    protected JournalEntry() {}
+	// TODO: Add attachment. Sugg: Make it a file location + hash
 
-    public JournalEntry(UUID operationId, long journalEntryId, String text, UUID createdBy) {
-        this.operationId = operationId;
-        this.journalEntryId = journalEntryId;
-        this.text = text;
-        this.createdBy = createdBy;
-        this.createdAt = Instant.now();
-    }
+	protected JournalEntry() {
+	}
+
+	public JournalEntry(UUID operationId, long journalEntryId, String text, UUID createdBy) {
+		this.operationId = operationId;
+		this.journalEntryId = journalEntryId;
+		this.text = text;
+		this.createdBy = createdBy;
+		this.createdAt = Instant.now();
+	}
 }
