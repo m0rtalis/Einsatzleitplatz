@@ -71,18 +71,18 @@ public class JournalService {
 		return updatedEntry;
 	}
 
-	public void delete(UUID id, @Nullable String text) {
+	public void delete(UUID id, @Nullable String reason) {
 		JournalEntry entry = this.get(id);
 		if (entry.isDeleted()) {
 			throw new RuntimeException();
 		}
 		entry.setDeleted(true);
 		var deletedEntry = journalRepository.save(entry);
-		if (text != null) {
+		if (reason != null && !reason.isEmpty()) {
 			// TODO: I18N this and every other hardcoded string
 			String deleteDescription = "Delete entry " + entry.getJournalEntryId();
 			this.create(entry.getOperationId(),
-						deleteDescription + "\n" + text);
+						deleteDescription + "\n" + reason);
 		}
 
 		eventStream.send(new Event(EventName.DELETE_JOURNAL_ENTRY,

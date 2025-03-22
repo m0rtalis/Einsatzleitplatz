@@ -32,7 +32,7 @@
 	<fieldset>
 		<legend>Create new journal entry</legend>
 		<label for="journal-entry">Event</label>
-		<textarea id="journal-entry" name="entry" class="entry-area" on:keydown={shouldSubmit} />
+		<textarea id="journal-entry" name="entry" class="entry-area" on:keydown={shouldSubmit} ></textarea>
 		<button type="submit">Create</button>
 	</fieldset>
 </form>

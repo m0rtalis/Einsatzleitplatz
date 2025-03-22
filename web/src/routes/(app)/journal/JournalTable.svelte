@@ -7,7 +7,7 @@
 	import type { JournalEntry } from '$lib/server/api';
 	// import {Tabulator} from 'tabulator-tables'; Wait for typings to catch up :( ... or create own :) ?
 
-	export let journalEntries: JournalEntry[] = [];
+	export let journalEntries: readonly JournalEntry[] = [];
 	export let editEntry: (id: string) => void;
 	export let deleteEntry: (id: string) => void;
 	export let restoreEntry: (id: string) => void;
@@ -20,7 +20,6 @@
 		<th>Seq. Nr.</th>
 		<th>Time</th>
 		<th>Author</th>
-		<th>Component</th>
 		<th>Text</th>
 		<th>Actions</th>
 	</tr>
@@ -35,7 +34,6 @@
 			<td>
 				<User id={entry.createdBy || ""} />
 			</td>
-			<td>{entry.component}</td>
 			<td class="grow">{entry.text}</td>
 			<td>
 				<div class="button-group">

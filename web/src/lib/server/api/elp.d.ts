@@ -3,295 +3,573 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
-  "/users/login": {
-    post: operations["login"];
-  };
-  "/operations": {
-    get: operations["getOperations"];
-    post: operations["createOperation"];
-  };
-  "/journal": {
-    get: operations["getJournal"];
-    post: operations["createJournalEntry"];
-  };
-  "/users": {
-    get: operations["getUsers"];
-  };
-  "/users/{id}": {
-    get: operations["getUser"];
-  };
-  "/sse": {
-    get: operations["subscribe"];
-  };
-  "/sse/names": {
-    get: operations["sseNames"];
-  };
-  "/operations/{id}": {
-    get: operations["getOperation"];
-  };
-  "/operations/names": {
-    get: operations["getOperationNames"];
-  };
-  "/journal/{id}": {
-    delete: operations["deleteEntry"];
-  };
+    readonly "/journal/{id}": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly get: operations["getJournalEntry"];
+        readonly put: operations["updateJournalEntry"];
+        readonly post?: never;
+        readonly delete: operations["deleteEntry"];
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/users/login": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly get?: never;
+        readonly put?: never;
+        readonly post: operations["login"];
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/operations": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly get: operations["getOperations"];
+        readonly put?: never;
+        readonly post: operations["createOperation"];
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/journal": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly get: operations["getJournal"];
+        readonly put?: never;
+        readonly post: operations["createJournalEntry"];
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/users": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly get: operations["getUsers"];
+        readonly put?: never;
+        readonly post?: never;
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/users/{id}": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly get: operations["getUser"];
+        readonly put?: never;
+        readonly post?: never;
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/sse": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly get: operations["subscribe"];
+        readonly put?: never;
+        readonly post?: never;
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/sse/names": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly get: operations["sseNames"];
+        readonly put?: never;
+        readonly post?: never;
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/operations/{id}": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly get: operations["getOperation"];
+        readonly put?: never;
+        readonly post?: never;
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/operations/names": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly get: operations["getOperationNames"];
+        readonly put?: never;
+        readonly post?: never;
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
 }
-
 export type webhooks = Record<string, never>;
-
 export interface components {
-  schemas: {
-    Login: {
-      username: string;
-      password: string;
+    schemas: {
+        readonly JournalEntry: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: uuid */
+            readonly operationId: string;
+            /** Format: uuid */
+            readonly createdBy: string;
+            /** Format: date-time */
+            readonly createdAt: string;
+            /** Format: int64 */
+            readonly journalEntryId?: number;
+            readonly text: string;
+            readonly isDeleted?: boolean;
+        };
+        readonly Login: {
+            readonly username: string;
+            readonly password: string;
+        };
+        readonly User: {
+            /** Format: uuid */
+            readonly id: string;
+            readonly username: string;
+        };
+        readonly CreateOperation: {
+            readonly name: string;
+        };
+        readonly Operation: {
+            /** Format: uuid */
+            readonly id: string;
+            readonly name: string;
+        };
+        readonly CreateJournalEntry: {
+            /** Format: uuid */
+            readonly operationId: string;
+            readonly text: string;
+        };
+        readonly Pagination: {
+            /** Format: int32 */
+            readonly offset?: number;
+            /** Format: int32 */
+            readonly limit?: number;
+            /** Format: int32 */
+            readonly totalElements?: number;
+            readonly lastPage?: boolean;
+            /** Format: int32 */
+            readonly totalPages?: number;
+            /** Format: int32 */
+            readonly currentPage?: number;
+        };
+        readonly UserList: {
+            readonly data: readonly components["schemas"]["User"][];
+            readonly pagination: components["schemas"]["Pagination"];
+        };
+        readonly SseEmitter: {
+            /** Format: int64 */
+            readonly timeout?: number;
+        };
+        /** @enum {string} */
+        readonly EventName: EventName;
+        readonly OperationName: {
+            /** Format: uuid */
+            readonly id: string;
+            readonly name: string;
+        };
+        readonly JournalEntryList: {
+            readonly data: readonly components["schemas"]["JournalEntry"][];
+            readonly pagination: components["schemas"]["Pagination"];
+        };
+        readonly DeleteJournalEntryDto: {
+            readonly reason?: string;
+        };
     };
-    User: {
-      /** Format: uuid */
-      id: string;
-      username: string;
-    };
-    CreateOperation: {
-      name: string;
-    };
-    Operation: {
-      /** Format: uuid */
-      id: string;
-      name: string;
-    };
-    CreateJournalEntry: {
-      /** Format: uuid */
-      operationId: string;
-      text: string;
-    };
-    JournalEntry: {
-      /** Format: uuid */
-      id: string;
-      /** Format: uuid */
-      operationId: string;
-      /** Format: uuid */
-      createdBy: string;
-      /** @enum {string} */
-      component: "JOURNAL" | "OPERATION" | "USER";
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: int64 */
-      journalEntryId: number;
-      text: string;
-      isDeleted: boolean;
-    };
-    Pagination: {
-      /** Format: int32 */
-      offset: number;
-      /** Format: int32 */
-      limit: number;
-      /** Format: int32 */
-      totalElements: number;
-      /** Format: int32 */
-      currentPage?: number;
-      lastPage?: boolean;
-      /** Format: int32 */
-      totalPages?: number;
-    };
-    UserList: {
-      data: components["schemas"]["User"][];
-      pagination: components["schemas"]["Pagination"];
-    };
-    SseEmitter: {
-      /** Format: int64 */
-      timeout?: number;
-    };
-    /** @enum {string} */
-    EventName: "NEW_JOURNAL_ENTRY";
-    OperationName: {
-      /** Format: uuid */
-      id: string;
-      name: string;
-    };
-    JournalEntryList: {
-      data: components["schemas"]["JournalEntry"][];
-      pagination: components["schemas"]["Pagination"];
-    };
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-
 export type $defs = Record<string, never>;
-
-export type external = Record<string, never>;
-
 export interface operations {
-
-  login: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["Login"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["User"];
+    readonly getJournalEntry: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path: {
+                readonly id: string;
+            };
+            readonly cookie?: never;
         };
-      };
-    };
-  };
-  getOperations: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Operation"][];
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description OK */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["JournalEntry"];
+                };
+            };
         };
-      };
     };
-  };
-  createOperation: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateOperation"];
-      };
-    };
-    responses: {
-      /** @description Created */
-      201: {
-        content: {
-          "application/json": components["schemas"]["Operation"];
+    readonly updateJournalEntry: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path: {
+                readonly id: string;
+            };
+            readonly cookie?: never;
         };
-      };
-    };
-  };
-  getJournal: {
-    parameters: {
-      query: {
-        operationId: string;
-        offset?: string;
-        limit?: string;
-        /** @description Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
-        sort?: string[];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["JournalEntryList"];
+        readonly requestBody: {
+            readonly content: {
+                readonly "application/json": string;
+            };
         };
-      };
-    };
-  };
-  createJournalEntry: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateJournalEntry"];
-      };
-    };
-    responses: {
-      /** @description Created */
-      201: {
-        content: {
-          "application/json": components["schemas"]["JournalEntry"];
+        readonly responses: {
+            /** @description OK */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["JournalEntry"];
+                };
+            };
         };
-      };
     };
-  };
-  getUsers: {
-    parameters: {
-      query?: {
-        offset?: string;
-        limit?: string;
-        /** @description Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
-        sort?: string[];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserList"];
+    readonly deleteEntry: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path: {
+                readonly id: string;
+            };
+            readonly cookie?: never;
         };
-      };
-    };
-  };
-  getUser: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["User"];
+        readonly requestBody?: {
+            readonly content: {
+                readonly "application/json": components["schemas"]["DeleteJournalEntryDto"];
+            };
         };
-      };
-    };
-  };
-  subscribe: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "text/event-stream": components["schemas"]["SseEmitter"];
+        readonly responses: {
+            /** @description No Content */
+            readonly 204: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
-      };
     };
-  };
-  sseNames: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["EventName"][];
+    readonly login: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
         };
-      };
-    };
-  };
-  getOperation: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Operation"];
+        readonly requestBody: {
+            readonly content: {
+                readonly "application/json": components["schemas"]["Login"];
+            };
         };
-      };
-    };
-  };
-  getOperationNames: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["OperationName"][];
+        readonly responses: {
+            /** @description OK */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["User"];
+                };
+            };
         };
-      };
     };
-  };
-  deleteEntry: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["JournalEntry"];
+    readonly getOperations: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
         };
-      };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description OK */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": readonly components["schemas"]["Operation"][];
+                };
+            };
+        };
     };
-  };
+    readonly createOperation: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody: {
+            readonly content: {
+                readonly "application/json": components["schemas"]["CreateOperation"];
+            };
+        };
+        readonly responses: {
+            /** @description Created */
+            readonly 201: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["Operation"];
+                };
+            };
+        };
+    };
+    readonly getJournal: {
+        readonly parameters: {
+            readonly query: {
+                readonly operationId: string;
+                readonly offset?: string;
+                readonly limit?: string;
+                /** @description Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
+                readonly sort?: readonly string[];
+            };
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description OK */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["JournalEntryList"];
+                };
+            };
+        };
+    };
+    readonly createJournalEntry: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody: {
+            readonly content: {
+                readonly "application/json": components["schemas"]["CreateJournalEntry"];
+            };
+        };
+        readonly responses: {
+            /** @description Created */
+            readonly 201: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["JournalEntry"];
+                };
+            };
+        };
+    };
+    readonly getUsers: {
+        readonly parameters: {
+            readonly query?: {
+                readonly offset?: string;
+                readonly limit?: string;
+                /** @description Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
+                readonly sort?: readonly string[];
+            };
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description OK */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["UserList"];
+                };
+            };
+        };
+    };
+    readonly getUser: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path: {
+                readonly id: string;
+            };
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description OK */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["User"];
+                };
+            };
+        };
+    };
+    readonly subscribe: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description OK */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "text/event-stream": components["schemas"]["SseEmitter"];
+                };
+            };
+        };
+    };
+    readonly sseNames: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description OK */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": readonly components["schemas"]["EventName"][];
+                };
+            };
+        };
+    };
+    readonly getOperation: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path: {
+                readonly id: string;
+            };
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description OK */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["Operation"];
+                };
+            };
+        };
+    };
+    readonly getOperationNames: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description OK */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": readonly components["schemas"]["OperationName"][];
+                };
+            };
+        };
+    };
+}
+export enum EventName {
+    CREATE_JOURNAL_ENTRY = "CREATE_JOURNAL_ENTRY",
+    UPDATE_JOURNAL_ENTRY = "UPDATE_JOURNAL_ENTRY",
+    DELETE_JOURNAL_ENTRY = "DELETE_JOURNAL_ENTRY"
 }

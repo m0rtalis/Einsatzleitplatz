@@ -8,16 +8,14 @@
 	export let data;
 	const sseStore = getSseStore();
 
-	$: if ($sseStore?.name === 'NEW_JOURNAL_ENTRY') {
+	$: if ($sseStore?.name === 'CREATE_JOURNAL_ENTRY') {
 		invalidate('journal');
 	}
 
-	function editEntry(id: string) {
-
+	async function editEntry(id: string) {
 	}
 
 	async function deleteEntry(id: string) {
-		console.log("Delete entry")
 		await fetch(`/journal/${id}`, { method: 'DELETE' });
 	}
 
