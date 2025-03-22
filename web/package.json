@@ -24,7 +24,7 @@
 		"@iconify-json/uil": "^1.1.8",
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/kit": "2.8.3",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@types/eslint": "^9.6.1",
 		"@types/eventsource": "^1.1.15",
