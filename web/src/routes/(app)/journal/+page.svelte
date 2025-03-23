@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getSseStore, setPageName } from '$lib/store';
+	import { getSseStore, setPageName } from '$lib/state';
 	import { invalidate } from '$app/navigation';
 	import CreateJournal from './CreateJournal.svelte';
 	import JournalTable from './JournalTable.svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { setPageName } from '$lib/store';
+	import { setPageName } from '$lib/state';
 
 	setPageName('Home');
 </script>

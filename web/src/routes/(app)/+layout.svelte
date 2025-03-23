@@ -22,7 +22,7 @@
 		getOperationStore,
 		getPageStore,
 		setFromMessageEvent,
-	} from '$lib/store';
+	} from '$lib/state';
 	import { onMount } from 'svelte';
 	import { type SseEventName } from '$lib/api';
 	import { EventName } from '$lib/api/elp';

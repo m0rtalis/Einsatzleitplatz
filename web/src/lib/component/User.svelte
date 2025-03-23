@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import { local } from '$lib/store/persisted';
+	import { local } from '$lib/state/persisted';
 	import type { User } from '$lib/api';
 	import { Map as IMap } from 'immutable';
 

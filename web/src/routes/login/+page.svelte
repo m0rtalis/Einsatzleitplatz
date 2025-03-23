@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { getOperationStore, getUserStore, setPageName } from '$lib/store';
+	import { getOperationStore, getUserStore, setPageName } from '$lib/state';
 	import { afterNavigate, goto } from '$app/navigation';
 	import Combobox from '$lib/component/Combobox.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';

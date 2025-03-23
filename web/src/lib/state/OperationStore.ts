@@ -1,4 +1,4 @@
-import { session } from '$lib/store/persisted';
+import { session } from '$lib/state/persisted';
 import { browser } from '$app/environment';
 import { getContext, setContext } from 'svelte';
 import type { Writable } from 'svelte/store';

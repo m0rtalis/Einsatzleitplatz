@@ -2,7 +2,7 @@
 	// TODO: Use pico
 	import 'chota';
 	import './global.css';
-	import { createOperationStore, createPageStore, createUserStore } from '$lib/store';
+	import { createOperationStore, createPageStore, createUserStore } from '$lib/state';
 
 	interface Props {
 		children?: import('svelte').Snippet;

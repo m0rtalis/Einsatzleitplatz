@@ -14,7 +14,8 @@
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
 		"test:types": "tsc --noEmit",
-		"schema:generate": "openapi-typescript http://localhost:8080/v3/api-docs -o src/lib/api/elp.ts --enum --immutable"
+		"schema:generate": "openapi-typescript http://localhost:8080/v3/api-docs -o src/lib/api/elp.ts --enum --immutable",
+		"prepare": "svelte-kit sync"
 	},
 	"devDependencies": {
 		"@iconify-json/icon-park-outline": "^1.1.15",
@@ -23,7 +24,7 @@
 		"@iconify-json/mdi": "^1.1.64",
 		"@iconify-json/uil": "^1.1.8",
 		"@playwright/test": "^1.28.1",
-		"@sveltejs/kit": "^2.8.3",
+		"@sveltejs/kit": "^2.12.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@types/eslint": "^9.6.1",
 		"@types/eventsource": "^1.1.15",
