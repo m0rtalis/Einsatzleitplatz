@@ -1,5 +1,5 @@
 import { type RequestHandler } from '@sveltejs/kit';
-import EventSource from 'eventsource';
+import { EventSource } from 'eventsource';
 import { client, getAuthCookieStr, SERVER_URL } from '$lib/server/api';
 
 const sseToString = (message: MessageEvent): string => {
@@ -21,7 +21,11 @@ export const GET: RequestHandler = async ({ fetch, cookies }) => {
 	const stream = new ReadableStream({
 		start(controller) {
 			eventSource = new EventSource(`${SERVER_URL}/sse`, {
-				headers: { Cookie: authCookieStr },
+				fetch: (input, init) =>
+					fetch(input, {
+						...init,
+						headers: { ...init?.headers, Cookie: authCookieStr },
+					}),
 			});
 			eventNames.data!.forEach((name) =>
 				eventSource?.addEventListener(name, (evt) => {

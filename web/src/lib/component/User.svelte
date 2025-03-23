@@ -3,8 +3,8 @@
 	import type { User } from '$lib/api';
 	import { Map as IMap } from 'immutable';
 
-	const usersStore = local<IMap<string, User>>('Users', IMap(), {
-		deserializer: (value) => IMap(JSON.parse(value)),
+	const usersStore = local<IMap<string, User>>('Users', IMap<string, User>(), {
+		deserializer: (value) => IMap<string, User>(JSON.parse(value))
 	});
 </script>
 
