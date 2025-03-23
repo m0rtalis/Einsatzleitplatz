@@ -415,14 +415,14 @@ components:
         totalElements:
           type: integer
           format: int32
+        lastPage:
+          type: boolean
         totalPages:
           type: integer
           format: int32
         currentPage:
           type: integer
           format: int32
-        lastPage:
-          type: boolean
     UserList:
       required:
       - data
@@ -444,9 +444,7 @@ components:
     EventName:
       type: string
       enum:
-      - CREATE_JOURNAL_ENTRY
-      - UPDATE_JOURNAL_ENTRY
-      - DELETE_JOURNAL_ENTRY
+      - CHANGED_JOURNAL_ENTRY
     OperationName:
       required:
       - id

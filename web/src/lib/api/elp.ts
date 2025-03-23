@@ -214,11 +214,11 @@ export interface components {
 			readonly limit?: number;
 			/** Format: int32 */
 			readonly totalElements?: number;
-			readonly lastPage?: boolean;
-			/** Format: int32 */
-			readonly totalPages?: number;
 			/** Format: int32 */
 			readonly currentPage?: number;
+			/** Format: int32 */
+			readonly totalPages?: number;
+			readonly lastPage?: boolean;
 		};
 		readonly UserList: {
 			readonly data: readonly components['schemas']['User'][];
@@ -598,7 +598,5 @@ export interface operations {
 	};
 }
 export enum EventName {
-	CREATE_JOURNAL_ENTRY = 'CREATE_JOURNAL_ENTRY',
-	UPDATE_JOURNAL_ENTRY = 'UPDATE_JOURNAL_ENTRY',
-	DELETE_JOURNAL_ENTRY = 'DELETE_JOURNAL_ENTRY',
+	CHANGED_JOURNAL_ENTRY = 'CHANGED_JOURNAL_ENTRY',
 }

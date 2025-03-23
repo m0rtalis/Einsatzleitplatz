@@ -9,9 +9,10 @@
 	const sseStore = getSseStore();
 
 	$effect(() => {
-		const event = $sseStore?.name
-		if (event && ['CREATE_JOURNAL_ENTRY', 'UPDATE_JOURNAL_ENTRY', 'DELETE_JOURNAL_ENTRY'].includes(event)) {
-			invalidate("journal");
+		const event = $sseStore?.name;
+		if (event === 'CHANGED_JOURNAL_ENTRY') {
+			// TODO: Check if changed journal entry id is displayed and only invalidate then
+			invalidate('journal');
 		}
 	});
 
@@ -25,7 +26,6 @@
 		// I could send a body with isDeleted false but since PATCH isn't used for anything else I don't have to.
 		await fetch(`/journal/${id}`, { method: 'PATCH' });
 	}
-
 </script>
 
 <div class="content">

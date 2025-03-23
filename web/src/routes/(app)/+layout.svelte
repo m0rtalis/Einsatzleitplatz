@@ -17,7 +17,12 @@
 	import { page } from '$app/stores';
 	import { isClipped } from '$lib/dom/isClipped';
 	import { throttle } from '$lib/js';
-	import { createSseStore, getOperationStore, getPageStore, setFromMessageEvent } from '$lib/store';
+	import {
+		createSseStore,
+		getOperationStore,
+		getPageStore,
+		setFromMessageEvent,
+	} from '$lib/store';
 	import { onMount } from 'svelte';
 	import { type SseEventName } from '$lib/api';
 	import { EventName } from '$lib/api/elp';
@@ -60,7 +65,7 @@
 		}
 	}
 
-	const sseEventNames: SseEventName[] = [EventName.CREATE_JOURNAL_ENTRY, EventName.UPDATE_JOURNAL_ENTRY, EventName.DELETE_JOURNAL_ENTRY];
+	const sseEventNames: SseEventName[] = [EventName.CHANGED_JOURNAL_ENTRY];
 	onMount(() => {
 		const eventSource = new EventSource('/api/events');
 		eventSource.onerror = (error) => {

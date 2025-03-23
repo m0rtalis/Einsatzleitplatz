@@ -1,4 +1,5 @@
-import { AUTH_COOKIE, client, getAuthCookieStr, type Schema } from '$lib/server/api';
+import { AUTH_COOKIE, client, getAuthCookieStr } from '$lib/server/api';
+import { type Schema } from '$lib/api';
 import parseCookie from 'cookie';
 
 export const load = async ({ fetch }) => ({

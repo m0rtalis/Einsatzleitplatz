@@ -29,4 +29,4 @@ export const setFromMessageEvent = (ev: MessageEvent) => {
 		name: ev.type as SseEventName,
 		data: ev.data,
 	});
-}
+};

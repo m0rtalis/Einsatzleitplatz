@@ -9,6 +9,10 @@ export const DELETE: RequestHandler = async ({ params, fetch }) => {
 
 export const PATCH: RequestHandler = async ({ params, fetch }) => {
 	const id = params.id!;
-	await client.PATCH('/journal/{id}', { params: { path: { id } }, body: { isDeleted: false }, fetch });
+	await client.PATCH('/journal/{id}', {
+		params: { path: { id } },
+		body: { isDeleted: false },
+		fetch,
+	});
 	return new Response(null, { status: 204 });
 };

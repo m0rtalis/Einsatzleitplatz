@@ -51,7 +51,7 @@ public class JournalService {
 											userId);
 		var savedEntry = this.journalRepository.save(journalEntry);
 
-		eventStream.send(new Event(EventName.CREATE_JOURNAL_ENTRY, savedEntry));
+		eventStream.send(new Event(EventName.CHANGED_JOURNAL_ENTRY, savedEntry));
 
 		return savedEntry;
 	}
@@ -65,7 +65,7 @@ public class JournalService {
 		entry.setText(newText);
 		var updatedEntry = journalRepository.save(entry);
 
-		eventStream.send(new Event(EventName.UPDATE_JOURNAL_ENTRY,
+		eventStream.send(new Event(EventName.CHANGED_JOURNAL_ENTRY,
 								   updatedEntry));
 
 		return updatedEntry;
@@ -85,7 +85,7 @@ public class JournalService {
 						deleteDescription + "\n" + reason);
 		}
 
-		eventStream.send(new Event(EventName.DELETE_JOURNAL_ENTRY,
+		eventStream.send(new Event(EventName.CHANGED_JOURNAL_ENTRY,
 								   deletedEntry));
 	}
 
@@ -101,7 +101,7 @@ public class JournalService {
 		entry.setDeleted(false);
 		var updatedEntry = journalRepository.save(entry);
 
-		eventStream.send(new Event(EventName.UPDATE_JOURNAL_ENTRY, updatedEntry));
+		eventStream.send(new Event(EventName.CHANGED_JOURNAL_ENTRY, updatedEntry));
 		return updatedEntry;
 	}
 }

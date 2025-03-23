@@ -70,7 +70,7 @@ public class JournalServiceTests {
 			journalService.create(UUID.randomUUID(),
 								  "Test Journal");
 
-			verify(eventStream).send(argThat(e -> e.name().equals(EventName.CREATE_JOURNAL_ENTRY)));
+			verify(eventStream).send(argThat(e -> e.name().equals(EventName.CHANGED_JOURNAL_ENTRY)));
 		}
 
 		@Test
