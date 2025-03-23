@@ -95,13 +95,13 @@
 		width: 100%;
 	}
 
-	table tr.deleted td:before {
+	table tr.deleted td:not(:last-child):before {
 		content: ' ';
 		position: absolute;
 		left: 0;
 		top: 50%;
 		width: 100%;
-		border-bottom: 1px solid var(--color-darkGrey);
+		border-bottom: 2px solid var(--color-darkGrey);
 	}
 
 	.button-group {
