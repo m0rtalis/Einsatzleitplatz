@@ -41,3 +41,6 @@ offers dark mode
 https://icongr.am/
 
 unlighthouse and web vitals (chrome)
+
+Use syncpack and depcheck after switch to pnpm
+https://adamcoster.com/blog/pnpm-config

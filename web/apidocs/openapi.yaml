@@ -1,268 +1,268 @@
 openapi: 3.0.1
 info:
-  title: Einsatzleitplatz
-  version: 0.0.1
+    title: Einsatzleitplatz
+    version: 0.0.1
 servers:
-- url: http://localhost
-  description: Generated server url
+    - url: http://localhost
+      description: Generated server url
 security:
-- Basic: []
+    - Basic: []
 paths:
-  /users/login:
-    post:
-      tags:
-      - user-controller
-      operationId: login
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Login'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/User'
-  /operations:
-    get:
-      tags:
-      - operation-controller
-      operationId: getOperations
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Operation'
-    post:
-      tags:
-      - operation-controller
-      operationId: createOperation
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateOperation'
-        required: true
-      responses:
-        "201":
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Operation'
-  /journal:
-    get:
-      tags:
-      - journal-controller
-      operationId: getJournal
-      parameters:
-      - name: operationId
-        in: query
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: offset
-        in: query
-        required: false
-        schema:
-          minimum: 0
-          type: string
-          default: "0"
-      - name: limit
-        in: query
-        required: false
-        schema:
-          maximum: 200
-          minimum: 1
-          type: string
-          default: "50"
-      - name: sort
-        in: query
-        description: "Sorting criteria in the format: property,(asc|desc). Default\
-          \ sort order is ascending. Multiple sort criteria are supported."
-        required: false
-        schema:
-          type: array
-          items:
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/JournalEntryList'
-    post:
-      tags:
-      - journal-controller
-      operationId: createJournalEntry
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateJournalEntry'
-        required: true
-      responses:
-        "201":
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/JournalEntry'
-  /users/me:
-    get:
-      tags:
-      - user-controller
-      operationId: authenticatedUser
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/User'
-  /operations/{id}:
-    get:
-      tags:
-      - operation-controller
-      operationId: getOperation
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Operation'
-  /operations/names:
-    get:
-      tags:
-      - operation-controller
-      operationId: getOperationNames
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/OperationName'
+    /users/login:
+        post:
+            tags:
+                - user-controller
+            operationId: login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Login'
+                required: true
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: '#/components/schemas/User'
+    /operations:
+        get:
+            tags:
+                - operation-controller
+            operationId: getOperations
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Operation'
+        post:
+            tags:
+                - operation-controller
+            operationId: createOperation
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateOperation'
+                required: true
+            responses:
+                '201':
+                    description: Created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Operation'
+    /journal:
+        get:
+            tags:
+                - journal-controller
+            operationId: getJournal
+            parameters:
+                - name: operationId
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+                - name: offset
+                  in: query
+                  required: false
+                  schema:
+                      minimum: 0
+                      type: string
+                      default: '0'
+                - name: limit
+                  in: query
+                  required: false
+                  schema:
+                      maximum: 200
+                      minimum: 1
+                      type: string
+                      default: '50'
+                - name: sort
+                  in: query
+                  description: "Sorting criteria in the format: property,(asc|desc). Default\
+                      \ sort order is ascending. Multiple sort criteria are supported."
+                  required: false
+                  schema:
+                      type: array
+                      items:
+                          type: string
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/JournalEntryList'
+        post:
+            tags:
+                - journal-controller
+            operationId: createJournalEntry
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateJournalEntry'
+                required: true
+            responses:
+                '201':
+                    description: Created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/JournalEntry'
+    /users/me:
+        get:
+            tags:
+                - user-controller
+            operationId: authenticatedUser
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: '#/components/schemas/User'
+    /operations/{id}:
+        get:
+            tags:
+                - operation-controller
+            operationId: getOperation
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Operation'
+    /operations/names:
+        get:
+            tags:
+                - operation-controller
+            operationId: getOperationNames
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/OperationName'
 components:
-  schemas:
-    Login:
-      required:
-      - password
-      - username
-      type: object
-      properties:
-        username:
-          type: string
-        password:
-          type: string
-    User:
-      required:
-      - username
-      type: object
-      properties:
-        username:
-          type: string
-    CreateOperation:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-    Operation:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-    CreateJournalEntry:
-      type: object
-      properties:
-        operationId:
-          type: string
-          format: uuid
-        type:
-          type: string
-        text:
-          type: string
-    JournalEntry:
-      type: object
-      properties:
-        operationId:
-          type: string
-          format: uuid
-        createdBy:
-          type: string
-          format: uuid
-        component:
-          type: string
-          enum:
-          - JOURNAL
-          - OPERATION
-        createdAt:
-          type: string
-          format: date-time
-        journalEntryId:
-          type: integer
-          format: int64
-        text:
-          type: string
-    OperationName:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-    JournalEntryList:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/JournalEntry'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    Pagination:
-      type: object
-      properties:
-        lastPage:
-          type: boolean
-        totalPages:
-          type: integer
-          format: int32
-        currentPage:
-          type: integer
-          format: int32
-  securitySchemes:
-    Basic:
-      type: http
-      scheme: basic
+    schemas:
+        Login:
+            required:
+                - password
+                - username
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+        User:
+            required:
+                - username
+            type: object
+            properties:
+                username:
+                    type: string
+        CreateOperation:
+            required:
+                - name
+            type: object
+            properties:
+                name:
+                    type: string
+        Operation:
+            required:
+                - id
+                - name
+            type: object
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                name:
+                    type: string
+        CreateJournalEntry:
+            type: object
+            properties:
+                operationId:
+                    type: string
+                    format: uuid
+                type:
+                    type: string
+                text:
+                    type: string
+        JournalEntry:
+            type: object
+            properties:
+                operationId:
+                    type: string
+                    format: uuid
+                createdBy:
+                    type: string
+                    format: uuid
+                component:
+                    type: string
+                    enum:
+                        - JOURNAL
+                        - OPERATION
+                createdAt:
+                    type: string
+                    format: date-time
+                journalEntryId:
+                    type: integer
+                    format: int64
+                text:
+                    type: string
+        OperationName:
+            required:
+                - id
+                - name
+            type: object
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                name:
+                    type: string
+        JournalEntryList:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/JournalEntry'
+                pagination:
+                    $ref: '#/components/schemas/Pagination'
+        Pagination:
+            type: object
+            properties:
+                lastPage:
+                    type: boolean
+                totalPages:
+                    type: integer
+                    format: int32
+                currentPage:
+                    type: integer
+                    format: int32
+    securitySchemes:
+        Basic:
+            type: http
+            scheme: basic

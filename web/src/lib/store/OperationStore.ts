@@ -4,16 +4,19 @@ import { getContext, setContext } from 'svelte';
 import type { Writable } from 'svelte/store';
 import parseCookie from 'cookie';
 
-type OperationData = { id: string, name: string } | null;
+type OperationData = { id: string; name: string } | null;
 
 const OPERATION_CTX = Symbol.for('OPERATION_CTX');
 
 export const createOperationStore = (operation: OperationData = null) => {
 	const operationStore = session<OperationData>('Operation', operation);
 	setContext(OPERATION_CTX, operationStore);
-	operationStore.subscribe(value => {
+	operationStore.subscribe((value) => {
 		if (browser && value) {
-			document.cookie = parseCookie.serialize("operationId", value.id, {path: "/", sameSite: 'strict'})
+			document.cookie = parseCookie.serialize('operationId', value.id, {
+				path: '/',
+				sameSite: 'strict',
+			});
 		}
 	});
 	return operationStore;

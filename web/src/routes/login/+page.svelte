@@ -7,16 +7,15 @@
 
 	setPageName('Login');
 
-	export let data;
-	export let form;
+	let { data, form } = $props();
 
-	const operationStore = getOperationStore()
-	const userStore = getUserStore()
+	const operationStore = getOperationStore();
+	const userStore = getUserStore();
 
 	afterNavigate(() => {
-		const usernameInput: HTMLInputElement | null = document.querySelector('#login-username')
+		const usernameInput: HTMLInputElement | null = document.querySelector('#login-username');
 		usernameInput?.focus();
-	})
+	});
 
 	const submitLogin: SubmitFunction = ({ submitter }) => {
 		if (submitter && submitter instanceof HTMLButtonElement) {
@@ -31,64 +30,89 @@
 		};
 	};
 
-	$: if (form?.isLoggedIn) {
-		userStore.set({ username: form.user.username });
-		operationStore.set({ id: form.operation.id, name: form.operation.name });
-		goto('/');
-	}
+	$effect(() => {
+		if (form?.isLoggedIn) {
+			userStore.set({ username: form.user.username });
+			operationStore.set({ id: form.operation.id, name: form.operation.name });
+			goto('/');
+		}
+	});
 </script>
 
 <div class="content">
 	<h1 class="heading">Einsatzleitplatz</h1>
-	<form id="login-form" name="login-form" method="post" action="?/login" class="login-form"
-		  use:enhance={submitLogin}>
+	<form
+		id="login-form"
+		name="login-form"
+		method="post"
+		action="?/login"
+		class="login-form"
+		use:enhance={submitLogin}
+	>
 		<label for="login-username">Username</label>
-		<input id="login-username" name="username" type="text" placeholder="Username" required
-			   autocapitalize="none" />
+		<input
+			id="login-username"
+			name="username"
+			type="text"
+			placeholder="Username"
+			required
+			autocapitalize="none"
+		/>
 		<label for="login-password">Password</label>
-		<input id="login-password" name="password" type="password" placeholder="Password"
-			   required />
+		<input
+			id="login-password"
+			name="password"
+			type="password"
+			placeholder="Password"
+			required
+		/>
 		<label for="login-operations">Operation</label>
-		<Combobox id="login-operations"
+		<Combobox
+			id="login-operations"
 			options={data.openOperations}
-				  translation={{addButton: "Add new Operation", listButton: "List operations", newText: "New Operation"}}
-				  componentName="operation" />
+			translation={{
+				addButton: 'Add new Operation',
+				listButton: 'List operations',
+				newText: 'New Operation',
+			}}
+			componentName="operation"
+		/>
 		<button type="submit">Login</button>
 	</form>
 </div>
 
 <style>
-    .content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex: 1;
-        padding-top: 10%;
-        height: 100%
-    }
+	.content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex: 1;
+		padding-top: 10%;
+		height: 100%;
+	}
 
-    .heading {
-        text-align: center;
-    }
+	.heading {
+		text-align: center;
+	}
 
-    .login-form {
-        padding-bottom: 2rem;
-    }
+	.login-form {
+		padding-bottom: 2rem;
+	}
 
-    .login-form > * {
-        max-width: 100%;
-    }
+	.login-form > * {
+		max-width: 100%;
+	}
 
-    .login-form > label {
-        display: block;
-        margin-top: .5rem;
-        text-align: left;
-        font-weight: bold;
-    }
+	.login-form > label {
+		display: block;
+		margin-top: 0.5rem;
+		text-align: left;
+		font-weight: bold;
+	}
 
-    .login-form > button[type="submit"] {
-        width: 100%;
-        margin-top: 1rem;
-        cursor: pointer;
-    }
+	.login-form > button[type='submit'] {
+		width: 100%;
+		margin-top: 1rem;
+		cursor: pointer;
+	}
 </style>

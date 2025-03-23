@@ -4,6 +4,6 @@ export const debounce = (fun: Function, bounceMs: number = 500) => {
 		clearTimeout(timer);
 		timer = setTimeout(() => {
 			fun(...args);
-		}, bounceMs)
-	}
-}
+		}, bounceMs);
+	};
+};

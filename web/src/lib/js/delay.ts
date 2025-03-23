@@ -11,7 +11,9 @@ import { debounce } from '$lib/js/debounce';
 export const delay = (fun: Function, delayMs: number = 1000, timeoutMs: number = 500) => {
 	let timer: NodeJS.Timeout | undefined;
 	if (timeoutMs > delayMs) {
-		throw new Error(`TimeoutMs ${timeoutMs} must be smaller then delayMs ${delayMs} for delay function`);
+		throw new Error(
+			`TimeoutMs ${timeoutMs} must be smaller then delayMs ${delayMs} for delay function`,
+		);
 	}
 	console.log('Delay created');
 	return (...args: any[]) => {
@@ -20,12 +22,12 @@ export const delay = (fun: Function, delayMs: number = 1000, timeoutMs: number =
 			timer = setTimeout(() => {
 				console.log('Execute');
 				fun(...args);
-				timer = undefined
+				timer = undefined;
 			}, delayMs);
 		}
 		console.log('Debounce');
 		debounce(() => {
-			console.log("Clear Timeout")
+			console.log('Clear Timeout');
 			clearTimeout(timer);
 		}, timeoutMs);
 	};

@@ -13,4 +13,4 @@ export const createPageStore = () => {
 
 export const getPageStore = () => getContext<Writable<PageData>>(PAGE_CTX);
 
-export const setPageName = (name: string) => getPageStore().update(data => ({ ...data, name }));
+export const setPageName = (name: string) => getPageStore().update((data) => ({ ...data, name }));

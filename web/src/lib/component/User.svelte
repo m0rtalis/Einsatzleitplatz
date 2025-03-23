@@ -1,24 +1,30 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 	import { local } from '$lib/store/persisted';
-	import type { User } from '$lib/server/api';
+	import type { User } from '$lib/api';
 	import { Map as IMap } from 'immutable';
 
-	const usersStore = local<IMap<string, User>>('Users', IMap(), { deserializer: value => IMap(JSON.parse(value)) });
+	const usersStore = local<IMap<string, User>>('Users', IMap(), {
+		deserializer: (value) => IMap(JSON.parse(value)),
+	});
 </script>
 
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	export let id: string;
+	interface Props {
+		id: string;
+	}
 
-	$: user = $usersStore?.get(id);
+	let { id }: Props = $props();
+
+	let user = $derived($usersStore?.get(id));
 
 	onMount(async () => {
 		// Not sure about this pattern yet. Let's see how it works out
 		// Don't like the extra api endpoint. Would be better if I can define a server only function in this component.
 		// Definitively needs caching
 		if (!$usersStore.has(id)) {
-			const downloadedUser = await (await fetch(`/api/users/${id}`)).json() as User;
+			const downloadedUser = (await (await fetch(`/api/users/${id}`)).json()) as User;
 			usersStore.set($usersStore.set(id, downloadedUser));
 		}
 	});

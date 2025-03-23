@@ -17,7 +17,6 @@ const getTimezone = (date: Date, useJTimezone: boolean): string => {
 		return 'J';
 	}
 
-
 	const fullOffset = Math.trunc(date.getTimezoneOffset() / 60);
 	let letter;
 	if (fullOffset === 0) {
@@ -46,8 +45,8 @@ export const toTacticalTime = (date: Date, options: TacticalTimeOptions): string
 	const format = new Intl.NumberFormat(undefined, { minimumIntegerDigits: 2 });
 	const day: string = format.format(date.getDate());
 	const hours: string = format.format(date.getHours());
-	const minutes: string = format.format(date.getMinutes())
-	const seconds: string = format.format(date.getSeconds())
+	const minutes: string = format.format(date.getMinutes());
+	const seconds: string = format.format(date.getSeconds());
 	const timezone: string = options.includeTimezone ? getTimezone(date, options.useJTimezone) : '';
 	const month: string = format.format(date.getMonth() + 1);
 	const year: string = format.format(date.getFullYear() % 100);
@@ -55,15 +54,15 @@ export const toTacticalTime = (date: Date, options: TacticalTimeOptions): string
 	let timeString;
 	switch (options.form) {
 		case 'full':
-			timeString = day + hours + minutes + seconds + timezone + month + year
+			timeString = day + hours + minutes + seconds + timezone + month + year;
 			break;
 		case 'long':
-			timeString = day + hours + minutes + timezone + month + year
+			timeString = day + hours + minutes + timezone + month + year;
 			break;
 		case 'short':
-			timeString = day + hours + minutes
-			break
+			timeString = day + hours + minutes;
+			break;
 	}
 
-	return timeString
+	return timeString;
 };

@@ -1,1 +1,1 @@
-export * from './isClipped'
+export * from './isClipped';
