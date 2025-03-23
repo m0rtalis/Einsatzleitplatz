@@ -17,7 +17,7 @@ export interface paths {
 		readonly delete: operations['deleteEntry'];
 		readonly options?: never;
 		readonly head?: never;
-		readonly patch?: never;
+		readonly patch: operations['restoreEntry'];
 		readonly trace?: never;
 	};
 	readonly '/users/login': {
@@ -204,6 +204,9 @@ export interface components {
 			readonly operationId: string;
 			readonly text: string;
 		};
+		readonly PatchJournalEntryDto: {
+			readonly isDeleted?: boolean;
+		};
 		readonly Pagination: {
 			/** Format: int32 */
 			readonly offset?: number;
@@ -211,9 +214,9 @@ export interface components {
 			readonly limit?: number;
 			/** Format: int32 */
 			readonly totalElements?: number;
+			readonly lastPage?: boolean;
 			/** Format: int32 */
 			readonly totalPages?: number;
-			readonly lastPage?: boolean;
 			/** Format: int32 */
 			readonly currentPage?: number;
 		};
@@ -317,6 +320,32 @@ export interface operations {
 					readonly [name: string]: unknown;
 				};
 				content?: never;
+			};
+		};
+	};
+	readonly restoreEntry: {
+		readonly parameters: {
+			readonly query?: never;
+			readonly header?: never;
+			readonly path: {
+				readonly id: string;
+			};
+			readonly cookie?: never;
+		};
+		readonly requestBody: {
+			readonly content: {
+				readonly 'application/json': components['schemas']['PatchJournalEntryDto'];
+			};
+		};
+		readonly responses: {
+			/** @description OK */
+			readonly 200: {
+				headers: {
+					readonly [name: string]: unknown;
+				};
+				content: {
+					readonly 'application/json': components['schemas']['JournalEntry'];
+				};
 			};
 		};
 	};

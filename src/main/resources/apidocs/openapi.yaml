@@ -67,10 +67,33 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/DeleteJournalEntryDto"
-        required: true
       responses:
         "204":
           description: No Content
+    patch:
+      tags:
+      - journal-controller
+      operationId: restoreEntry
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchJournalEntryDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalEntry"
   /users/login:
     post:
       tags:
@@ -375,6 +398,11 @@ components:
           format: uuid
         text:
           type: string
+    PatchJournalEntryDto:
+      type: object
+      properties:
+        isDeleted:
+          type: boolean
     Pagination:
       type: object
       properties:
@@ -390,11 +418,11 @@ components:
         totalPages:
           type: integer
           format: int32
-        lastPage:
-          type: boolean
         currentPage:
           type: integer
           format: int32
+        lastPage:
+          type: boolean
     UserList:
       required:
       - data
@@ -445,7 +473,7 @@ components:
     DeleteJournalEntryDto:
       type: object
       properties:
-        text:
+        reason:
           type: string
   securitySchemes:
     Basic:

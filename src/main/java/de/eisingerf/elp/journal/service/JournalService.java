@@ -92,4 +92,16 @@ public class JournalService {
 	public JournalEntry get(UUID id) {
 		return journalRepository.findById(id).orElseThrow();
 	}
+
+	public JournalEntry restore(UUID id) {
+		JournalEntry entry = this.get(id);
+		if (!entry.isDeleted()) {
+			throw new RuntimeException();
+		}
+		entry.setDeleted(false);
+		var updatedEntry = journalRepository.save(entry);
+
+		eventStream.send(new Event(EventName.UPDATE_JOURNAL_ENTRY, updatedEntry));
+		return updatedEntry;
+	}
 }
