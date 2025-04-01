@@ -14,26 +14,25 @@
 	import SettingsIcon from 'virtual:icons/mdi/settings';
 	import ArrowsIcon from 'virtual:icons/material-symbols-light/double-arrow';
 	import DamageAccountIcon from 'virtual:icons/material-symbols/team-dashboard-outline';
-	import { page } from '$app/stores';
+	import SimpleIconsDevbox from 'virtual:icons/simple-icons/devbox';
 	import { isClipped } from '$lib/dom/isClipped';
 	import { throttle } from '$lib/js';
 	import {
 		createSseStore,
 		getOperationStore,
 		getPageStore,
-		setFromMessageEvent
+		setFromMessageEvent,
 	} from '$lib/state';
 	import { onMount } from 'svelte';
 	import { type SseEventName } from '$lib/api';
 	import { EventName } from '$lib/api/elp';
+	import type { LayoutProps } from './$types';
+	import { page } from '$app/state';
+	import { EventSource } from 'eventsource';
 
-	interface Props {
-		children?: import('svelte').Snippet;
-	}
+	let { children }: LayoutProps = $props();
 
-	let { children }: Props = $props();
-
-	let path = $derived($page.route.id);
+	let path = $derived(page.route.id);
 	let isSidenavOpen: boolean = $state(false);
 	let sidemenu: HTMLElement | undefined = $state();
 	let showScrollUpArrow: boolean = $state(false);
@@ -68,19 +67,23 @@
 	const sseEventNames: SseEventName[] = [EventName.CHANGED_JOURNAL_ENTRY];
 	onMount(() => {
 		const eventSource = new EventSource('/api/events');
+		eventSource.onmessage = (event: MessageEvent) => {
+			console.log('SSE Message', event);
+		};
 		eventSource.onerror = (error) => {
-			console.warn(error, 'Error in SSE');
-			eventSource?.close();
+			// TODO: Reconnect
+			console.warn(eventSource, error, 'Error in SSE');
+			// eventSource?.close();
 		};
 		sseEventNames.forEach((name) =>
 			eventSource.addEventListener(name, (evt) => {
 				setFromMessageEvent(evt);
-			})
+			}),
 		);
 		// TODO: Build debug page which shows the event stream
 		return () => {
 			console.log('Close source');
-			eventSource?.close();
+			// eventSource?.close();
 		};
 	});
 </script>
@@ -170,6 +173,12 @@
 				<span>Settings</span></a
 			>
 		</li>
+		<li class:active={path?.startsWith('/(app)/dev')}>
+			<a href="/dev">
+				<SimpleIconsDevbox style="min-width: 1.5em; min-height: 1.5em" />
+				<span>Developer</span></a
+			>
+		</li>
 	</menu>
 	{#if showScrollDownArrow}
 		<div class="sidenav-scroll-arrow down-arrow">
@@ -183,150 +192,150 @@
 </main>
 
 <style>
-    :root {
-        --sidenav-width-collapsed: 3em;
-        --nav-font-size: 2rem;
-        --header-height: 5rem;
-    }
+	:root {
+		--sidenav-width-collapsed: 3em;
+		--nav-font-size: 2rem;
+		--header-height: 5rem;
+	}
 
-    /* Header */
-    .header {
-        display: flex;
-        font-size: var(--nav-font-size);
-        justify-content: space-between;
-        align-items: stretch;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        border-bottom: 2px solid var(--font-color);
-        box-shadow: 4px 0 8px 0 var(--font-color);
-        max-height: var(--header-height);
-        min-height: var(--header-height);
-        background-color: var(--color-grey);
-        z-index: 1;
-        padding-right: 1rem;
-    }
+	/* Header */
+	.header {
+		display: flex;
+		font-size: var(--nav-font-size);
+		justify-content: space-between;
+		align-items: stretch;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		border-bottom: 2px solid var(--font-color);
+		box-shadow: 4px 0 8px 0 var(--font-color);
+		max-height: var(--header-height);
+		min-height: var(--header-height);
+		background-color: var(--color-grey);
+		z-index: 1;
+		padding-right: 1rem;
+	}
 
-    .header-group {
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        align-items: center;
-    }
+	.header-group {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		align-items: center;
+	}
 
-    .header-group span {
-        width: auto;
-    }
+	.header-group span {
+		width: auto;
+	}
 
-    /* /Header */
+	/* /Header */
 
-    /* Sidenav */
-    .sidenav {
-        display: block;
-        position: fixed;
-        top: var(--header-height);
-        left: 0;
-        background: var(--color-grey);
-        min-height: 100vh;
-        padding-bottom: 5rem;
-        height: 100vh;
-        font-size: var(--nav-font-size);
-        transition: max-width 0.5s ease-in-out;
-        max-width: calc(2rem + 1rem + 15em);
-        overflow-x: hidden;
-        overflow-y: auto;
-        border-right: 2px solid var(--font-color);
-        box-shadow: 4px 0 8px 0 var(--font-color);
-        scrollbar-width: none;
-        z-index: 1;
-    }
+	/* Sidenav */
+	.sidenav {
+		display: block;
+		position: fixed;
+		top: var(--header-height);
+		left: 0;
+		background: var(--color-grey);
+		min-height: 100vh;
+		padding-bottom: 5rem;
+		height: 100vh;
+		font-size: var(--nav-font-size);
+		transition: max-width 0.5s ease-in-out;
+		max-width: calc(2rem + 1rem + 15em);
+		overflow-x: hidden;
+		overflow-y: auto;
+		border-right: 2px solid var(--font-color);
+		box-shadow: 4px 0 8px 0 var(--font-color);
+		scrollbar-width: none;
+		z-index: 10;
+	}
 
-    .sidenav::-webkit-scrollbar {
-        /* Remove as Chrome 121 supports scrollbar-width. */
-        display: none;
-    }
+	.sidenav::-webkit-scrollbar {
+		/* Remove as Chrome 121 supports scrollbar-width. */
+		display: none;
+	}
 
-    .sidenav.collapsed {
-        max-width: var(--sidenav-width-collapsed);
-    }
+	.sidenav.collapsed {
+		max-width: var(--sidenav-width-collapsed);
+	}
 
-    .sidenav.collapsed span {
-        transition-property: visibility;
-        transition-delay: 0.4s;
-        transition: visibility 0s step-end 0.45s;
-        visibility: hidden;
-    }
+	.sidenav.collapsed span {
+		transition-property: visibility;
+		transition-delay: 0.4s;
+		transition: visibility 0s step-end 0.45s;
+		visibility: hidden;
+	}
 
-    .sidenav-button {
-        font-size: var(--nav-font-size);
-        width: var(--sidenav-width-collapsed);
-        background-color: transparent;
-        padding-left: 0;
-        padding-right: 0;
-        margin-left: 0;
-    }
+	.sidenav-button {
+		font-size: var(--nav-font-size);
+		width: var(--sidenav-width-collapsed);
+		background-color: transparent;
+		padding-left: 0;
+		padding-right: 0;
+		margin-left: 0;
+	}
 
-    .sidenav-menu {
-        list-style-type: none;
-        padding-left: 0;
-        margin-top: 0;
-    }
+	.sidenav-menu {
+		list-style-type: none;
+		padding-left: 0;
+		margin-top: 0;
+	}
 
-    .sidenav-menu .active {
-        background: var(--color-primary);
-    }
+	.sidenav-menu .active {
+		background: var(--color-primary);
+	}
 
-    .sidenav-menu li {
-        border-bottom: 4px solid var(--font-color);
-    }
+	.sidenav-menu li {
+		border-bottom: 4px solid var(--font-color);
+	}
 
-    .sidenav-menu li a {
-        width: 100%;
-        padding: 2rem 2rem 2rem 1rem;
-        display: flex;
-        align-items: center;
-        color: var(--font-color);
-    }
+	.sidenav-menu li a {
+		width: 100%;
+		padding: 2rem 2rem 2rem 1rem;
+		display: flex;
+		align-items: center;
+		color: var(--font-color);
+	}
 
-    .sidenav-menu li a:hover {
-        background: var(--color-lightGrey);
-    }
+	.sidenav-menu li a:hover {
+		background: var(--color-lightGrey);
+	}
 
-    .sidenav-menu li a span {
-        padding-left: 1rem;
-        white-space: nowrap;
-    }
+	.sidenav-menu li a span {
+		padding-left: 1rem;
+		white-space: nowrap;
+	}
 
-    .sidenav-scroll-arrow {
-        display: block;
-        margin: auto;
-        width: min-content;
-        height: min-content;
-        position: sticky;
-        pointer-events: none;
-    }
+	.sidenav-scroll-arrow {
+		display: block;
+		margin: auto;
+		width: min-content;
+		height: min-content;
+		position: sticky;
+		pointer-events: none;
+	}
 
-    .sidenav-scroll-arrow.up-arrow {
-        top: 10px;
-    }
+	.sidenav-scroll-arrow.up-arrow {
+		top: 10px;
+	}
 
-    .sidenav-scroll-arrow.down-arrow {
-        bottom: 10px;
-    }
+	.sidenav-scroll-arrow.down-arrow {
+		bottom: 10px;
+	}
 
-    /* /Sidenav */
+	/* /Sidenav */
 
-    /* Main */
-    .main {
-        margin-top: var(--header-height);
-        margin-left: calc(var(--sidenav-width-collapsed) + 1rem);
-        background-color: grey;
-        overflow: auto;
-        padding-left: 2rem;
-        height: calc(100vh - var(--header-height));
-        width: calc(100vw - var(--sidenav-width-collapsed) - 1rem);
-    }
+	/* Main */
+	.main {
+		margin-top: var(--header-height);
+		margin-left: calc(var(--sidenav-width-collapsed) + 1rem);
+		background-color: grey;
+		overflow: auto;
+		padding-left: 2rem;
+		height: calc(100vh - var(--header-height));
+		width: calc(100vw - var(--sidenav-width-collapsed) - 1rem);
+	}
 
-    /* /Main */
+	/* /Main */
 </style>

@@ -33,10 +33,10 @@
 			<tr class:deleted={entry.isDeleted}>
 				<td>{entry.journalEntryId}</td>
 				<td>
-					<Time time={entry.createdAt || '0'} />
+					<Time time={entry.createdAt} />
 				</td>
 				<td>
-					<User id={entry.createdBy || ''} />
+					<User id={entry.createdBy} />
 				</td>
 				<td class="grow">{entry.text}</td>
 				<td>
@@ -49,7 +49,17 @@
 								<DeleteIcon />
 							</button>
 						{:else}
-							<button class="icon-only" onclick={() => restoreEntry(entry.id)}>
+							<!--
+						This causes the table to jump if all entries are deleted
+						 as we have 2 icons if not deleted and 1 icon if deleted.
+						We could add a hidden icon here or calculate a padding or sth. to prevent this.
+						For now it doesn't seem too important.
+						 -->
+							<button
+								class="icon-only"
+								style:float="right"
+								onclick={() => restoreEntry(entry.id)}
+							>
 								<RestoreIcon />
 							</button>
 						{/if}
@@ -106,6 +116,7 @@
 
 	.button-group {
 		float: left;
+		width: 100%;
 	}
 
 	.button-group button:not(:last-child) {

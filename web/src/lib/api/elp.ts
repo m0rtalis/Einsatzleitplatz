@@ -168,6 +168,9 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
 	schemas: {
+		readonly UpdateJournalEntryDto: {
+			readonly text?: string;
+		};
 		readonly JournalEntry: {
 			/** Format: uuid */
 			readonly id: string;
@@ -214,11 +217,11 @@ export interface components {
 			readonly limit?: number;
 			/** Format: int32 */
 			readonly totalElements?: number;
+			readonly lastPage?: boolean;
 			/** Format: int32 */
 			readonly currentPage?: number;
 			/** Format: int32 */
 			readonly totalPages?: number;
-			readonly lastPage?: boolean;
 		};
 		readonly UserList: {
 			readonly data: readonly components['schemas']['User'][];
@@ -284,7 +287,7 @@ export interface operations {
 		};
 		readonly requestBody: {
 			readonly content: {
-				readonly 'application/json': string;
+				readonly 'application/json': components['schemas']['UpdateJournalEntryDto'];
 			};
 		};
 		readonly responses: {

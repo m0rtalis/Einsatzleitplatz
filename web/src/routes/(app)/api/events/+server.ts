@@ -24,26 +24,27 @@ export const GET: RequestHandler = async ({ fetch, cookies }) => {
 				fetch: (input, init) =>
 					fetch(input, {
 						...init,
-						headers: { ...init?.headers, Cookie: authCookieStr },
-					}),
+						headers: { ...init?.headers, Cookie: authCookieStr }
+					})
 			});
 			eventNames.data!.forEach((name) =>
 				eventSource?.addEventListener(name, (evt) => {
+					// FIX: This is throwing error if client closes stream
 					controller.enqueue(sseToString(evt));
-				}),
+				})
 			);
 			eventSource.onerror = (evt) => {
-				console.log('Error', evt);
+				console.log('Events error: Error', eventSource, evt);
 				eventSource?.close();
 				controller.close();
 			};
 		},
 		cancel(reason) {
-			console.log(reason, 'Canceled');
+			console.log('Events server: Canceled', eventSource, reason);
 			eventSource?.close();
-		},
+		}
 	});
 	return new Response(stream, {
-		headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache' },
+		headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache' }
 	});
 };

@@ -3,20 +3,26 @@
 	import { invalidate } from '$app/navigation';
 	import CreateJournal from './CreateJournal.svelte';
 	import JournalTable from './JournalTable.svelte';
+	import type { JournalEntry } from '$lib/api';
 
 	setPageName('Journal');
 	let { data } = $props();
 	const sseStore = getSseStore();
+	let entryForEdit: JournalEntry | undefined = $state();
 
 	$effect(() => {
-		const event = $sseStore?.name;
-		if (event === 'CHANGED_JOURNAL_ENTRY') {
+		const eventName = $sseStore?.name;
+		if (eventName === 'CHANGED_JOURNAL_ENTRY') {
 			// TODO: Check if changed journal entry id is displayed and only invalidate then
+			// 	Technically we could also invalidate on edit/delete/restoreEntry but this would cause two fetches
+			//  unless we make sure to double check the event message
 			invalidate('journal');
 		}
 	});
 
-	async function editEntry(id: string) {}
+	async function editEntry(id: string) {
+		entryForEdit = data.journalData?.data.find((e: JournalEntry) => e.id === id);
+	}
 
 	async function deleteEntry(id: string) {
 		await fetch(`/journal/${id}`, { method: 'DELETE' });
@@ -28,17 +34,20 @@
 	}
 </script>
 
-<div class="content">
-	<section>
-		<CreateJournal />
-	</section>
-	<!-- List journal entries -->
-	<section>
-		<JournalTable
-			journalEntries={data.journalData?.data ?? []}
-			{editEntry}
-			{deleteEntry}
-			{restoreEntry}
-		/>
-	</section>
-</div>
+<section>
+	<!--
+	I think editEntry works as the prop is updated ephemeral inside of CreateJournal
+	 to be undefined again after cancel or save.
+	 Maybe the more robust (cleaner) method is to update entryForEdit from inside CreateJournal if it is canceled.
+	  -->
+	<CreateJournal editEntry={entryForEdit} />
+</section>
+<!-- List journal entries -->
+<section>
+	<JournalTable
+		journalEntries={data.journalData?.data ?? []}
+		{editEntry}
+		{deleteEntry}
+		{restoreEntry}
+	/>
+</section>

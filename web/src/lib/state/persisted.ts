@@ -6,6 +6,7 @@ export type Options<T> = {
 	deserializer?: (value: string) => T;
 };
 
+// TODO: Can we use runes instead https://svelte.dev/docs/svelte/stores#When-to-use-stores
 export const local = <T>(name: string, value: T, options?: Options<T>): Writable<T> =>
 	storage<T>(name, value, 'local', options);
 

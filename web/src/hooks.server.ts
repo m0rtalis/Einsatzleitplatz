@@ -1,9 +1,12 @@
 import { redirect } from '@sveltejs/kit';
-import { AUTH_COOKIE } from '$lib/server/api';
+import { AUTH_COOKIE_NAME } from '$lib/server/api';
 
 export async function handle({ event, resolve }) {
 	let operationId = event.cookies.get('operationId');
-	if (event.route.id?.startsWith('/(app)') && (!event.cookies.get(AUTH_COOKIE) || !operationId)) {
+	if (
+		event.route.id?.startsWith('/(app)') &&
+		(!event.cookies.get(AUTH_COOKIE_NAME) || !operationId)
+	) {
 		redirect(307, '/login');
 	}
 	event.locals.operationId = operationId!;

@@ -3,8 +3,9 @@
 	import type { User } from '$lib/api';
 	import { Map as IMap } from 'immutable';
 
+	// TODO: Use SvelteMap instead and remove immutable?
 	const usersStore = local<IMap<string, User>>('Users', IMap<string, User>(), {
-		deserializer: (value) => IMap<string, User>(JSON.parse(value))
+		deserializer: (value) => IMap<string, User>(JSON.parse(value)),
 	});
 </script>
 

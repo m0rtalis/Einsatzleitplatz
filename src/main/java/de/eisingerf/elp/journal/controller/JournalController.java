@@ -3,6 +3,7 @@ package de.eisingerf.elp.journal.controller;
 import de.eisingerf.elp.common.api.rest.list.input.OffsetPaginationParameter;
 import de.eisingerf.elp.journal.controller.dto.JournalEntryDto;
 import de.eisingerf.elp.journal.controller.dto.JournalEntryListDto;
+import de.eisingerf.elp.journal.controller.dto.UpdateJournalEntryDto;
 import de.eisingerf.elp.journal.controller.dto.input.CreateJournalEntryDto;
 import de.eisingerf.elp.journal.controller.dto.input.DeleteJournalEntryDto;
 import de.eisingerf.elp.journal.controller.dto.input.PatchJournalEntryDto;
@@ -51,8 +52,8 @@ public class JournalController {
 	}
 
 	@PutMapping("/{id}")
-	public JournalEntryDto updateJournalEntry(@PathVariable UUID id, @RequestBody String text) {
-		var entry = journalService.update(id, text);
+	public JournalEntryDto updateJournalEntry(@PathVariable UUID id, @RequestBody UpdateJournalEntryDto updateJournalEntryDto) {
+		var entry = journalService.update(id, updateJournalEntryDto.text());
 		return JournalEntryDto.from(entry);
 	}
 

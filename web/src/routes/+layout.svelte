@@ -1,18 +1,24 @@
 <script lang="ts">
-	// TODO: Use pico
 	import 'chota';
 	import './global.css';
 	import { createOperationStore, createPageStore, createUserStore } from '$lib/state';
+	import type { LayoutProps } from './$types';
+	import { onMount } from 'svelte';
+	import { redirect } from '@sveltejs/kit';
 
-	interface Props {
-		children?: import('svelte').Snippet;
-	}
-
-	let { children }: Props = $props();
+	let { children }: LayoutProps = $props();
 
 	createOperationStore();
 	createUserStore();
 	const pageStore = createPageStore();
+
+	const isUserLoggedIn = () => true;
+	onMount(() => {
+		// TODO: Implement isUserLoggedIn
+		if (!isUserLoggedIn()) {
+			redirect(307, '/login');
+		}
+	});
 </script>
 
 <svelte:head>

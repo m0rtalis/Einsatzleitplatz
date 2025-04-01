@@ -1,4 +1,4 @@
-import { AUTH_COOKIE, client, getAuthCookieStr } from '$lib/server/api';
+import { AUTH_COOKIE_NAME, client, getAuthCookieStr } from '$lib/server/api';
 import { type Schema } from '$lib/api';
 import parseCookie from 'cookie';
 
@@ -27,11 +27,14 @@ export const actions = {
 		const setCookies = loginResponse.response.headers.getSetCookie();
 		const authCookie = setCookies
 			.map((cookie) => parseCookie.parse(cookie))
-			.find((cookie) => AUTH_COOKIE in cookie);
+			.find((cookie) => AUTH_COOKIE_NAME in cookie);
 		let authCookieString: string;
 		if (authCookie) {
-			authCookieString = `${AUTH_COOKIE}=${authCookie[AUTH_COOKIE]}`;
-			cookies.set(AUTH_COOKIE, authCookie[AUTH_COOKIE]!, { path: '/', ...authCookie });
+			authCookieString = `${AUTH_COOKIE_NAME}=${authCookie[AUTH_COOKIE_NAME]}`;
+			cookies.set(AUTH_COOKIE_NAME, authCookie[AUTH_COOKIE_NAME]!, {
+				path: '/',
+				...authCookie,
+			});
 		} else {
 			authCookieString = getAuthCookieStr(cookies);
 		}
@@ -57,7 +60,8 @@ export const actions = {
 		}
 
 		// 3. Return operation and user to Page and then set there
-		//    redirect on client side. I'd rather do it on server side but not possible.
+		//    redirect on client side. I'd rather do it on server side but not possible
+		//    as the client needs to save the returned data.
 		return { isLoggedIn: true, user, operation: operationResponse };
 	},
 };
