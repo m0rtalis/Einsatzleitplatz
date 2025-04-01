@@ -6,8 +6,11 @@
 	import User from '$lib/component/User.svelte';
 	import type { JournalEntry } from '$lib/api';
 
+	// TODO: Find a good table package
+	//  svelte-headless-table: Is awesome but unfortunately not maintained anymore.
+	//  @mediakular/gridcraft: Next best thing, currently working on upgrade to svelte-5.
+	//  @tanstack/svelte-table: The standard for now it seems. I don't really like it..
 	interface Props {
-		// import {Tabulator} from 'tabulator-tables'; Wait for typings to catch up :( ... or create own :) ?
 		journalEntries?: readonly JournalEntry[];
 		editEntry: (id: string) => void;
 		deleteEntry: (id: string) => void;
