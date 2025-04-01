@@ -38,6 +38,7 @@
 		"prettier-plugin-svelte": "^3.2.6",
 		"svelte": "^5.1.9",
 		"svelte-check": "^4.0.5",
+		"sveltekit-sse": "^0.13.16",
 		"tslib": "^2.4.1",
 		"typescript": "^5.5.0",
 		"unplugin-icons": "^22.1.0",

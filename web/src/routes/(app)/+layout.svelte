@@ -71,9 +71,7 @@
 			console.log('SSE Message', event);
 		};
 		eventSource.onerror = (error) => {
-			// TODO: Reconnect
 			console.warn(eventSource, error, 'Error in SSE');
-			// eventSource?.close();
 		};
 		sseEventNames.forEach((name) =>
 			eventSource.addEventListener(name, (evt) => {
@@ -83,7 +81,6 @@
 		// TODO: Build debug page which shows the event stream
 		return () => {
 			console.log('Close source');
-			// eventSource?.close();
 		};
 	});
 </script>
