@@ -74,6 +74,7 @@
 	table {
 		margin-top: 2rem;
 		width: 100%;
+		max-width: 100%;
 	}
 
 	table caption {
@@ -103,6 +104,14 @@
 
 	table td.grow {
 		width: 100%;
+		/* No idea why this max-width works. I should probably look into it.. */
+		max-width: 1vw;
+		overflow: auto;
+		scrollbar-width: thin;
+	}
+
+	table tr.deleted td.grow {
+		overflow: hidden;
 	}
 
 	table tr.deleted td:not(:last-child):before {
