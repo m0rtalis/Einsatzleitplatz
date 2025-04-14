@@ -160,16 +160,16 @@ paths:
         required: false
         schema:
           minimum: 0
-          type: string
-          default: "0"
+          type: number
+          default: 0
       - name: limit
         in: query
         required: false
         schema:
           maximum: 200
           minimum: 1
-          type: string
-          default: "50"
+          type: number
+          default: 50
       - name: sort
         in: query
         description: "Sorting criteria in the format: property,(asc|desc). Default\
@@ -214,16 +214,16 @@ paths:
         required: false
         schema:
           minimum: 0
-          type: string
-          default: "0"
+          type: number
+          default: 0
       - name: limit
         in: query
         required: false
         schema:
           maximum: 200
           minimum: 1
-          type: string
-          default: "50"
+          type: number
+          default: 50
       - name: sort
         in: query
         description: "Sorting criteria in the format: property,(asc|desc). Default\
@@ -409,6 +409,12 @@ components:
         isDeleted:
           type: boolean
     Pagination:
+      required:
+      - currentPage
+      - limit
+      - offset
+      - totalElements
+      - totalPages
       type: object
       properties:
         offset:
@@ -420,14 +426,12 @@ components:
         totalElements:
           type: integer
           format: int32
-        totalPages:
-          type: integer
-          format: int32
         currentPage:
           type: integer
           format: int32
-        lastPage:
-          type: boolean
+        totalPages:
+          type: integer
+          format: int32
     UserList:
       required:
       - data

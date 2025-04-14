@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { getSseStore, setPageName } from '$lib/state';
-	import { invalidate } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
 	import CreateJournal from './CreateJournal.svelte';
-	import JournalTable from './JournalTable.svelte';
 	import type { JournalEntry } from '$lib/api';
+	import JournalTable, { type Pagination, type Sorting } from './JournalTable.svelte';
+	import type { PageProps } from './$types';
+	import { page } from '$app/state';
 
 	setPageName('Journal');
-	let { data } = $props();
+	let { data }: PageProps = $props();
 	const sseStore = getSseStore();
 	let entryForEdit: JournalEntry | undefined = $state();
 
@@ -20,18 +22,40 @@
 		}
 	});
 
-	async function editEntry(id: string) {
-		entryForEdit = data.journalData?.data.find((e: JournalEntry) => e.id === id);
-	}
+	let paginationSettings = $state({
+		currentPage: Number(page.url.searchParams.get('page') || 1),
+		elementsPerPage: Number(page.url.searchParams.get('size') || 5),
+	})
 
-	async function deleteEntry(id: string) {
-		await fetch(`/journal/${id}`, { method: 'DELETE' });
-	}
+	let pagination: Pagination = $derived({
+		totalPages: data.journalData.pagination.totalPages,
+		totalElements: data.journalData.pagination.totalElements,
+	});
 
-	async function restoreEntry(id: string) {
-		// I could send a body with isDeleted false but since PATCH isn't used for anything else I don't have to.
-		await fetch(`/journal/${id}`, { method: 'PATCH' });
-	}
+	let sorting: Sorting[] = $state([]);
+
+	$effect(() => {
+		const params = new URLSearchParams(page.url.searchParams);
+		if (
+			params.get('page') === paginationSettings.currentPage.toString() &&
+			params.get('size') === paginationSettings.elementsPerPage.toString()
+		) {
+			// Seems stupid. Svelte should be able to recognize that the search params haven't changed
+			// and then 1. Don't run the effect at all and 2. Make goto a noop
+			return;
+		}
+		params.set('page', paginationSettings.currentPage.toString());
+		params.set('size', paginationSettings.elementsPerPage.toString());
+		goto(`?${params}`, { replaceState: false, noScroll: true, keepFocus: true });
+	});
+
+	const editEntry = (id: string) =>
+		(entryForEdit = data.journalData?.data.find((e: JournalEntry) => e.id === id));
+
+	const deleteEntry = async (id: string) => fetch(`/journal/${id}`, { method: 'DELETE' });
+
+	// I could send a body with isDeleted false but since PATCH isn't used for anything else I don't have to.
+	const restoreEntry = async (id: string) => fetch(`/journal/${id}`, { method: 'PATCH' });
 </script>
 
 <section>
@@ -45,7 +69,10 @@
 <!-- List journal entries -->
 <section>
 	<JournalTable
-		journalEntries={data.journalData?.data ?? []}
+		data={data.journalData?.data}
+		{pagination}
+		bind:paginationSettings
+		bind:sorting
 		{editEntry}
 		{deleteEntry}
 		{restoreEntry}

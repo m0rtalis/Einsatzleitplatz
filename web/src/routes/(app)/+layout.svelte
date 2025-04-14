@@ -16,7 +16,7 @@
 	import DamageAccountIcon from 'virtual:icons/material-symbols/team-dashboard-outline';
 	import SimpleIconsDevbox from 'virtual:icons/simple-icons/devbox';
 	import { isClipped } from '$lib/dom/isClipped';
-	import { throttle } from '$lib/js';
+	import { debounce, throttle } from '$lib/js';
 	import {
 		createSseStore,
 		getOperationStore,
@@ -37,7 +37,8 @@
 	let sidemenu: HTMLElement | undefined = $state();
 	let showScrollUpArrow: boolean = $state(false);
 	let showScrollDownArrow: boolean = $state(false);
-	let expandSidenavTimer: NodeJS.Timeout | null = $state(null);
+	let expandSidenavTimer: number | null = $state(null);
+	let main: HTMLElement | undefined = $state();
 
 	createSseStore();
 	const operationStore = getOperationStore();
@@ -64,6 +65,7 @@
 		}
 	}
 
+	// TODO: Save scroll position https://stackoverflow.com/questions/65548728/how-to-remember-scroll-position-of-overflowscroll-div
 	const sseEventNames: SseEventName[] = [EventName.CHANGED_JOURNAL_ENTRY];
 	onMount(() => {
 		const eventSource = new EventSource('/api/events');
@@ -88,7 +90,7 @@
 <svelte:window onresize={throttle(checkShowNavArrow)} />
 
 <!-- TODO: header with operation name, operation switcher, search, notifications, profile -->
-<header class="header">
+<header>
 	<button
 		type="button"
 		title="Sidebar"
@@ -109,7 +111,6 @@
 </header>
 
 <nav
-	class="sidenav"
 	class:collapsed={!isSidenavOpen}
 	onscroll={checkShowNavArrow}
 	onmouseleave={cancelExpandSidenavTimer}
@@ -184,7 +185,8 @@
 	{/if}
 </nav>
 
-<main class="main">
+<!-- TODO: This is preparation for saving scroll position on site reload. Need to migrate stores to state before this. -->
+<main bind:this={main} onscrollend={debounce(() => main && main.scrollTop, 200)}>
 	{@render children?.()}
 </main>
 
@@ -196,7 +198,7 @@
 	}
 
 	/* Header */
-	.header {
+	header {
 		display: flex;
 		font-size: var(--nav-font-size);
 		justify-content: space-between;
@@ -210,7 +212,7 @@
 		max-height: var(--header-height);
 		min-height: var(--header-height);
 		background-color: var(--color-grey);
-		z-index: 1;
+		z-index: 20;
 		padding-right: 1rem;
 	}
 
@@ -228,7 +230,7 @@
 	/* /Header */
 
 	/* Sidenav */
-	.sidenav {
+	nav {
 		display: block;
 		position: fixed;
 		top: var(--header-height);
@@ -248,20 +250,20 @@
 		z-index: 10;
 	}
 
-	.sidenav::-webkit-scrollbar {
+	nav::-webkit-scrollbar {
 		/* Remove as Chrome 121 supports scrollbar-width. */
 		display: none;
 	}
 
-	.sidenav.collapsed {
+	nav.collapsed {
 		max-width: var(--sidenav-width-collapsed);
-	}
 
-	.sidenav.collapsed span {
-		transition-property: visibility;
-		transition-delay: 0.4s;
-		transition: visibility 0s step-end 0.45s;
-		visibility: hidden;
+		span {
+			transition-property: visibility;
+			transition-delay: 0.4s;
+			transition: visibility 0s step-end 0.45s;
+			visibility: hidden;
+		}
 	}
 
 	.sidenav-button {
@@ -285,23 +287,23 @@
 
 	.sidenav-menu li {
 		border-bottom: 4px solid var(--font-color);
-	}
 
-	.sidenav-menu li a {
-		width: 100%;
-		padding: 2rem 2rem 2rem 1rem;
-		display: flex;
-		align-items: center;
-		color: var(--font-color);
-	}
+		a {
+			width: 100%;
+			padding: 2rem 2rem 2rem 1rem;
+			display: flex;
+			align-items: center;
+			color: var(--font-color);
 
-	.sidenav-menu li a:hover {
-		background: var(--color-lightGrey);
-	}
+			span {
+				padding-left: 1rem;
+				white-space: nowrap;
+			}
+		}
 
-	.sidenav-menu li a span {
-		padding-left: 1rem;
-		white-space: nowrap;
+		a:hover {
+			background: var(--color-lightGrey);
+		}
 	}
 
 	.sidenav-scroll-arrow {
@@ -324,7 +326,7 @@
 	/* /Sidenav */
 
 	/* Main */
-	.main {
+	main {
 		margin-top: var(--header-height);
 		margin-left: calc(var(--sidenav-width-collapsed) + 1rem);
 		background-color: grey;
@@ -332,6 +334,7 @@
 		padding-left: 2rem;
 		height: calc(100vh - var(--header-height));
 		width: calc(100vw - var(--sidenav-width-collapsed) - 1rem);
+		scroll-behavior: smooth;
 	}
 
 	/* /Main */

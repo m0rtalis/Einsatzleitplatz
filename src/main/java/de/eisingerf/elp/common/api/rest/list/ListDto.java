@@ -2,12 +2,12 @@ package de.eisingerf.elp.common.api.rest.list;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import org.springframework.data.domain.Page;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Getter;
-import org.springframework.data.domain.Slice;
-import org.springframework.util.Assert;
 
 @Getter
 @Schema(name = "List")
@@ -18,7 +18,7 @@ public abstract class ListDto<T> {
 
     protected ListDto() {
         this.data = new ArrayList<>();
-        this.pagination = new Pagination(0, 50, 0);
+        this.pagination = new Pagination(0, 50, 1, 0, 0);
     }
 
     public ListDto(List<T> data, Pagination pagination) {
@@ -27,30 +27,21 @@ public abstract class ListDto<T> {
         this.pagination = pagination;
     }
 
-    public ListDto(Slice<T> slice) {
+    public ListDto(Page<T> page) {
         this(
-                slice.getContent(),
-                new Pagination((int) slice.getPageable().getOffset(), slice.getSize(), slice.getNumberOfElements()));
+                page.getContent(),
+                new Pagination((int) page.getPageable().getOffset(), page.getSize(), page.getNumber()+1, (int)page.getTotalElements(), Math.max(1, page.getTotalPages())));
     }
 
-    public record Pagination(int offset, int limit, int totalElements) {
+    // FIXME: NotNull is required so apidocs as property required but it's redundant as these are primitives
+    public record Pagination(@NotNull int offset, @NotNull int limit, @NotNull int currentPage, @NotNull int totalElements, @NotNull int totalPages) {
         public Pagination {
             Assert.isTrue(offset >= 0, "Offset must be positive");
             Assert.isTrue(limit > 0, "Limit must be positive");
+            Assert.isTrue(currentPage > 0, "Current page must be positive");
             Assert.isTrue(totalElements >= 0, "TotalElements must be positive");
+            Assert.isTrue(totalPages > 0, "TotalPages must be positive");
         }
 
-        public int getCurrentPage() {
-            return offset / limit + 1;
-        }
-
-        public int getTotalPages() {
-            return Math.ceilDiv(totalElements, limit);
-        }
-
-        @SuppressWarnings("unused")
-        public boolean isLastPage() {
-            return getCurrentPage() == getTotalPages();
-        }
     }
 }

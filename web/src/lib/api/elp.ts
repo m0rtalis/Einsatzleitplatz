@@ -212,16 +212,15 @@ export interface components {
 		};
 		readonly Pagination: {
 			/** Format: int32 */
-			readonly offset?: number;
+			readonly offset: number;
 			/** Format: int32 */
-			readonly limit?: number;
+			readonly limit: number;
 			/** Format: int32 */
-			readonly totalElements?: number;
-			readonly lastPage?: boolean;
+			readonly totalElements: number;
 			/** Format: int32 */
-			readonly currentPage?: number;
+			readonly currentPage: number;
 			/** Format: int32 */
-			readonly totalPages?: number;
+			readonly totalPages: number;
 		};
 		readonly UserList: {
 			readonly data: readonly components['schemas']['User'][];
@@ -424,8 +423,8 @@ export interface operations {
 		readonly parameters: {
 			readonly query: {
 				readonly operationId: string;
-				readonly offset?: string;
-				readonly limit?: string;
+				readonly offset?: number;
+				readonly limit?: number;
 				/** @description Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
 				readonly sort?: readonly string[];
 			};
@@ -473,8 +472,8 @@ export interface operations {
 	readonly getUsers: {
 		readonly parameters: {
 			readonly query?: {
-				readonly offset?: string;
-				readonly limit?: string;
+				readonly offset?: number;
+				readonly limit?: number;
 				/** @description Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
 				readonly sort?: readonly string[];
 			};

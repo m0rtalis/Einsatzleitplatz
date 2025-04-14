@@ -10,3 +10,12 @@ body {
 	overflow-y: auto;
 	background-color: grey;
 }
+
+/* https://www.w3schools.com/css/css3_box-sizing.asp */
+:where(*) {
+	box-sizing: border-box;
+}
+
+:where(button, input, select, textarea) {
+	background-color: white;
+}

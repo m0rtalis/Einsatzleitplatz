@@ -13,6 +13,7 @@ declare global {
 			operationId: string; // Only available below /(app) route
 		}
 
+		// TODO: Look into PageData and PageState
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}

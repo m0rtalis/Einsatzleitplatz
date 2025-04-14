@@ -47,7 +47,7 @@ but until I can come up with a better way I'll leave it like this.
 		bind:this={journalEntryForm}
 		name="journal-entry-form"
 		method="post"
-		action="?/journal"
+		action="?/createJournalEntry"
 		use:enhance={submitJournalEntry}
 	>
 		<fieldset>
@@ -65,7 +65,7 @@ but until I can come up with a better way I'll leave it like this.
 		bind:this={journalEntryForm}
 		name="journal-entry-form"
 		method="post"
-		action="?/journalEdit"
+		action="?/editJournalEntry"
 		use:enhance={submitJournalEntry}
 	>
 		<input name="entryId" type="hidden" readonly value={editEntry.id} />
