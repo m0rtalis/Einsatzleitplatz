@@ -25,7 +25,7 @@
 	let paginationSettings = $state({
 		currentPage: Number(page.url.searchParams.get('page') || 1),
 		elementsPerPage: Number(page.url.searchParams.get('size') || 5),
-	})
+	});
 
 	let pagination: Pagination = $derived({
 		totalPages: data.journalData.pagination.totalPages,

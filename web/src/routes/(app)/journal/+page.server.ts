@@ -14,7 +14,7 @@ export const load: PageServerLoad = async ({ fetch, locals, depends, url }) => {
 		params: { query: { operationId, offset, limit: size, sort: ['id'] } },
 		fetch,
 	});
-	console.log(response.data!.pagination)
+	console.log(response.data!.pagination);
 	return {
 		journalData: response.data!,
 	};

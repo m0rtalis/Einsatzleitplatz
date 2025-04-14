@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import type { KeyboardEventHandler } from 'svelte/elements';
-	import { afterNavigate } from '$app/navigation';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import type { JournalEntry } from '$lib/api';
 
@@ -12,7 +11,6 @@
 	} = $props();
 
 	let journalEntryForm: HTMLFormElement | undefined = $state();
-	const textarea = $derived(journalEntryForm?.querySelector('textarea') ?? undefined);
 
 	const submitOnCtrlEnter: KeyboardEventHandler<HTMLTextAreaElement> = ({ ctrlKey, key }) => {
 		if (ctrlKey && key === 'Enter') {
@@ -23,21 +21,13 @@
 	const submitJournalEntry: SubmitFunction =
 		() =>
 		async ({ update }) => {
+			$inspect.trace();
 			await update();
 			editEntry = undefined;
-			textarea?.focus();
 		};
-
-	afterNavigate(() => {
-		textarea?.focus();
-	});
-
-	$effect(() => {
-		editEntry;
-		textarea?.focus();
-	});
 </script>
 
+<svelte:window onfocusin={console.log} />
 <!--
 I don't think this is the best way to handle the two states "Create" and "Edit",
 but until I can come up with a better way I'll leave it like this.
@@ -53,7 +43,9 @@ but until I can come up with a better way I'll leave it like this.
 		<fieldset>
 			<legend>Create new journal entry</legend>
 			<label for="journal-entry">Event</label>
-			<textarea id="journal-entry" name="entry" onkeydown={submitOnCtrlEnter}></textarea>
+			<!-- svelte-ignore a11y_autofocus -->
+			<textarea id="journal-entry" name="entry" onkeydown={submitOnCtrlEnter} autofocus
+			></textarea>
 			<div class="btn-group">
 				<!-- TODO: Disable is textarea.content is blank -->
 				<button type="submit">Create</button>
@@ -72,7 +64,8 @@ but until I can come up with a better way I'll leave it like this.
 		<fieldset>
 			<legend>Edit journal entry</legend>
 			<label for="journal-entry">Event</label>
-			<textarea id="journal-entry" name="entry" onkeydown={submitOnCtrlEnter}
+			<!-- svelte-ignore a11y_autofocus -->
+			<textarea id="journal-entry" name="entry" onkeydown={submitOnCtrlEnter} autofocus
 				>{editEntry.text}</textarea
 			>
 			<div class="btn-group">

@@ -50,8 +50,6 @@
 		deleteEntry,
 		restoreEntry,
 	}: Props = $props();
-
-
 </script>
 
 <table class="journal-table">
@@ -114,7 +112,7 @@ For now it doesn't seem too important.
 			name="select-elements-per-page"
 			bind:value={paginationSettings.elementsPerPage}
 		>
-			{#each paginationSettings.elementsPerPageOptions || [5,10,15] as e}
+			{#each paginationSettings.elementsPerPageOptions || [5, 10, 15] as e}
 				<option value={e}>{e}</option>
 			{/each}
 		</select>
