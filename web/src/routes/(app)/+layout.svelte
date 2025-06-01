@@ -15,6 +15,7 @@
 	import ArrowsIcon from 'virtual:icons/material-symbols-light/double-arrow';
 	import DamageAccountIcon from 'virtual:icons/material-symbols/team-dashboard-outline';
 	import SimpleIconsDevbox from 'virtual:icons/simple-icons/devbox';
+	import MapIcon from 'virtual:icons/mdi/map-legend';
 	import { isClipped } from '$lib/dom/isClipped';
 	import { debounce, throttle } from '$lib/js';
 	import {
@@ -37,7 +38,7 @@
 	let sidemenu: HTMLElement | undefined = $state();
 	let showScrollUpArrow: boolean = $state(false);
 	let showScrollDownArrow: boolean = $state(false);
-	let expandSidenavTimer: number | null = $state(null);
+	let expandSidenavTimer: NodeJS.Timeout | null = $state(null);
 	let main: HTMLElement | undefined = $state();
 
 	createSseStore();
@@ -151,6 +152,12 @@
 			<a href="/damage">
 				<DamageAccountIcon style="min-width: 1.5em; min-height: 1.5em" />
 				<span>Damage Account</span>
+			</a>
+		</li>
+		<li class:active={path?.startsWith('/(app)/map')}>
+			<a href="/map">
+				<MapIcon style="min-width: 1.5em; min-height: 1.5em" />
+				<span>Map</span>
 			</a>
 		</li>
 		<li class:active={path?.startsWith('/(app)/units')}>

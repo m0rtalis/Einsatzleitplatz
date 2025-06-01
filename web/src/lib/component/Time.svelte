@@ -12,4 +12,4 @@
 	const timeString: string = timeDate.toLocaleString();
 </script>
 
-<span>{timeString}</span>
+<time datetime={timeDate.toISOString()}>{timeString}</time>
