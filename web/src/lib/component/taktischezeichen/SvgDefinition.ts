@@ -16,22 +16,22 @@ export const Organisation = {
 export type OrganisationKey = keyof typeof Organisation;
 
 export const Grundzeichen = {
-	Einheit: ['<rect x="-45" y="-30" width="90" height="60"/>'],
+	Einheit: ['<rect x="5" y="20" width="90" height="60"/>'],
 	Fahrzeug: [
-		'<path d="M -45,-30 q 45,10 90,0 v 60 h -90 z"/>',
+		'<path d="M 5,20 q 45,10 90,0 v 60 h -90 z"/>',
 	],
 	Anhanger: [
-		'<path d="M -40,-30 q 45,10 85,0 v 60 h -85 z"/>',
+		'<path d="M 10,20 q 45,10 85,0 v 60 h -85 z"/>',
 	],
-	Luftfahrzeug: ['<path d="M -45,20 a 45,50 180 0,1 90,0 Z"/>'],
-	Stelle: ['<circle cx="0" cy="00" r="30"/>']
+	Luftfahrzeug: ['<path d="M 5,70 a 45,50 180 0,1 90,0 Z"/>'],
+	Stelle: ['<circle cx="50" cy="50" r="30"/>']
 } as const satisfies Record<string, readonly string[]>;
 export type GrundzeichenKey = keyof typeof Grundzeichen;
 
 export const Grundeigenschaft = {
-	Fuhrung: ['<rect x="-45" y="-30" width="100%" height="5%" fill="black"/>'],
-	Versorgung: ['<rect x="-45" y="25" width="100%" height="5%" fill="black"/>'],
-	Drohne: [`<path d="M 0,5
+	Fuhrung: ['<rect x="5" y="20" width="100%" height="5%" fill="black"/>'],
+	Versorgung: ['<rect x="5" y="75" width="100%" height="5%" fill="black"/>'],
+	Drohne: [`<path d="M 50,55
 				  	   l -20,-15
 				  	   v -5
 				  	   l 20, 12
@@ -46,7 +46,7 @@ export type GrundeigenschaftKey = keyof typeof Grundeigenschaft;
 
 export const Zusatzzeichen = {
 	Drehfluegler: [
-		`<path d="M 0,15
+		`<path d="M 50,65
 				  l -20,-10
 				  v 20
 				  l 40,-20
@@ -59,17 +59,17 @@ export type ZusatzzeichenKey = keyof typeof Zusatzzeichen;
 
 export const TaktischeGrosse = {
 	Trupp: [
-		'<circle cx="0" cy="-40" r="3"/>'
+		'<circle cx="50" cy="10" r="3"/>'
 	],
 	Staffel: [],
 	Gruppe: [
-		'<circle cx="-10" cy="-40" r="3"/>',
-		'<circle cx="10" cy="-40" r="3"/>'
+		'<circle cx="40" cy="10" r="3"/>',
+		'<circle cx="60" cy="10" r="3"/>'
 	],
 	Zug: [
-		'<circle cx="-20" cy="-40" r="3"/>',
-		'<circle cx="0" cy="-40" r="3"/>',
-		'<circle cx="20" cy="-40" r="3"/>'
+		'<circle cx="30" cy="10" r="3"/>',
+		'<circle cx="50" cy="10" r="3"/>',
+		'<circle cx="70" cy="10" r="3"/>'
 	],
 	Bereitschaft: [
 		'<line x1="0" y1="-35" x2="0" y2="-45" stroke-width="3"/>'

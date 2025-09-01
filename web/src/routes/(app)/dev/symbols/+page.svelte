@@ -1,10 +1,10 @@
 <script lang="ts">
-	import MilitarySymbol, {
+	import TacticalSymbol, {
 		AircraftBuilder,
 		SiteBuilder,
 		UnitBuilder,
 		VehicleBuilder
-	} from '$lib/component/MilitarySymbol.svelte';
+	} from '$lib/component/TacticalSymbol.svelte';
 	import { AnhangerBuilder } from '$lib/component/taktischezeichen/TacticalSignBuilder';
 
 	// 	https://banjocode.com/post/svelte/client-side-library
@@ -266,66 +266,66 @@
 </script>
 
 <h1>Taktische Zeichen</h1>
-{#await import('$lib/component/MilitarySymbol.svelte')}
+{#await import('$lib/component/TacticalSymbol.svelte')}
 	Loading...
 {:then x }
-	<MilitarySymbol symbol={a} />
+	<TacticalSymbol symbol={a} />
 	{#each l as b}
-		<MilitarySymbol symbol={b} />
+		<TacticalSymbol symbol={b} />
 	{/each}
 
 	<h2>F Sanitäts-, Rettungs-, Betreuungswesen</h2>
 	<h3>F.1 Taktische Einheiten</h3>
-	<MilitarySymbol symbol={f11_mtf} />
-	<MilitarySymbol symbol={f12_mtfDekon} />
-	<MilitarySymbol symbol={f13_btd5000} />
-	<MilitarySymbol symbol={f14_einsatzeinheit} />
-	<MilitarySymbol symbol={f15_sanzug_asb} />
-	<MilitarySymbol symbol={f16_sangruppe} />
-	<MilitarySymbol symbol={f17_sangruppe_arzt} />
-	<MilitarySymbol symbol={f18_trapo} />
-	<MilitarySymbol symbol={f19_segsan} />
-	<MilitarySymbol symbol={f110_segrtd} />
-	<MilitarySymbol symbol={f111_rtd1} />
-	<MilitarySymbol symbol={f111_rtd2} />
-	<MilitarySymbol symbol={f112_manv1} />
-	<MilitarySymbol symbol={f112_manv2} />
-	<MilitarySymbol symbol={f113_bhp50} />
-	<MilitarySymbol symbol={f114_evt} />
-	<MilitarySymbol symbol={f115_arzttrupp1} />
-	<MilitarySymbol symbol={f115_arzttrupp2} />
-	<MilitarySymbol symbol={f116_drohnentrupp} />
-	<MilitarySymbol symbol={f117_verpfl} />
-	<MilitarySymbol symbol={f118_soz} />
-	<MilitarySymbol symbol={f119_unterkunft} />
-	<MilitarySymbol symbol={f120_betr} />
-	<MilitarySymbol symbol={f121_betr} />
-	<MilitarySymbol symbol={f122_trapo} />
+	<TacticalSymbol symbol={f11_mtf} />
+	<TacticalSymbol symbol={f12_mtfDekon} />
+	<TacticalSymbol symbol={f13_btd5000} />
+	<TacticalSymbol symbol={f14_einsatzeinheit} />
+	<TacticalSymbol symbol={f15_sanzug_asb} />
+	<TacticalSymbol symbol={f16_sangruppe} />
+	<TacticalSymbol symbol={f17_sangruppe_arzt} />
+	<TacticalSymbol symbol={f18_trapo} />
+	<TacticalSymbol symbol={f19_segsan} />
+	<TacticalSymbol symbol={f110_segrtd} />
+	<TacticalSymbol symbol={f111_rtd1} />
+	<TacticalSymbol symbol={f111_rtd2} />
+	<TacticalSymbol symbol={f112_manv1} />
+	<TacticalSymbol symbol={f112_manv2} />
+	<TacticalSymbol symbol={f113_bhp50} />
+	<TacticalSymbol symbol={f114_evt} />
+	<TacticalSymbol symbol={f115_arzttrupp1} />
+	<TacticalSymbol symbol={f115_arzttrupp2} />
+	<TacticalSymbol symbol={f116_drohnentrupp} />
+	<TacticalSymbol symbol={f117_verpfl} />
+	<TacticalSymbol symbol={f118_soz} />
+	<TacticalSymbol symbol={f119_unterkunft} />
+	<TacticalSymbol symbol={f120_betr} />
+	<TacticalSymbol symbol={f121_betr} />
+	<TacticalSymbol symbol={f122_trapo} />
 
 	<h3>F.2 Einsatzmittel</h3>
-	<MilitarySymbol symbol={f21_ktw1} />
-	<MilitarySymbol symbol={f21_ktw2} />
-	<MilitarySymbol symbol={f22_nktw1} />
-	<MilitarySymbol symbol={f22_nktw2} />
-	<MilitarySymbol symbol={f23_rtw1} />
-	<MilitarySymbol symbol={f23_rtw2} />
-	<MilitarySymbol symbol={f24_nef1} />
-	<MilitarySymbol symbol={f24_nef2} />
-	<MilitarySymbol symbol={f25_naw1} />
-	<MilitarySymbol symbol={f25_naw2} />
-	<MilitarySymbol symbol={f26_rth} />
-	<MilitarySymbol symbol={f27_ith} />
-	<MilitarySymbol symbol={f28_gwsan50} />
-	<MilitarySymbol symbol={f29_anhangerUHS} />
-	<MilitarySymbol symbol={f210_btkombi} />
-	<MilitarySymbol symbol={f211_btkombiAnlauf} />
-	<MilitarySymbol symbol={f212_gwbtr} />
-	<MilitarySymbol symbol={f213_btlkwkueche} />
-	<MilitarySymbol symbol={f214_gwlog} />
-	<MilitarySymbol symbol={f215_anhbtr} />
-	<MilitarySymbol symbol={f216_bt40} />
-	<MilitarySymbol symbol={f217_trinkwa} />
+	<TacticalSymbol symbol={f21_ktw1} />
+	<TacticalSymbol symbol={f21_ktw2} />
+	<TacticalSymbol symbol={f22_nktw1} />
+	<TacticalSymbol symbol={f22_nktw2} />
+	<TacticalSymbol symbol={f23_rtw1} />
+	<TacticalSymbol symbol={f23_rtw2} />
+	<TacticalSymbol symbol={f24_nef1} />
+	<TacticalSymbol symbol={f24_nef2} />
+	<TacticalSymbol symbol={f25_naw1} />
+	<TacticalSymbol symbol={f25_naw2} />
+	<TacticalSymbol symbol={f26_rth} />
+	<TacticalSymbol symbol={f27_ith} />
+	<TacticalSymbol symbol={f28_gwsan50} />
+	<TacticalSymbol symbol={f29_anhangerUHS} />
+	<TacticalSymbol symbol={f210_btkombi} />
+	<TacticalSymbol symbol={f211_btkombiAnlauf} />
+	<TacticalSymbol symbol={f212_gwbtr} />
+	<TacticalSymbol symbol={f213_btlkwkueche} />
+	<TacticalSymbol symbol={f214_gwlog} />
+	<TacticalSymbol symbol={f215_anhbtr} />
+	<TacticalSymbol symbol={f216_bt40} />
+	<TacticalSymbol symbol={f217_trinkwa} />
 
 	<h3>F.3 Plätze, Stellen und Einrichtungen</h3>
-	<MilitarySymbol symbol={f31_pa} />
+	<TacticalSymbol symbol={f31_pa} />
 {/await}

@@ -46,7 +46,10 @@ export abstract class TacticalSignBuilder {
 		return this;
 	}
 
-	fahigkeit(fahigkeit: FahigkeitKey | FahigkeitKey[], options?: {name?: string, specification?: string} | string): this {
+	fahigkeit(fahigkeit: FahigkeitKey | FahigkeitKey[], options?: {
+		name?: string,
+		specification?: string
+	} | string): this {
 		const { name, specification } = typeof options === 'string' ? { name: options } : options ?? {};
 		this.fahigkeitSvg = Array.isArray(fahigkeit) ? fahigkeit.flatMap(x => Array.from(Fahigkeit[x])) : Array.from(Fahigkeit[fahigkeit]);
 		if (name) {
@@ -122,24 +125,26 @@ export abstract class TacticalSignBuilder {
 	make(): string {
 		const content: string[] = [];
 		const id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-		content.push(`<svg viewBox="-50 -50 100 100" id="military-symbol-${id}" class="military-symbol" width="3cm" height="3cm" xmlns="http://www.w3.org/2000/svg">`);
+		content.push(`<svg viewBox="0 0 100 100" id="military-symbol-${id}" class="military-symbol" width="3cm" height="3cm" xmlns="http://www.w3.org/2000/svg">`);
 
 		this.makeStyle(content, id);
 		this.makeDefs(content, id);
 
+		this.makeGroesse(content);
+
+		content.push(`<svg x="5" y="20" width="90" height="60" viewBox="0 0 100 100" preserveAspectRatio="none">`);
 		content.push(`<use href="#Grundzeichen-${id}" />`);
 
-		content.push(`<g mask="url(#clip-Zeichen-${id})">`);
-
-		this.makeOrganisation(content);
-		this.makeGrundeigenschaft(content);
+		content.push(`<svg id="middle" x="0" y="0" height="100" width="100" viewBox="0 0 100 100" preserveAspectRatio="non">`);
 		this.makeFahigkeit(content);
+		this.makeOrganisation(content);
+		content.push(`</svg>`);
 
-		content.push('</g>');
+		content.push(`</svg>`);
+
 
 		content.push('<g id="Zusatzzeichen" fill="black">');
 		this.makeZusatzzeichen(content);
-		this.makeGroesse(content);
 		content.push('</g>');
 
 		content.push('</svg>');
@@ -157,9 +162,9 @@ export class UnitBuilder extends TacticalSignBuilder {
 
 export class VehicleBuilder extends TacticalSignBuilder {
 	private transportartSvg: readonly string[] = [];
-private anhangerSvg: readonly string[] = [];
+	private anhangerSvg: readonly string[] = [];
 
-	constructor(type: GrundzeichenKey = "Fahrzeug") {
+	constructor(type: GrundzeichenKey = 'Fahrzeug') {
 		super(type);
 	}
 

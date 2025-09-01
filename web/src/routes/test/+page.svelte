@@ -1,7 +1,7 @@
 <script lang="ts">
-	import MilitarySymbol from '$lib/component/MilitarySymbol.svelte';
+	import TacticalSymbol from '$lib/component/TacticalSymbol.svelte';
 
-	import { GrundzeichenBuilder } from '$lib/component/MilitarySymbol.svelte';
+	import { GrundzeichenBuilder } from '$lib/component/TacticalSymbol.svelte';
 
 	const a = new GrundzeichenBuilder('Einheit')
 		.organisation('Rescue', 'BRK')
@@ -11,8 +11,8 @@
 // 	https://banjocode.com/post/svelte/client-side-library
 </script>
 
-{#await import('$lib/component/MilitarySymbol.svelte')}
+{#await import('$lib/component/TacticalSymbol.svelte')}
 	Loading...
 {:then x }
-	<MilitarySymbol symbol={a}/>
+	<TacticalSymbol symbol={a}/>
 {/await}
