@@ -1,0 +1,21 @@
+.tactical-symbol {
+    stroke-width: 2;
+    user-select: none;
+}
+
+.tactical-symbol text {
+    font-family: Lubalin Graph Bold,
+    Roboto Slab,
+    Courier new,
+    serif;
+    font-weight: bold;
+    font-size: 10px;
+    font-size-adjust: 0.458;
+    stroke-width: .25em;
+    paint-order: stroke;
+    stroke-linejoin: round;
+}
+
+.tactical-symbol #shortname {
+    font-size: 20px;
+}

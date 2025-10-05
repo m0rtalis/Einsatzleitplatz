@@ -27,7 +27,7 @@ export async function handleFetch({ request, fetch }) {
 
 export async function handleError({ status, error, event, message }) {
 	if (status === StatusCode.NOT_FOUND) {
-		console.log('Error not found');
+		console.log('Error not found', status, error, event, message);
 		redirect(StatusCode.TEMPORARY_REDIRECT, '/');
 	}
 	console.error(error, event, message);
