@@ -1,5 +1,4 @@
 .tactical-symbol {
-    stroke-width: 2;
     user-select: none;
 }
 
@@ -7,7 +6,8 @@
     font-family: Lubalin Graph Bold,
     Roboto Slab,
     Courier new,
-    serif;
+    sans-serif;
+    font-variant-numeric: slashed-zero;
     font-weight: bold;
     font-size: 10px;
     font-size-adjust: 0.458;

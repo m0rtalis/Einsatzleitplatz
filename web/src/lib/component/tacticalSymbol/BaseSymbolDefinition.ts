@@ -1,5 +1,4 @@
-type Point = { x: number, y: number }
-type Area = { topLeft: Point, bottomRight: Point }
+import type { Area, Point } from '$lib/utility/svg';
 
 export type BaseSymbolType = {
 	svg: string[]
@@ -16,13 +15,28 @@ export const BaseSymbol = {
 		size: { width: 90, height: 60 },
 		printableArea: { topLeft: { x: 0, y: 0 }, bottomRight: { x: 90, y: 60 } },
 		organisationPoint: { x: 87, y: 55 },
-		unitPoint: { x: 2, y: 10 },
+		unitPoint: { x: 3, y: 13 },
+		shortnamePoint: { x: 45, y: 36 }
+	},
+	Fahrzeug: {
+		svg: [
+			'<path d="M 0,0 q 45,10 90,0 v 60 h -90 z"/>'
+		],
+		size: { width: 90, height: 60 },
+		printableArea: { topLeft: { x: 0, y: 5 }, bottomRight: { x: 90, y: 60 } },
+		organisationPoint: { x: 87, y: 55 },
+		unitPoint: { x: 3, y: 15 },
+		shortnamePoint: { x: 45, y: 36 }
+	},
+	Stelle: {
+		svg: ['<circle cx="50" cy="50" r="50"/>'],
+		size: { width: 60, height: 60 },
+		printableArea: { topLeft: { x: 0, y: 0 }, bottomRight: { x: 60, y: 60 } },
+		organisationPoint: { x: 50, y: 50 },
+		unitPoint: { x: 3, y: 15 },
 		shortnamePoint: { x: 45, y: 36 }
 	}
 	/*
-		Fahrzeug: [
-			'<path d="M 5,20 q 45,10 90,0 v 60 h -90 z"/>'
-		],
 		Anhanger: [
 			'<path d="M 10,20 q 45,10 85,0 v 60 h -85 z"/>'
 		],

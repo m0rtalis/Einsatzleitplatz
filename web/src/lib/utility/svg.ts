@@ -1,5 +1,22 @@
 import { isEmpty } from '$lib/js';
 
+export type Point = { x: number, y: number }
+export type Area = { topLeft: Point, bottomRight: Point }
+
+export type AreaInfo = Area & { midPoint: Point, width: number, height: number }
+
+export const areaInfo = (area: Area): AreaInfo => {
+	const width = area.bottomRight.x - area.topLeft.x;
+	const height = area.bottomRight.y - area.topLeft.y;
+
+	return {
+		...area,
+		midPoint: { x: area.bottomRight.x - width / 2, y: area.bottomRight.y - height / 2 },
+		width: width,
+		height: height
+	};
+};
+
 abstract class Element {
 	private readonly attributes: Record<string, string> = {};
 	private readonly styles: Record<string, string> = {};
@@ -20,9 +37,9 @@ abstract class Element {
 	protected getOpenTag(autoclose: boolean = true): string {
 		return `<${this.name}`
 			+ Object.entries(this.attributes).map(([key, value]) => ` ${key}='${value}'`).join('')
-			+ (isEmpty(this.styles) ? '' : 'style=\'' + Object.entries(this.styles)
-				.map(([key, value]) => ` ${key}='${value}'`)
-				.join(';') + '\'')
+			+ (isEmpty(this.styles) ? '' : 'style="' + Object.entries(this.styles)
+				.map(([key, value]) => `${key}:${value}`)
+				.join('; ') + '"')
 			+ (autoclose ? '/>' : '>');
 	}
 
@@ -126,10 +143,27 @@ export class SVG extends Container {
 		return node;
 	}
 
+	static rect(area: Area): LeafElement {
+		return new LeafElement('rect').addAttr('x', area.topLeft.x)
+			.addAttr('y', area.topLeft.y)
+			.addAttr('width', area.bottomRight.x - area.topLeft.x)
+			.addAttr('height', area.bottomRight.y - area.topLeft.y);
+	}
+
+	static circle(point: Point, radius: number): LeafElement {
+		return new LeafElement('circle').addAttr('cx', point.x).addAttr('cy', point.y).addAttr('r', radius);
+	}
+
+	static line(point1: Point, point2: Point): LeafElement {
+		return new LeafElement('line').addAttr('x1', point1.x)
+			.addAttr('y1', point1.y)
+			.addAttr('x2', point2.x)
+			.addAttr('y2', point2.y);
+	}
+
 	static use(href: string): LeafElement {
 		return new LeafElement('use').addAttr('href', href);
 	}
-
 
 	static clipPath(id: string): Container {
 		const c = new Container('clipPath');
